@@ -39,7 +39,6 @@ namespace OCA\DAV;
 use OCA\DAV\AppInfo\PluginManager;
 use OCA\DAV\BulkUpload\BulkUploadPlugin;
 use OCA\DAV\CalDAV\BirthdayService;
-use OCA\DAV\CalDAV\Security\RateLimitingPlugin;
 use OCA\DAV\CardDAV\HasPhotoPlugin;
 use OCA\DAV\CardDAV\ImageExportPlugin;
 use OCA\DAV\CardDAV\MultiGetExportPlugin;
@@ -195,8 +194,6 @@ class Server {
 				\OC::$server->getConfig(),
 				\OC::$server->getURLGenerator()
 			));
-
-			$this->server->addPlugin(\OCP\Server::get(RateLimitingPlugin::class));
 		}
 
 		// addressbook plugins
@@ -241,6 +238,11 @@ class Server {
 			$this->server->addPlugin(new FakeLockerPlugin());
 		}
 
+		// Allow view-only plugin for webdav requests
+		$this->server->addPlugin(new ViewOnlyPlugin(
+			$logger
+		));
+
 		if (BrowserErrorPagePlugin::isBrowserRequest($request)) {
 			$this->server->addPlugin(new BrowserErrorPagePlugin());
 		}
@@ -250,11 +252,6 @@ class Server {
 
 		// wait with registering these until auth is handled and the filesystem is setup
 		$this->server->on('beforeMethod:*', function () use ($root, $lazySearchBackend, $logger) {
-			// Allow view-only plugin for webdav requests
-			$this->server->addPlugin(new ViewOnlyPlugin(
-				\OC::$server->getUserFolder(),
-			));
-
 			// custom properties plugin must be the last one
 			$userSession = \OC::$server->getUserSession();
 			$user = $userSession->getUser();
@@ -276,7 +273,6 @@ class Server {
 				$this->server->addPlugin(
 					new \Sabre\DAV\PropertyStorage\Plugin(
 						new CustomPropertiesBackend(
-							$this->server,
 							$this->server->tree,
 							\OC::$server->getDatabaseConnection(),
 							\OC::$server->getUserSession()->getUser()
@@ -390,4 +386,7 @@ class Server {
 		return false;
 	}
 
+	public function getSabreServer(): Connector\Sabre\Server {
+		return $this->server;
+	}
 }

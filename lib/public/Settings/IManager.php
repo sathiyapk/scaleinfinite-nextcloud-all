@@ -35,25 +35,25 @@ use OCP\IUser;
 interface IManager {
 	/**
 	 * @since 9.1.0
-	 * @deprecated 29.0.0 Use {@see self::SETTINGS_ADMIN} instead
+	 * @depreacted 29.0.0 Use {@see self::SETTINGS_ADMIN} instead
 	 */
 	public const KEY_ADMIN_SETTINGS = 'admin';
 
 	/**
 	 * @since 9.1.0
-	 * @deprecated 29.0.0 Use {@see self::SETTINGS_ADMIN} instead
+	 * @depreacted 29.0.0 Use {@see self::SETTINGS_ADMIN} instead
 	 */
 	public const KEY_ADMIN_SECTION = 'admin-section';
 
 	/**
 	 * @since 13.0.0
-	 * @deprecated 29.0.0 Use {@see self::SETTINGS_PERSONAL} instead
+	 * @depreacted 29.0.0 Use {@see self::SETTINGS_PERSONAL} instead
 	 */
 	public const KEY_PERSONAL_SETTINGS = 'personal';
 
 	/**
 	 * @since 13.0.0
-	 * @deprecated 29.0.0 Use {@see self::SETTINGS_PERSONAL} instead
+	 * @depreacted 29.0.0 Use {@see self::SETTINGS_PERSONAL} instead
 	 */
 	public const KEY_PERSONAL_SECTION = 'personal-section';
 

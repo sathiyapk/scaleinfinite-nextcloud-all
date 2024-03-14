@@ -447,7 +447,7 @@ class OwnershipTransferService {
 		$progress = new ProgressBar($output, count($sourceShares));
 		$prefix = "$destinationUid/files";
 		$finalShareTarget = '';
-		if (str_starts_with($finalTarget, $prefix)) {
+		if (substr($finalTarget, 0, strlen($prefix)) === $prefix) {
 			$finalShareTarget = substr($finalTarget, strlen($prefix));
 		}
 		foreach ($sourceShares as $share) {
@@ -457,7 +457,7 @@ class OwnershipTransferService {
 				if (trim($path, '/') !== '') {
 					$pathToCheck = '/' . trim($path) . '/';
 				}
-				if (!str_starts_with($share->getTarget(), $pathToCheck)) {
+				if (substr($share->getTarget(), 0, strlen($pathToCheck)) !== $pathToCheck) {
 					continue;
 				}
 				$shareTarget = $share->getTarget();

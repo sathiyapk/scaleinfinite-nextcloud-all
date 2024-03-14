@@ -70,6 +70,7 @@ use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 
 class Application extends App implements IBootstrap {
+
 	/** @var LoggerInterface */
 	protected $logger;
 

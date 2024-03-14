@@ -44,10 +44,19 @@ use Psr\Log\LoggerInterface;
 abstract class Fetcher {
 	public const INVALIDATE_AFTER_SECONDS = 3600;
 	public const RETRY_AFTER_FAILURE_SECONDS = 300;
-	public const APP_STORE_URL = 'https://apps.nextcloud.com/api/v1';
 
 	/** @var IAppData */
 	protected $appData;
+	/** @var IClientService */
+	protected $clientService;
+	/** @var ITimeFactory */
+	protected $timeFactory;
+	/** @var IConfig */
+	protected $config;
+	/** @var LoggerInterface */
+	protected $logger;
+	/** @var IRegistry */
+	protected $registry;
 
 	/** @var string */
 	protected $fileName;
@@ -58,15 +67,18 @@ abstract class Fetcher {
 	/** @var ?string */
 	protected $channel = null;
 
-	public function __construct(
-		Factory $appDataFactory,
-		protected IClientService $clientService,
-		protected ITimeFactory $timeFactory,
-		protected IConfig $config,
-		protected LoggerInterface $logger,
-		protected IRegistry $registry,
-	) {
+	public function __construct(Factory $appDataFactory,
+		IClientService $clientService,
+		ITimeFactory $timeFactory,
+		IConfig $config,
+		LoggerInterface $logger,
+		IRegistry $registry) {
 		$this->appData = $appDataFactory->get('appstore');
+		$this->clientService = $clientService;
+		$this->timeFactory = $timeFactory;
+		$this->config = $config;
+		$this->logger = $logger;
+		$this->registry = $registry;
 	}
 
 	/**
@@ -97,13 +109,10 @@ abstract class Fetcher {
 			];
 		}
 
-		if ($this->config->getSystemValueString('appstoreurl', self::APP_STORE_URL) === self::APP_STORE_URL) {
-			// If we have a valid subscription key, send it to the appstore
-			$subscriptionKey = $this->config->getAppValue('support', 'subscription_key');
-			if ($this->registry->delegateHasValidSubscription() && $subscriptionKey) {
-				$options['headers'] ??= [];
-				$options['headers']['X-NC-Subscription-Key'] = $subscriptionKey;
-			}
+		// If we have a valid subscription key, send it to the appstore
+		$subscriptionKey = $this->config->getAppValue('support', 'subscription_key');
+		if ($this->registry->delegateHasValidSubscription() && $subscriptionKey) {
+			$options['headers']['X-NC-Subscription-Key'] = $subscriptionKey;
 		}
 
 		$client = $this->clientService->newClient();
@@ -141,9 +150,8 @@ abstract class Fetcher {
 	public function get($allowUnstable = false) {
 		$appstoreenabled = $this->config->getSystemValueBool('appstoreenabled', true);
 		$internetavailable = $this->config->getSystemValueBool('has_internet_connection', true);
-		$isDefaultAppStore = $this->config->getSystemValueString('appstoreurl', self::APP_STORE_URL) === self::APP_STORE_URL;
 
-		if (!$appstoreenabled || (!$internetavailable && $isDefaultAppStore)) {
+		if (!$appstoreenabled || !$internetavailable) {
 			return [];
 		}
 

@@ -2,7 +2,7 @@ OC.L10N.register(
     "dav",
     {
     "Calendar" : "カレンダー",
-    "Tasks" : "タスク",
+    "To-dos" : "To-dos",
     "Personal" : "個人",
     "{actor} created calendar {calendar}" : "{actor}はカレンダー {calendar} を作成しました",
     "You created calendar {calendar}" : "カレンダー {calendar} を作成しました",
@@ -143,6 +143,7 @@ OC.L10N.register(
     "Configures a CalDAV account" : "CalDAVアカウントを設定します",
     "Configures a CardDAV account" : "CardDAVアカウントを設定します",
     "Events" : "イベント",
+    "Tasks" : "タスク",
     "Untitled task" : "タイトルなしタスク",
     "Completed on %s" : "%sに完了",
     "Due on %s by %s" : "期限日%s が%sにより設定",
@@ -184,6 +185,7 @@ OC.L10N.register(
     "Saved availability" : "可用性を保存しました",
     "Failed to save availability" : "可用性を保存しました",
     "Availability" : "応対可能日時",
+    "If you configure your working hours, other users will see when you are out of office when they book a meeting." : "勤務時間を設定すると、他のユーザが会議を予約する際に、あなたがいつ不在であるかがわかります。",
     "Absence" : "不在",
     "Configure your next absence period." : "次の不在期間を設定します。",
     "Calendar server" : "カレンダーサーバー",
@@ -202,8 +204,6 @@ OC.L10N.register(
     "Please contact the organizer directly." : "主催者に直接お問い合わせください。",
     "Are you accepting the invitation?" : "招待を受け入れていますか？",
     "Tentative" : "暫定的",
-    "Your attendance was updated successfully." : "出席は正常に更新されました。",
-    "To-dos" : "To-dos",
-    "If you configure your working hours, other users will see when you are out of office when they book a meeting." : "勤務時間を設定すると、他のユーザが会議を予約する際に、あなたがいつ不在であるかがわかります。"
+    "Your attendance was updated successfully." : "出席は正常に更新されました。"
 },
 "nplurals=1; plural=0;");

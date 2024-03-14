@@ -40,7 +40,6 @@ use OCP\Files\Storage\IStorageFactory;
 use OCP\ICache;
 use OCP\IUser;
 use OCP\Share\Events\VerifyMountPointEvent;
-use Psr\Log\LoggerInterface;
 
 /**
  * Shared mount points can be moved by the user
@@ -199,7 +198,7 @@ class SharedMount extends MountPoint implements MoveableMount, ISharedMountPoint
 
 		// it is not a file relative to data/user/files
 		if (count($split) < 3 || $split[1] !== 'files') {
-			\OCP\Server::get(LoggerInterface::class)->error('Can not strip userid and "files/" from path: ' . $path, ['app' => 'files_sharing']);
+			\OC::$server->getLogger()->error('Can not strip userid and "files/" from path: ' . $path, ['app' => 'files_sharing']);
 			throw new \OCA\Files_Sharing\Exceptions\BrokenPath('Path does not start with /user/files', 10);
 		}
 
@@ -227,13 +226,7 @@ class SharedMount extends MountPoint implements MoveableMount, ISharedMountPoint
 			$this->setMountPoint($target);
 			$this->storage->setMountPoint($relTargetPath);
 		} catch (\Exception $e) {
-			\OCP\Server::get(LoggerInterface::class)->error(
-				'Could not rename mount point for shared folder "' . $this->getMountPoint() . '" to "' . $target . '"',
-				[
-					'app' => 'files_sharing',
-					'exception' => $e,
-				]
-			);
+			\OC::$server->getLogger()->logException($e, ['app' => 'files_sharing', 'message' => 'Could not rename mount point for shared folder "' . $this->getMountPoint() . '" to "' . $target . '"']);
 		}
 
 		return $result;

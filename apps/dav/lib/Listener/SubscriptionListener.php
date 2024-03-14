@@ -35,7 +35,6 @@ use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 use Psr\Log\LoggerInterface;
 
-/** @template-implements IEventListener<SubscriptionCreatedEvent|SubscriptionDeletedEvent> */
 class SubscriptionListener implements IEventListener {
 	private IJobList $jobList;
 	private RefreshWebcalService $refreshWebcalService;

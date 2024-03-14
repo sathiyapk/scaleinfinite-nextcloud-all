@@ -138,7 +138,7 @@ class UserGlobalStoragesController extends StoragesController {
 
 		$data = $storage->jsonSerialize(true);
 		$isAdmin = $this->groupManager->isAdmin($this->userSession->getUser()->getUID());
-		$data['can_edit'] = $storage->getType() === StorageConfig::MOUNT_TYPE_PERSONAL || $isAdmin;
+		$data['can_edit'] = $storage->getType() === StorageConfig::MOUNT_TYPE_PERSONAl || $isAdmin;
 
 		return new DataResponse(
 			$data,
@@ -172,7 +172,7 @@ class UserGlobalStoragesController extends StoragesController {
 			} else {
 				return new DataResponse(
 					[
-						'message' => $this->l10n->t('Storage with ID "%d" is not editable by non-admins', [$id])
+						'message' => $this->l10n->t('Storage with ID "%d" is not user editable', [$id])
 					],
 					Http::STATUS_FORBIDDEN
 				);

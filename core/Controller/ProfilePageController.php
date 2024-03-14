@@ -29,7 +29,6 @@ namespace OC\Core\Controller;
 
 use OC\Profile\ProfileManager;
 use OCP\AppFramework\Controller;
-use OCP\AppFramework\Http\Attribute\FrontpageRoute;
 use OCP\AppFramework\Http\Attribute\OpenAPI;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\AppFramework\Services\IInitialState;
@@ -66,7 +65,6 @@ class ProfilePageController extends Controller {
 	 * @NoAdminRequired
 	 * @NoSubAdminRequired
 	 */
-	#[FrontpageRoute(verb: 'GET', url: '/u/{targetUserId}')]
 	public function index(string $targetUserId): TemplateResponse {
 		$profileNotFoundTemplate = new TemplateResponse(
 			'core',

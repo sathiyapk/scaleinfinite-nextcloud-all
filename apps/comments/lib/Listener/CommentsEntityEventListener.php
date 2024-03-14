@@ -30,7 +30,6 @@ use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 use OCP\Files\IRootFolder;
 
-/** @template-implements IEventListener<CommentsEntityEvent> */
 class CommentsEntityEventListener implements IEventListener {
 	public function __construct(
 		private IRootFolder $rootFolder,

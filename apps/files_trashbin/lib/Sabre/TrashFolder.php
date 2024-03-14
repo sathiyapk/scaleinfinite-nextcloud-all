@@ -30,6 +30,6 @@ use OCA\Files_Trashbin\Trashbin;
 
 class TrashFolder extends AbstractTrashFolder {
 	public function getName(): string {
-		return Trashbin::getTrashFilename($this->data->getName(), $this->getDeletionTime());
+		return Trashbin::getTrashFilename($this->data->getName(), $this->getLastModified());
 	}
 }

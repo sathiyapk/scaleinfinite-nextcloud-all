@@ -160,9 +160,6 @@ class ContactsMigrator implements IMigrator, ISizeEstimationMigrator {
 		)));
 	}
 
-	/**
-	 * @throws InvalidAddressBookException
-	 */
 	private function getUniqueAddressBookUri(IUser $user, string $initialAddressBookUri): string {
 		$principalUri = $this->getPrincipalUri($user);
 
@@ -171,7 +168,7 @@ class ContactsMigrator implements IMigrator, ISizeEstimationMigrator {
 			: ContactsMigrator::MIGRATED_URI_PREFIX . $initialAddressBookUri;
 
 		if ($initialAddressBookUri === '') {
-			throw new InvalidAddressBookException();
+			throw new ContactsMigratorException('Failed to get unique address book URI');
 		}
 
 		$existingAddressBookUris = array_map(
@@ -275,8 +272,6 @@ class ContactsMigrator implements IMigrator, ISizeEstimationMigrator {
 	/**
 	 * @param array{displayName: string, description?: string} $metadata
 	 * @param VCard[] $vCards
-	 *
-	 * @throws InvalidAddressBookException
 	 */
 	private function importAddressBook(IUser $user, string $filename, string $initialAddressBookUri, array $metadata, array $vCards, OutputInterface $output): void {
 		$principalUri = $this->getPrincipalUri($user);
@@ -371,29 +366,24 @@ class ContactsMigrator implements IMigrator, ISizeEstimationMigrator {
 
 			$splitFilename = explode('.', $addressBookFilename, 2);
 			if (count($splitFilename) !== 2) {
-				$output->writeln("Invalid filename \"$addressBookFilename\", expected filename of the format \"<address_book_name>." . ContactsMigrator::FILENAME_EXT . '", skipping…');
-				continue;
+				throw new ContactsMigratorException("Invalid filename \"$addressBookFilename\", expected filename of the format \"<address_book_name>." . ContactsMigrator::FILENAME_EXT . '"');
 			}
 			[$initialAddressBookUri, $ext] = $splitFilename;
 
 			/** @var array{displayName: string, description?: string} $metadata */
 			$metadata = json_decode($importSource->getFileContents($metadataImportPath), true, 512, JSON_THROW_ON_ERROR);
 
-			try {
-				$this->importAddressBook(
-					$user,
-					$addressBookFilename,
-					$initialAddressBookUri,
-					$metadata,
-					$vCards,
-					$output,
-				);
-			} catch (InvalidAddressBookException $e) {
-				// Allow this exception to skip a failed import
-			} finally {
-				foreach ($vCards as $vCard) {
-					$vCard->destroy();
-				}
+			$this->importAddressBook(
+				$user,
+				$addressBookFilename,
+				$initialAddressBookUri,
+				$metadata,
+				$vCards,
+				$output,
+			);
+
+			foreach ($vCards as $vCard) {
+				$vCard->destroy();
 			}
 		}
 	}

@@ -52,7 +52,6 @@ use OCP\IGroup;
 use OCP\IGroupManager;
 use OCP\IUser;
 use Psr\Log\LoggerInterface;
-use function is_string;
 
 /**
  * Class Manager
@@ -357,7 +356,7 @@ class Manager extends PublicEmitter implements IGroupManager {
 	 */
 	public function isAdmin($userId) {
 		foreach ($this->backends as $backend) {
-			if (is_string($userId) && $backend->implementsActions(Backend::IS_ADMIN) && $backend->isAdmin($userId)) {
+			if ($backend->implementsActions(Backend::IS_ADMIN) && $backend->isAdmin($userId)) {
 				return true;
 			}
 		}

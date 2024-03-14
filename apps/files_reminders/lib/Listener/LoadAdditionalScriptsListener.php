@@ -33,7 +33,6 @@ use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 use OCP\Util;
 
-/** @template-implements IEventListener<LoadAdditionalScriptsEvent> */
 class LoadAdditionalScriptsListener implements IEventListener {
 	public function __construct(
 		private IAppManager $appManager,

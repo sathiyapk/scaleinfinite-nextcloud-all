@@ -99,21 +99,13 @@ class Version1190Date20230706134108 extends SimpleMigrationStep {
 		$result = $query->executeQuery();
 		while ($row = $result->fetch()) {
 			$knownUsers = unserialize($row['owncloudusers']);
-			$knownUsers = array_unique($knownUsers);
 			foreach ($knownUsers as $knownUser) {
-				try {
-					$insert
-						->setParameter('groupid', $row['owncloudname'])
-						->setParameter('userid', $knownUser)
-					;
+				$insert
+					->setParameter('groupid', $row['owncloudname'])
+					->setParameter('userid', $knownUser)
+				;
 
-					$insert->executeStatement();
-				} catch (\OCP\DB\Exception $e) {
-					/*
-					 * If it fails on unique constaint violation it may just be left over value from previous half-migration
-					 * If it fails on something else, ignore as well, data will be filled by background job later anyway
-					 */
-				}
+				$insert->executeStatement();
 			}
 		}
 		$result->closeCursor();

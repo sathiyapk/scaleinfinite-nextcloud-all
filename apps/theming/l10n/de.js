@@ -24,10 +24,11 @@ OC.L10N.register(
     "Could not write file to disk" : "Die Datei konnte nicht auf die Festplatte geschrieben werden",
     "A PHP extension stopped the file upload" : "Eine PHP-Erweiterung hat das Hochladen der Datei gestoppt",
     "No file uploaded" : "Keine Datei hochgeladen",
+    "Failed to clean up the old administration theming images folder" : "Fehler beim Bereinigen des alten Admin-Design-Bilderordners",
+    "Failed to clean up the old administration image folder" : "Fehler beim Bereinigen des alten Admin-Design-Bilderordners",
     "You are already using a custom theme. Theming app settings might be overwritten by that." : "Du benutzt bereits ein benutzerdefiniertes Design. Die App \"Theming\" würde dies überschreiben.",
     "Theming" : "Design",
     "Appearance and accessibility" : "Erscheinungsbild und Barrierefreiheit",
-    "The PHP module \"imagick\" is not enabled although the theming app is. For favicon generation to work correctly, you need to install and enable this module." : "Das PHP-Modul \"imagick\" ist nicht aktiviert, die Theming-App hingegen schon. Damit die Favicon-Generierung korrekt funktioniert, musst du dieses Modul installieren und aktivieren.",
     "Dark theme with high contrast mode" : "Dunkles Design mit hohem Kontrastmodus",
     "Enable dark high contrast mode" : "Kontrastreichen Modus aktivieren",
     "Similar to the high contrast mode, but with dark colours." : "Ähnlich wie der Hochkontrastmodus, aber mit dunklen Farben",
@@ -104,11 +105,9 @@ OC.L10N.register(
     "Default app priority" : "Standard-App-Priorität",
     "If an app is not enabled for a user, the next app with lower priority is used." : "Wenn eine App für einen Benutzer nicht aktiviert ist, wird die nächste App mit niedrigerer Priorität verwendet.",
     "Could not set global default apps" : "Globale Standard-Apps konnten nicht festgelegt werden.",
+    "Select a custom color" : "Eine benutzerdefinierte Farbe auswählen",
     "Reset to default" : " Auf Standard zurücksetzen ",
     "Upload" : "Hochladen",
-    "Remove background image" : "Hintergrundbild entfernen",
-    "Failed to clean up the old administration theming images folder" : "Fehler beim Bereinigen des alten Admin-Design-Bilderordners",
-    "Failed to clean up the old administration image folder" : "Fehler beim Bereinigen des alten Admin-Design-Bilderordners",
-    "Select a custom color" : "Eine benutzerdefinierte Farbe auswählen"
+    "Remove background image" : "Hintergrundbild entfernen"
 },
 "nplurals=2; plural=(n != 1);");

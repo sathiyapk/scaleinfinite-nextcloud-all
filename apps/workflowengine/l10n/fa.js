@@ -110,8 +110,8 @@ OC.L10N.register(
     "between" : "بین ",
     "not between" : "نیست بین",
     "Request user agent" : "درخواست سفیر کاربر",
+    "User group membership" : "عضویت کاربر در گروه",
     "is member of" : "عضو است در ",
-    "is not member of" : "عضو نیست در ",
-    "User group membership" : "عضویت کاربر در گروه"
+    "is not member of" : "عضو نیست در "
 },
 "nplurals=2; plural=(n > 1);");

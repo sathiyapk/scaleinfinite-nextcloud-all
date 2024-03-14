@@ -42,14 +42,12 @@ namespace OCA\UserStatus;
  *     visible: ?bool,
  * }
  *
- * @psalm-type UserStatusType = "online"|"away"|"dnd"|"busy"|"offline"|"invisible"
- *
  * @psalm-type UserStatusPublic = array{
  *     userId: string,
  *     message: ?string,
  *     icon: ?string,
  *     clearAt: ?int,
- *     status: UserStatusType,
+ *     status: string,
  * }
  *
  * @psalm-type UserStatusPrivate = UserStatusPublic&array{

@@ -70,7 +70,6 @@ use OCP\Files\IRootFolder;
 use OCP\Files\Node;
 use OCP\Files\NotFoundException;
 use OCP\IConfig;
-use OCP\IDateTimeZone;
 use OCP\IGroupManager;
 use OCP\IL10N;
 use OCP\IPreview;
@@ -125,6 +124,20 @@ class ShareAPIController extends OCSController {
 
 	/**
 	 * Share20OCS constructor.
+	 *
+	 * @param string $appName
+	 * @param IRequest $request
+	 * @param IManager $shareManager
+	 * @param IGroupManager $groupManager
+	 * @param IUserManager $userManager
+	 * @param IRootFolder $rootFolder
+	 * @param IURLGenerator $urlGenerator
+	 * @param string $userId
+	 * @param IL10N $l10n
+	 * @param IConfig $config
+	 * @param IAppManager $appManager
+	 * @param IServerContainer $serverContainer
+	 * @param IUserStatusManager $userStatusManager
 	 */
 	public function __construct(
 		string $appName,
@@ -140,8 +153,7 @@ class ShareAPIController extends OCSController {
 		IAppManager $appManager,
 		IServerContainer $serverContainer,
 		IUserStatusManager $userStatusManager,
-		IPreview $previewManager,
-		private IDateTimeZone $dateTimeZone,
+		IPreview $previewManager
 	) {
 		parent::__construct($appName, $request);
 
@@ -240,7 +252,6 @@ class ShareAPIController extends OCSController {
 
 		$expiration = $share->getExpirationDate();
 		if ($expiration !== null) {
-			$expiration->setTimezone($this->dateTimeZone->getTimeZone());
 			$result['expiration'] = $expiration->format('Y-m-d 00:00:00');
 		}
 
@@ -311,11 +322,10 @@ class ShareAPIController extends OCSController {
 
 			$shareWithStart = ($hasCircleId ? strrpos($share->getSharedWith(), '[') + 1 : 0);
 			$shareWithLength = ($hasCircleId ? -1 : strpos($share->getSharedWith(), ' '));
-			if ($shareWithLength === false) {
-				$result['share_with'] = substr($share->getSharedWith(), $shareWithStart);
-			} else {
-				$result['share_with'] = substr($share->getSharedWith(), $shareWithStart, $shareWithLength);
+			if (is_bool($shareWithLength)) {
+				$shareWithLength = -1;
 			}
+			$result['share_with'] = substr($share->getSharedWith(), $shareWithStart, $shareWithLength);
 		} elseif ($share->getShareType() === IShare::TYPE_ROOM) {
 			$result['share_with'] = $share->getSharedWith();
 			$result['share_with_displayname'] = '';
@@ -587,7 +597,7 @@ class ShareAPIController extends OCSController {
 	 * @param string $publicUpload If public uploading is allowed
 	 * @param string $password Password for the share
 	 * @param string|null $sendPasswordByTalk Send the password for the share over Talk
-	 * @param string $expireDate Expiry date of the share using user timezone at 00:00. It means date in UTC timezone will be used.
+	 * @param string $expireDate Expiry date of the share
 	 * @param string $note Note for the share
 	 * @param string $label Label for the share (only used in link and email)
 	 * @param string|null $attributes Additional attributes for the share
@@ -689,7 +699,7 @@ class ShareAPIController extends OCSController {
 		if ($shareType === IShare::TYPE_USER) {
 			// Valid user is required to share
 			if ($shareWith === null || !$this->userManager->userExists($shareWith)) {
-				throw new OCSNotFoundException($this->l->t('Please specify a valid account to share with'));
+				throw new OCSNotFoundException($this->l->t('Please specify a valid user'));
 			}
 			$share->setSharedWith($shareWith);
 			$share->setPermissions($permissions);
@@ -764,7 +774,7 @@ class ShareAPIController extends OCSController {
 			}
 
 			if ($shareWith === null) {
-				throw new OCSNotFoundException($this->l->t('Please specify a valid federated account ID'));
+				throw new OCSNotFoundException($this->l->t('Please specify a valid federated user ID'));
 			}
 
 			$share->setSharedWith($shareWith);
@@ -852,11 +862,11 @@ class ShareAPIController extends OCSController {
 		try {
 			$share = $this->shareManager->createShare($share);
 		} catch (GenericShareException $e) {
-			\OCP\Server::get(LoggerInterface::class)->error($e->getMessage(), ['exception' => $e]);
+			\OC::$server->getLogger()->logException($e);
 			$code = $e->getCode() === 0 ? 403 : $e->getCode();
 			throw new OCSException($e->getHint(), $code);
 		} catch (\Exception $e) {
-			\OCP\Server::get(LoggerInterface::class)->error($e->getMessage(), ['exception' => $e]);
+			\OC::$server->getLogger()->logException($e);
 			throw new OCSForbiddenException($e->getMessage(), $e);
 		}
 
@@ -1696,15 +1706,12 @@ class ShareAPIController extends OCSController {
 	 */
 	private function parseDate(string $expireDate): \DateTime {
 		try {
-			$date = new \DateTime(trim($expireDate, "\""), $this->dateTimeZone->getTimeZone());
-			// Make sure it expires at midnight in owner timezone
-			$date->setTime(0, 0, 0);
+			$date = new \DateTime(trim($expireDate, "\""));
 		} catch (\Exception $e) {
 			throw new \Exception('Invalid date. Format must be YYYY-MM-DD');
 		}
 
-		// Use server timezone to store the date
-		$date->setTimezone(new \DateTimeZone(date_default_timezone_get()));
+		$date->setTime(0, 0, 0);
 
 		return $date;
 	}

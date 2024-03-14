@@ -75,10 +75,15 @@ $color-text-maxcontrast: nc-lighten($color-main-text, 33%) !default;
 $color-text-light: $color-main-text !default;
 $color-text-lighter: $color-text-maxcontrast !default;
 
-$image-logo: url('../img/logo/logo.svg?v=1') !default;
-$image-login-background: url('../img/background.png?v=2') !default;
-$image-logoheader: url('../img/logo/logo.svg?v=1') !default;
-$image-favicon: url('../img/logo/logo.svg?v=1') !default;
+// $image-logo: url('../img/logo/logo.svg?v=1') !default;
+// $image-login-background: url('../img/background.png?v=2') !default;
+// $image-logoheader: url('../img/logo/logo.svg?v=1') !default;
+// $image-favicon: url('../img/logo/logo.svg?v=1') !default;
+
+$image-logo: url('../img/logo/logo.svg');
+$image-login-background: url('../img/background.png');
+$image-logoheader: url('../img/logo/logo.svg');
+$image-favicon: url('../img/logo/logo.svg?');
 
 $color-loading-light: #ccc !default;
 $color-loading-dark: #444 !default;
@@ -90,8 +95,10 @@ $color-border: nc-darken($color-main-background, 7%) !default;
 // darker border like inputs or very visible elements
 $color-border-dark: nc-darken($color-main-background, 14%) !default;
 
-$border-radius: 3px !default;
-$border-radius-large: 10px !default;
+// $border-radius: 3px !default;
+// $border-radius-large: 10px !default;
+$border-radius:0 !default;
+$border-radius-large:0 !default;
 // Pill-style button, value is large so big buttons also have correct roundness
 $border-radius-pill: 100px !default;
 
@@ -115,3 +122,4 @@ $header-menu-profile-item-height: 66px;
 
 // mobile. Keep in sync with core/js/js.js
 $breakpoint-mobile: 1024px;
+

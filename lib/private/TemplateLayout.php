@@ -113,9 +113,9 @@ class TemplateLayout extends \OC_Template {
 				$this->initialState->provideInitialState('unified-search', 'limit-default', (int)$this->config->getAppValue('core', 'unified-search.limit-default', (string)SearchQuery::LIMIT_DEFAULT));
 				$this->initialState->provideInitialState('unified-search', 'min-search-length', (int)$this->config->getAppValue('core', 'unified-search.min-search-length', (string)1));
 				$this->initialState->provideInitialState('unified-search', 'live-search', $this->config->getAppValue('core', 'unified-search.live-search', 'yes') === 'yes');
-				Util::addScript('core', 'legacy-unified-search', 'core');
-			} else {
 				Util::addScript('core', 'unified-search', 'core');
+			} else {
+				Util::addScript('core', 'global-search', 'core');
 			}
 			// Set body data-theme
 			$this->assign('enabledThemes', []);
@@ -249,7 +249,7 @@ class TemplateLayout extends \OC_Template {
 			// this is on purpose outside of the if statement below so that the initial state is prefilled (done in the getConfig() call)
 			// see https://github.com/nextcloud/server/pull/22636 for details
 			$jsConfigHelper = new JSConfigHelper(
-				\OCP\Util::getL10N('lib'),
+				\OC::$server->getL10N('lib'),
 				\OCP\Server::get(Defaults::class),
 				\OC::$server->getAppManager(),
 				\OC::$server->getSession(),

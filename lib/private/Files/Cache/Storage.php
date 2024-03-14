@@ -31,7 +31,6 @@ namespace OC\Files\Cache;
 
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\Files\Storage\IStorage;
-use OCP\IDBConnection;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -66,7 +65,7 @@ class Storage {
 	 * @param bool $isAvailable
 	 * @throws \RuntimeException
 	 */
-	public function __construct($storage, $isAvailable, IDBConnection $connection) {
+	public function __construct($storage, $isAvailable = true) {
 		if ($storage instanceof IStorage) {
 			$this->storageId = $storage->getId();
 		} else {
@@ -77,6 +76,7 @@ class Storage {
 		if ($row = self::getStorageById($this->storageId)) {
 			$this->numericId = (int)$row['numeric_id'];
 		} else {
+			$connection = \OC::$server->getDatabaseConnection();
 			$available = $isAvailable ? 1 : 0;
 			if ($connection->insertIfNotExist('*PREFIX*storages', ['id' => $this->storageId, 'available' => $available])) {
 				$this->numericId = $connection->lastInsertId('*PREFIX*storages');

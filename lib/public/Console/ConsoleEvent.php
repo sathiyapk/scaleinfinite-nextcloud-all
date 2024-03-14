@@ -32,7 +32,6 @@ use OCP\EventDispatcher\Event;
  */
 class ConsoleEvent extends Event {
 	/**
-	 * @since 9.0.0
 	 * @deprecated 22.0.0
 	 */
 	public const EVENT_RUN = 'OC\Console\Application::run';

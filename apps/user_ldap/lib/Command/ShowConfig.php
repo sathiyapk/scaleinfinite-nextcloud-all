@@ -36,13 +36,18 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class ShowConfig extends Base {
-	public function __construct(
-		protected Helper $helper,
-	) {
+	/** @var \OCA\User_LDAP\Helper */
+	protected $helper;
+
+	/**
+	 * @param Helper $helper
+	 */
+	public function __construct(Helper $helper) {
+		$this->helper = $helper;
 		parent::__construct();
 	}
 
-	protected function configure(): void {
+	protected function configure() {
 		$this
 			->setName('ldap:show-config')
 			->setDescription('shows the LDAP configuration')
@@ -74,26 +79,23 @@ class ShowConfig extends Base {
 			$configIDs[] = $configID;
 			if (!in_array($configIDs[0], $availableConfigs)) {
 				$output->writeln("Invalid configID");
-				return self::FAILURE;
+				return 1;
 			}
 		} else {
 			$configIDs = $availableConfigs;
 		}
 
 		$this->renderConfigs($configIDs, $input, $output);
-		return self::SUCCESS;
+		return 0;
 	}
 
 	/**
 	 * prints the LDAP configuration(s)
-	 *
-	 * @param string[] $configIDs
+	 * @param string[] configID(s)
+	 * @param InputInterface $input
+	 * @param OutputInterface $output
 	 */
-	protected function renderConfigs(
-		array $configIDs,
-		InputInterface $input,
-		OutputInterface $output,
-	): void {
+	protected function renderConfigs($configIDs, $input, $output) {
 		$renderTable = $input->getOption('output') === 'table' or $input->getOption('output') === null;
 		$showPassword = $input->getOption('show-password');
 
@@ -119,17 +121,16 @@ class ShowConfig extends Base {
 				$table->setHeaders(['Configuration', $id]);
 				$table->setRows($rows);
 				$table->render();
-				continue;
-			}
-
-			foreach ($configuration as $key => $value) {
-				if ($key === 'ldapAgentPassword' && !$showPassword) {
-					$rows[$key] = '***';
-				} else {
-					$rows[$key] = $value;
+			} else {
+				foreach ($configuration as $key => $value) {
+					if ($key === 'ldapAgentPassword' && !$showPassword) {
+						$rows[$key] = '***';
+					} else {
+						$rows[$key] = $value;
+					}
 				}
+				$configs[$id] = $rows;
 			}
-			$configs[$id] = $rows;
 		}
 		if (!$renderTable) {
 			$this->writeArrayInOutputFormat($input, $output, $configs);

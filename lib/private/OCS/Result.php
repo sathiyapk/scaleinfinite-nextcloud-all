@@ -31,13 +31,14 @@
 namespace OC\OCS;
 
 class Result {
-	protected array $data;
+	/** @var array  */
+	protected $data;
 
 	/** @var null|string */
-	protected ?string $message;
+	protected $message;
 
 	/** @var int */
-	protected int $statusCode;
+	protected $statusCode;
 
 	/** @var integer */
 	protected $items;
@@ -46,17 +47,16 @@ class Result {
 	protected $perPage;
 
 	/** @var array */
-	private array $headers = [];
+	private $headers = [];
 
 	/**
 	 * create the OCS_Result object
-	 *
-	 * @param mixed|null $data the data to return
+	 * @param mixed $data the data to return
 	 * @param int $code
-	 * @param string|null $message
+	 * @param null|string $message
 	 * @param array $headers
 	 */
-	public function __construct(mixed $data = null, int $code = 100, string $message = null, array $headers = []) {
+	public function __construct($data = null, $code = 100, $message = null, $headers = []) {
 		if ($data === null) {
 			$this->data = [];
 		} elseif (!is_array($data)) {
@@ -71,19 +71,17 @@ class Result {
 
 	/**
 	 * optionally set the total number of items available
-	 *
 	 * @param int $items
 	 */
-	public function setTotalItems(int $items): void {
+	public function setTotalItems($items) {
 		$this->items = $items;
 	}
 
 	/**
-	 * optionally set the number of items per page
-	 *
+	 * optionally set the the number of items per page
 	 * @param int $items
 	 */
-	public function setItemsPerPage(int $items): void {
+	public function setItemsPerPage($items) {
 		$this->perPage = $items;
 	}
 
@@ -91,7 +89,7 @@ class Result {
 	 * get the status code
 	 * @return int
 	 */
-	public function getStatusCode(): int {
+	public function getStatusCode() {
 		return $this->statusCode;
 	}
 
@@ -99,7 +97,7 @@ class Result {
 	 * get the meta data for the result
 	 * @return array
 	 */
-	public function getMeta(): array {
+	public function getMeta() {
 		$meta = [];
 		$meta['status'] = $this->succeeded() ? 'ok' : 'failure';
 		$meta['statuscode'] = $this->statusCode;
@@ -117,7 +115,7 @@ class Result {
 	 * get the result data
 	 * @return array
 	 */
-	public function getData(): array {
+	public function getData() {
 		return $this->data;
 	}
 
@@ -125,18 +123,17 @@ class Result {
 	 * return bool Whether the method succeeded
 	 * @return bool
 	 */
-	public function succeeded(): bool {
+	public function succeeded() {
 		return ($this->statusCode == 100);
 	}
 
 	/**
 	 * Adds a new header to the response
-	 *
 	 * @param string $name The name of the HTTP header
 	 * @param string $value The value, null will delete it
 	 * @return $this
 	 */
-	public function addHeader(string $name, ?string $value): static {
+	public function addHeader($name, $value) {
 		$name = trim($name);  // always remove leading and trailing whitespace
 		// to be able to reliably check for security
 		// headers
@@ -154,7 +151,7 @@ class Result {
 	 * Returns the set headers
 	 * @return array the headers
 	 */
-	public function getHeaders(): array {
+	public function getHeaders() {
 		return $this->headers;
 	}
 }

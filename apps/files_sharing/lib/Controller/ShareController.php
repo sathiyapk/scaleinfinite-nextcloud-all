@@ -46,14 +46,13 @@ namespace OCA\Files_Sharing\Controller;
 use OC\Security\CSP\ContentSecurityPolicy;
 use OC_Files;
 use OC_Util;
-use OCA\DAV\Connector\Sabre\PublicAuth;
 use OCA\FederatedFileSharing\FederatedShareProvider;
 use OCA\Files_Sharing\Activity\Providers\Downloads;
 use OCA\Files_Sharing\Event\BeforeTemplateRenderedEvent;
 use OCA\Files_Sharing\Event\ShareLinkAccessedEvent;
 use OCP\Accounts\IAccountManager;
 use OCP\AppFramework\AuthPublicShareController;
-use OCP\AppFramework\Http\Attribute\OpenAPI;
+use OCP\AppFramework\Http\Attribute\IgnoreOpenAPI;
 use OCP\AppFramework\Http\NotFoundResponse;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\Defaults;
@@ -79,7 +78,7 @@ use OCP\Template;
 /**
  * @package OCA\Files_Sharing\Controllers
  */
-#[OpenAPI(scope: OpenAPI::SCOPE_IGNORE)]
+#[IgnoreOpenAPI]
 class ShareController extends AuthPublicShareController {
 	protected ?Share\IShare $share = null;
 
@@ -204,7 +203,7 @@ class ShareController extends AuthPublicShareController {
 		return $this->shareManager->checkPassword($this->share, $password);
 	}
 
-	protected function getPasswordHash(): ?string {
+	protected function getPasswordHash(): string {
 		return $this->share->getPassword();
 	}
 
@@ -223,12 +222,8 @@ class ShareController extends AuthPublicShareController {
 	}
 
 	protected function authSucceeded() {
-		if ($this->share === null) {
-			throw new NotFoundException();
-		}
-
 		// For share this was always set so it is still used in other apps
-		$this->session->set(PublicAuth::DAV_AUTHENTICATED, $this->share->getId());
+		$this->session->set('public_link_authenticated', (string)$this->share->getId());
 	}
 
 	protected function authFailed() {

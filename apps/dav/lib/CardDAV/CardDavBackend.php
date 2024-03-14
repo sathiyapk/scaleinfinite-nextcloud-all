@@ -52,6 +52,7 @@ use OCP\DB\Exception;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\EventDispatcher\IEventDispatcher;
 use OCP\IDBConnection;
+use OCP\IGroupManager;
 use OCP\IUserManager;
 use PDO;
 use Sabre\CardDAV\Backend\BackendInterface;
@@ -63,11 +64,15 @@ use Sabre\VObject\Reader;
 
 class CardDavBackend implements BackendInterface, SyncSupport {
 	use TTransactional;
+
 	public const PERSONAL_ADDRESSBOOK_URI = 'contacts';
 	public const PERSONAL_ADDRESSBOOK_NAME = 'Contacts';
 
+	private Principal $principalBackend;
 	private string $dbCardsTable = 'cards';
 	private string $dbCardsPropertiesTable = 'cards_properties';
+	private IDBConnection $db;
+	private Backend $sharingBackend;
 
 	/** @var array properties to index */
 	public static array $indexProperties = [
@@ -79,15 +84,29 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 	 * @var string[] Map of uid => display name
 	 */
 	protected array $userDisplayNames;
+	private IUserManager $userManager;
+	private IEventDispatcher $dispatcher;
 	private array $etagCache = [];
 
-	public function __construct(
-		private IDBConnection $db,
-		private Principal $principalBackend,
-		private IUserManager $userManager,
-		private IEventDispatcher $dispatcher,
-		private Sharing\Backend $sharingBackend,
-	) {
+	/**
+	 * CardDavBackend constructor.
+	 *
+	 * @param IDBConnection $db
+	 * @param Principal $principalBackend
+	 * @param IUserManager $userManager
+	 * @param IGroupManager $groupManager
+	 * @param IEventDispatcher $dispatcher
+	 */
+	public function __construct(IDBConnection $db,
+		Principal $principalBackend,
+		IUserManager $userManager,
+		IGroupManager $groupManager,
+		IEventDispatcher $dispatcher) {
+		$this->db = $db;
+		$this->principalBackend = $principalBackend;
+		$this->userManager = $userManager;
+		$this->dispatcher = $dispatcher;
+		$this->sharingBackend = new Backend($this->db, $this->userManager, $groupManager, $principalBackend, 'addressbook');
 	}
 
 	/**
@@ -130,14 +149,14 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 		return $this->atomic(function () use ($principalUri) {
 			$principalUriOriginal = $principalUri;
 			$principalUri = $this->convertPrincipal($principalUri, true);
-			$select = $this->db->getQueryBuilder();
-			$select->select(['id', 'uri', 'displayname', 'principaluri', 'description', 'synctoken'])
+			$query = $this->db->getQueryBuilder();
+			$query->select(['id', 'uri', 'displayname', 'principaluri', 'description', 'synctoken'])
 				->from('addressbooks')
-				->where($select->expr()->eq('principaluri', $select->createNamedParameter($principalUri)));
+				->where($query->expr()->eq('principaluri', $query->createNamedParameter($principalUri)));
 
 			$addressBooks = [];
 
-			$result = $select->executeQuery();
+			$result = $query->execute();
 			while ($row = $result->fetch()) {
 				$addressBooks[$row['id']] = [
 					'id' => $row['id'],
@@ -159,22 +178,15 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 
 			$principals[] = $principalUri;
 
-			$select = $this->db->getQueryBuilder();
-			$subSelect = $this->db->getQueryBuilder();
-
-			$subSelect->select('id')
-				->from('dav_shares', 'd')
-				->where($subSelect->expr()->eq('d.access', $select->createNamedParameter(\OCA\DAV\CardDAV\Sharing\Backend::ACCESS_UNSHARED, IQueryBuilder::PARAM_INT), IQueryBuilder::PARAM_INT))
-				->andWhere($subSelect->expr()->in('d.principaluri', $select->createNamedParameter($principals, IQueryBuilder::PARAM_STR_ARRAY), IQueryBuilder::PARAM_STR_ARRAY));
-
-
-			$select->select(['a.id', 'a.uri', 'a.displayname', 'a.principaluri', 'a.description', 'a.synctoken', 's.access'])
+			$query = $this->db->getQueryBuilder();
+			$result = $query->select(['a.id', 'a.uri', 'a.displayname', 'a.principaluri', 'a.description', 'a.synctoken', 's.access'])
 				->from('dav_shares', 's')
-				->join('s', 'addressbooks', 'a', $select->expr()->eq('s.resourceid', 'a.id'))
-				->where($select->expr()->in('s.principaluri', $select->createNamedParameter($principals, IQueryBuilder::PARAM_STR_ARRAY)))
-				->andWhere($select->expr()->eq('s.type', $select->createNamedParameter('addressbook', IQueryBuilder::PARAM_STR)))
-				->andWhere($select->expr()->notIn('s.id', $select->createFunction($subSelect->getSQL()), IQueryBuilder::PARAM_INT_ARRAY));
-			$result = $select->executeQuery();
+				->join('s', 'addressbooks', 'a', $query->expr()->eq('s.resourceid', 'a.id'))
+				->where($query->expr()->in('s.principaluri', $query->createParameter('principaluri')))
+				->andWhere($query->expr()->eq('s.type', $query->createParameter('type')))
+				->setParameter('type', 'addressbook')
+				->setParameter('principaluri', $principals, IQueryBuilder::PARAM_STR_ARRAY)
+				->execute();
 
 			$readOnlyPropertyName = '{' . \OCA\DAV\DAV\Sharing\Plugin::NS_OWNCLOUD . '}read-only';
 			while ($row = $result->fetch()) {
@@ -1044,7 +1056,7 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 			$addressBookData = $this->getAddressBookById($addressBookId);
 			$oldShares = $this->getShares($addressBookId);
 
-			$this->sharingBackend->updateShares($shareable, $add, $remove, $oldShares);
+			$this->sharingBackend->updateShares($shareable, $add, $remove);
 
 			$this->dispatcher->dispatchTyped(new AddressBookShareUpdatedEvent($addressBookId, $addressBookData, $oldShares, $add, $remove));
 		}, $this->db);
@@ -1406,8 +1418,7 @@ class CardDavBackend implements BackendInterface, SyncSupport {
 	 * @return list<array{privilege: string, principal: string, protected: bool}>
 	 */
 	public function applyShareAcl(int $addressBookId, array $acl): array {
-		$shares = $this->sharingBackend->getShares($addressBookId);
-		return $this->sharingBackend->applyShareAcl($shares, $acl);
+		return $this->sharingBackend->applyShareAcl($addressBookId, $acl);
 	}
 
 	/**

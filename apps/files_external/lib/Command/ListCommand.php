@@ -125,12 +125,12 @@ class ListCommand extends Base {
 		}
 
 		if (!$input->getOption('show-password')) {
-			$hideKeys = ['key', 'bucket', 'secret', 'password', 'refresh_token', 'token', 'client_secret', 'public_key', 'private_key'];
+			$hideKeys = ['password', 'refresh_token', 'token', 'client_secret', 'public_key', 'private_key'];
 			foreach ($mounts as $mount) {
 				$config = $mount->getBackendOptions();
 				foreach ($config as $key => $value) {
 					if (in_array($key, $hideKeys)) {
-						$mount->setBackendOption($key, '***REMOVED SENSITIVE VALUE***');
+						$mount->setBackendOption($key, '***');
 					}
 				}
 			}

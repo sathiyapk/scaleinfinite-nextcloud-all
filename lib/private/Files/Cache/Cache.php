@@ -44,7 +44,6 @@ use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use OC\Files\Search\SearchComparison;
 use OC\Files\Search\SearchQuery;
 use OC\Files\Storage\Wrapper\Encryption;
-use OC\SystemConfig;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\EventDispatcher\IEventDispatcher;
 use OCP\Files\Cache\CacheEntryInsertedEvent;
@@ -83,51 +82,60 @@ class Cache implements ICache {
 	/**
 	 * @var array partial data for the cache
 	 */
-	protected array $partial = [];
-	protected string $storageId;
-	protected Storage $storageCache;
-	protected IMimeTypeLoader$mimetypeLoader;
-	protected IDBConnection $connection;
-	protected SystemConfig $systemConfig;
-	protected LoggerInterface $logger;
-	protected QuerySearchHelper $querySearchHelper;
-	protected IEventDispatcher $eventDispatcher;
-	protected IFilesMetadataManager $metadataManager;
+	protected $partial = [];
 
-	public function __construct(
-		private IStorage $storage,
-		// this constructor is used in to many pleases to easily do proper di
-		// so instead we group it all together
-		CacheDependencies $dependencies = null,
-	) {
+	/**
+	 * @var string
+	 */
+	protected $storageId;
+
+	private $storage;
+
+	/**
+	 * @var Storage $storageCache
+	 */
+	protected $storageCache;
+
+	/** @var IMimeTypeLoader */
+	protected $mimetypeLoader;
+
+	/**
+	 * @var IDBConnection
+	 */
+	protected $connection;
+
+	/**
+	 * @var IEventDispatcher
+	 */
+	protected $eventDispatcher;
+
+	/** @var QuerySearchHelper */
+	protected $querySearchHelper;
+
+	/**
+	 * @param IStorage $storage
+	 */
+	public function __construct(IStorage $storage) {
 		$this->storageId = $storage->getId();
+		$this->storage = $storage;
 		if (strlen($this->storageId) > 64) {
 			$this->storageId = md5($this->storageId);
 		}
-		if (!$dependencies) {
-			$dependencies = \OC::$server->get(CacheDependencies::class);
-		}
-		$this->storageCache = new Storage($this->storage, true, $dependencies->getConnection());
-		$this->mimetypeLoader = $dependencies->getMimeTypeLoader();
-		$this->connection = $dependencies->getConnection();
-		$this->systemConfig = $dependencies->getSystemConfig();
-		$this->logger = $dependencies->getLogger();
-		$this->querySearchHelper = $dependencies->getQuerySearchHelper();
-		$this->eventDispatcher = $dependencies->getEventDispatcher();
-		$this->metadataManager = $dependencies->getMetadataManager();
+
+		$this->storageCache = new Storage($storage);
+		$this->mimetypeLoader = \OC::$server->getMimeTypeLoader();
+		$this->connection = \OC::$server->getDatabaseConnection();
+		$this->eventDispatcher = \OC::$server->get(IEventDispatcher::class);
+		$this->querySearchHelper = \OCP\Server::get(QuerySearchHelper::class);
 	}
 
 	protected function getQueryBuilder() {
 		return new CacheQueryBuilder(
 			$this->connection,
-			$this->systemConfig,
-			$this->logger,
-			$this->metadataManager,
+			\OC::$server->getSystemConfig(),
+			\OC::$server->get(LoggerInterface::class),
+			\OC::$server->get(IFilesMetadataManager::class),
 		);
-	}
-
-	public function getStorageCache(): Storage {
-		return $this->storageCache;
 	}
 
 	/**
@@ -598,12 +606,9 @@ class Cache implements ICache {
 			}
 
 			/** @var ICacheEntry[] $childFolders */
-			$childFolders = [];
-			foreach ($children as $child) {
-				if ($child->getMimeType() == FileInfo::MIMETYPE_FOLDER) {
-					$childFolders[] = $child;
-				}
-			}
+			$childFolders = array_filter($children, function ($child) {
+				return $child->getMimeType() == FileInfo::MIMETYPE_FOLDER;
+			});
 			foreach ($childFolders as $folder) {
 				$parentIds[] = $folder->getId();
 				$queue[] = $folder->getId();

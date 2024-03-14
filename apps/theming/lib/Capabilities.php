@@ -94,11 +94,7 @@ class Capabilities implements IPublicCapability {
 	 */
 	public function getCapabilities() {
 		$color = $this->theming->getDefaultColorPrimary();
-		// Same as in DefaultTheme
-		if ($color === BackgroundService::DEFAULT_COLOR) {
-			$color = BackgroundService::DEFAULT_ACCESSIBLE_COLOR;
-		}
-		$colorText = $this->util->invertTextColor($color) ? '#000000' : '#ffffff';
+		$colorText = $this->theming->getDefaultTextColorPrimary();
 
 		$backgroundLogo = $this->config->getAppValue('theming', 'backgroundMime', '');
 		$backgroundPlain = $backgroundLogo === 'backgroundColor' || ($backgroundLogo === '' && $color !== '#0082c9');
@@ -112,10 +108,7 @@ class Capabilities implements IPublicCapability {
 			 * @see \OCA\Theming\Themes\CommonThemeTrait::generateUserBackgroundVariables()
 			 */
 			$color = $this->theming->getColorPrimary();
-			if ($color === BackgroundService::DEFAULT_COLOR) {
-				$color = BackgroundService::DEFAULT_ACCESSIBLE_COLOR;
-			}
-			$colorText = $this->util->invertTextColor($color) ? '#000000' : '#ffffff';
+			$colorText = $this->theming->getTextColorPrimary();
 
 			$backgroundImage = $this->config->getUserValue($user->getUID(), Application::APP_ID, 'background_image', BackgroundService::BACKGROUND_DEFAULT);
 			if ($backgroundImage === BackgroundService::BACKGROUND_CUSTOM) {

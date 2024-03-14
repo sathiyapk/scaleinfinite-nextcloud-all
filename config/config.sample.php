@@ -152,14 +152,6 @@ $CONFIG = [
 'dbpersistent' => '',
 
 /**
- * Specify read only replicas to be used by Nextcloud when querying the database
- */
-'dbreplica' => [
-	['user' => 'nextcloud', 'password' => 'password1', 'host' => 'replica1', 'dbname' => ''],
-	['user' => 'nextcloud', 'password' => 'password2', 'host' => 'replica2', 'dbname' => ''],
-],
-
-/**
  * Indicates whether the Nextcloud instance was installed successfully; ``true``
  * indicates a successful installation, and ``false`` indicates an unsuccessful
  * installation.
@@ -368,7 +360,7 @@ $CONFIG = [
 'token_auth_activity_update' => 60,
 
 /**
- * Whether the brute force protection shipped with Nextcloud should be enabled or not.
+ * Whether the bruteforce protection shipped with Nextcloud should be enabled or not.
  *
  * Disabling this is discouraged for security reasons.
  *
@@ -377,9 +369,9 @@ $CONFIG = [
 'auth.bruteforce.protection.enabled' => true,
 
 /**
- * Whether the brute force protection shipped with Nextcloud should be set to testing mode.
+ * Whether the bruteforce protection shipped with Nextcloud should be set to testing mode.
  *
- * In testing mode brute force attempts are still recorded, but the requests do
+ * In testing mode bruteforce attempts are still recorded, but the requests do
  * not sleep/wait for the specified time. They will still abort with
  * "429 Too Many Requests" when the maximum delay is reached.
  * Enabling this is discouraged for security reasons
@@ -993,15 +985,6 @@ $CONFIG = [
  * Defaults to ``2``
  */
 'loglevel_frontend' => 2,
-
-/**
- * Loglevel used by the dirty database query detection. Useful to identify
- * potential database bugs in production. Set this to loglevel or higher to
- * see dirty queries in the logs.
- *
- * Defaults to ``0`` (debug)
- */
-'loglevel_dirty_database_queries' => 0,
 
 /**
  * If you maintain different instances and aggregate the logs, you may want
@@ -1962,8 +1945,6 @@ $CONFIG = [
 /**
  * Blacklist characters from being used in filenames. This is useful if you
  * have a filesystem or OS which does not support certain characters like windows.
- * 
- * The '/' and '\' characters are always forbidden.
  *
  * Example for windows systems: ``array('?', '<', '>', ':', '*', '|', '"', chr(0), "\n", "\r")``
  * see https://en.wikipedia.org/wiki/Comparison_of_file_systems#Limits

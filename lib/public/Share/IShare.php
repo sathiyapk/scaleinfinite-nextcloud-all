@@ -474,7 +474,7 @@ interface IShare {
 	 * If this share is obtained via a shareprovider the password is
 	 * hashed.
 	 *
-	 * @return string|null
+	 * @return string
 	 * @since 9.0.0
 	 */
 	public function getPassword();

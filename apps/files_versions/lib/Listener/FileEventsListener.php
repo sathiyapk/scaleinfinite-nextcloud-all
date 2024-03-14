@@ -62,7 +62,6 @@ use OCP\Files\Node;
 use OCP\IUserSession;
 use Psr\Log\LoggerInterface;
 
-/** @template-implements IEventListener<BeforeNodeCopiedEvent|BeforeNodeDeletedEvent|BeforeNodeRenamedEvent|BeforeNodeTouchedEvent|BeforeNodeWrittenEvent|NodeCopiedEvent|NodeCreatedEvent|NodeDeletedEvent|NodeRenamedEvent|NodeTouchedEvent|NodeWrittenEvent> */
 class FileEventsListener implements IEventListener {
 	/**
 	 * @var array<int, array>
@@ -219,12 +218,11 @@ class FileEventsListener implements IEventListener {
 		}
 
 		if (
-			$writeHookInfo['versionCreated'] &&
+			($writeHookInfo['versionCreated'] || $writeHookInfo['previousNode']->getSize() === 0) &&
 			$node->getMTime() !== $writeHookInfo['previousNode']->getMTime()
 		) {
 			// If a new version was created, insert a version in the DB for the current content.
-			// If both versions have the same mtime, it means the latest version file simply got overrode,
-			// so no need to create a new version.
+			// Unless both versions have the same mtime.
 			$this->created($node);
 		} else {
 			try {
@@ -352,24 +350,16 @@ class FileEventsListener implements IEventListener {
 	private function getPathForNode(Node $node): ?string {
 		$user = $this->userSession->getUser()?->getUID();
 		if ($user) {
-			$path = $this->rootFolder
+			return $this->rootFolder
 				->getUserFolder($user)
 				->getRelativePath($node->getPath());
-
-			if ($path !== null) {
-				return $path;
-			}
 		}
 
 		$owner = $node->getOwner()?->getUid();
 		if ($owner) {
-			$path = $this->rootFolder
+			return $this->rootFolder
 				->getUserFolder($owner)
 				->getRelativePath($node->getPath());
-
-			if ($path !== null) {
-				return $path;
-			}
 		}
 
 		return null;

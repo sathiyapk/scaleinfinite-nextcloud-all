@@ -34,7 +34,6 @@ use OCP\Group\Events\UserRemovedEvent;
 use OCP\IUser;
 use OCP\IUserSession;
 
-/** @template-implements IEventListener<UserRemovedEvent> */
 class UserRemovedFromGroupActivityListener implements IEventListener {
 
 	/** @var Manager */

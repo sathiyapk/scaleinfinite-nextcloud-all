@@ -40,8 +40,7 @@ use OCP\AppFramework\App;
 use OCP\AppFramework\Bootstrap\IBootContext;
 use OCP\AppFramework\Bootstrap\IBootstrap;
 use OCP\AppFramework\Bootstrap\IRegistrationContext;
-use OCP\Authentication\TwoFactorAuth\TwoFactorProviderForUserRegistered;
-use OCP\Authentication\TwoFactorAuth\TwoFactorProviderForUserUnregistered;
+use OCP\Authentication\TwoFactorAuth\IRegistry;
 use OCP\User\Events\UserDeletedEvent;
 
 class Application extends App implements IBootstrap {
@@ -57,8 +56,8 @@ class Application extends App implements IBootstrap {
 		$context->registerEventListener(CodesGenerated::class, ActivityPublisher::class);
 		$context->registerEventListener(CodesGenerated::class, RegistryUpdater::class);
 		$context->registerEventListener(CodesGenerated::class, ClearNotifications::class);
-		$context->registerEventListener(TwoFactorProviderForUserRegistered::class, ProviderEnabled::class);
-		$context->registerEventListener(TwoFactorProviderForUserUnregistered::class, ProviderDisabled::class);
+		$context->registerEventListener(IRegistry::EVENT_PROVIDER_ENABLED, ProviderEnabled::class);
+		$context->registerEventListener(IRegistry::EVENT_PROVIDER_DISABLED, ProviderDisabled::class);
 		$context->registerEventListener(UserDeletedEvent::class, UserDeleted::class);
 
 

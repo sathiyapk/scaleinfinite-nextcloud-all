@@ -41,7 +41,6 @@ declare(strict_types=1);
 namespace OC;
 
 use OC\App\AppManager;
-use OC\App\AppStore\Fetcher\AppFetcher;
 use OC\DB\Connection;
 use OC\DB\MigrationService;
 use OC\DB\MigratorExecuteSqlEvent;
@@ -256,8 +255,7 @@ class Updater extends BasicEmitter {
 		file_put_contents($this->config->getSystemValueString('datadirectory', \OC::$SERVERROOT . '/data') . '/.ocdata', '');
 
 		// pre-upgrade repairs
-		$repair = \OCP\Server::get(Repair::class);
-		$repair->setRepairSteps(Repair::getBeforeUpgradeRepairSteps());
+		$repair = new Repair(Repair::getBeforeUpgradeRepairSteps(), \OC::$server->get(\OCP\EventDispatcher\IEventDispatcher::class), \OC::$server->get(LoggerInterface::class));
 		$repair->run();
 
 		$this->doCoreUpgrade();
@@ -274,7 +272,7 @@ class Updater extends BasicEmitter {
 		$this->doAppUpgrade();
 
 		// Update the appfetchers version so it downloads the correct list from the appstore
-		\OC::$server->get(AppFetcher::class)->setVersion($currentVersion);
+		\OC::$server->getAppFetcher()->setVersion($currentVersion);
 
 		/** @var AppManager $appManager */
 		$appManager = \OC::$server->getAppManager();
@@ -298,8 +296,7 @@ class Updater extends BasicEmitter {
 		}
 
 		// post-upgrade repairs
-		$repair = \OCP\Server::get(Repair::class);
-		$repair->setRepairSteps(Repair::getRepairSteps());
+		$repair = new Repair(Repair::getRepairSteps(), \OC::$server->get(\OCP\EventDispatcher\IEventDispatcher::class), \OC::$server->get(LoggerInterface::class));
 		$repair->run();
 
 		//Invalidate update feed

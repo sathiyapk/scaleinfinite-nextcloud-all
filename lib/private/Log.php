@@ -62,22 +62,24 @@ use function strtr;
  * MonoLog is an example implementing this interface.
  */
 class Log implements ILogger, IDataLogger {
+	private IWriter $logger;
 	private ?SystemConfig $config;
 	private ?bool $logConditionSatisfied = null;
 	private ?Normalizer $normalizer;
+	private ?IRegistry $crashReporters;
 	private ?IEventDispatcher $eventDispatcher;
 
 	/**
 	 * @param IWriter $logger The logger that should be used
-	 * @param SystemConfig|null $config the system config object
+	 * @param SystemConfig $config the system config object
 	 * @param Normalizer|null $normalizer
-	 * @param IRegistry|null $crashReporters
+	 * @param IRegistry|null $registry
 	 */
 	public function __construct(
-		private IWriter $logger,
+		IWriter $logger,
 		SystemConfig $config = null,
 		Normalizer $normalizer = null,
-		private	?IRegistry $crashReporters = null
+		IRegistry $registry = null
 	) {
 		// FIXME: Add this for backwards compatibility, should be fixed at some point probably
 		if ($config === null) {
@@ -85,11 +87,13 @@ class Log implements ILogger, IDataLogger {
 		}
 
 		$this->config = $config;
+		$this->logger = $logger;
 		if ($normalizer === null) {
 			$this->normalizer = new Normalizer();
 		} else {
 			$this->normalizer = $normalizer;
 		}
+		$this->crashReporters = $registry;
 		$this->eventDispatcher = null;
 	}
 
@@ -207,18 +211,15 @@ class Log implements ILogger, IDataLogger {
 	 */
 	public function log(int $level, string $message, array $context = []) {
 		$minLevel = $this->getLogLevel($context);
-		if ($level < $minLevel
-			&& (($this->crashReporters?->hasReporters() ?? false) === false)
-			&& (($this->eventDispatcher?->hasListeners(BeforeMessageLoggedEvent::class) ?? false) === false)) {
-			return; // no crash reporter, no listeners, we can stop for lower log level
-		}
 
 		array_walk($context, [$this->normalizer, 'format']);
 
 		$app = $context['app'] ?? 'no app in context';
 		$entry = $this->interpolateMessage($context, $message);
 
-		$this->eventDispatcher?->dispatchTyped(new BeforeMessageLoggedEvent($app, $level, $entry));
+		if ($this->eventDispatcher) {
+			$this->eventDispatcher->dispatchTyped(new BeforeMessageLoggedEvent($app, $level, $entry));
+		}
 
 		$hasBacktrace = isset($entry['exception']);
 		$logBacktrace = $this->config->getValue('log.backtrace', false);
@@ -240,7 +241,9 @@ class Log implements ILogger, IDataLogger {
 					$this->crashReporters->delegateMessage($entry['message'], $messageContext);
 				}
 			} else {
-				$this->crashReporters?->delegateBreadcrumb($entry['message'], 'log', $context);
+				if ($this->crashReporters !== null) {
+					$this->crashReporters->delegateBreadcrumb($entry['message'], 'log', $context);
+				}
 			}
 		} catch (Throwable $e) {
 			// make sure we dont hard crash if logging fails
@@ -326,10 +329,8 @@ class Log implements ILogger, IDataLogger {
 		$level = $context['level'] ?? ILogger::ERROR;
 
 		$minLevel = $this->getLogLevel($context);
-		if ($level < $minLevel
-			&& (($this->crashReporters?->hasReporters() ?? false) === false)
-			&& (($this->eventDispatcher?->hasListeners(BeforeMessageLoggedEvent::class) ?? false) === false)) {
-			return; // no crash reporter, no listeners, we can stop for lower log level
+		if ($level < $minLevel && ($this->crashReporters === null || !$this->crashReporters->hasReporters())) {
+			return;
 		}
 
 		// if an error is raised before the autoloader is properly setup, we can't serialize exceptions
@@ -345,9 +346,12 @@ class Log implements ILogger, IDataLogger {
 		$data = array_merge($serializer->serializeException($exception), $data);
 		$data = $this->interpolateMessage($data, isset($context['message']) && $context['message'] !== '' ? $context['message'] : ('Exception thrown: ' . get_class($exception)), 'CustomMessage');
 
+
 		array_walk($context, [$this->normalizer, 'format']);
 
-		$this->eventDispatcher?->dispatchTyped(new BeforeMessageLoggedEvent($app, $level, $data));
+		if ($this->eventDispatcher) {
+			$this->eventDispatcher->dispatchTyped(new BeforeMessageLoggedEvent($app, $level, $data));
+		}
 
 		try {
 			if ($level >= $minLevel) {

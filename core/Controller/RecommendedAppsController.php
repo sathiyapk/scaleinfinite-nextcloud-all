@@ -27,7 +27,6 @@ declare(strict_types=1);
 namespace OC\Core\Controller;
 
 use OCP\AppFramework\Controller;
-use OCP\AppFramework\Http\Attribute\FrontpageRoute;
 use OCP\AppFramework\Http\Attribute\OpenAPI;
 use OCP\AppFramework\Http\Response;
 use OCP\AppFramework\Http\StandaloneTemplateResponse;
@@ -49,7 +48,6 @@ class RecommendedAppsController extends Controller {
 	 * @NoCSRFRequired
 	 * @return Response
 	 */
-	#[FrontpageRoute(verb: 'GET', url: '/core/apps/recommended')]
 	public function index(): Response {
 		$defaultPageUrl = $this->urlGenerator->linkToDefaultPageUrl();
 		$this->initialStateService->provideInitialState('core', 'defaultPageUrl', $defaultPageUrl);

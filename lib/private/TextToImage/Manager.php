@@ -43,14 +43,13 @@ use OCP\TextToImage\Exception\TaskFailureException;
 use OCP\TextToImage\Exception\TaskNotFoundException;
 use OCP\TextToImage\IManager;
 use OCP\TextToImage\IProvider;
-use OCP\TextToImage\IProviderWithUserId;
 use OCP\TextToImage\Task;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
 use Throwable;
 
 class Manager implements IManager {
-	/** @var ?list<IProvider> */
+	/** @var ?IProvider[] */
 	private ?array $providers = null;
 	private IAppData $appData;
 
@@ -67,7 +66,7 @@ class Manager implements IManager {
 	}
 
 	/**
-	 * @inheritDoc
+	 * @inerhitDocs
 	 */
 	public function getProviders(): array {
 		$context = $this->coordinator->getRegistrationContext();
@@ -84,9 +83,7 @@ class Manager implements IManager {
 		foreach ($context->getTextToImageProviders() as $providerServiceRegistration) {
 			$class = $providerServiceRegistration->getService();
 			try {
-				/** @var IProvider $provider */
-				$provider = $this->serverContainer->get($class);
-				$this->providers[] = $provider;
+				$this->providers[$class] = $this->serverContainer->get($class);
 			} catch (Throwable $e) {
 				$this->logger->error('Failed to load Text to image provider ' . $class, [
 					'exception' => $e,
@@ -159,9 +156,6 @@ class Manager implements IManager {
 					}
 				}
 				$this->logger->debug('Calling Text2Image provider\'s generate method');
-				if ($provider instanceof IProviderWithUserId) {
-					$provider->setUserId($task->getUserId());
-				}
 				$provider->generate($task->getInput(), $resources);
 				for ($i = 0; $i < $task->getNumberOfImages(); $i++) {
 					if (is_resource($resources[$i])) {
@@ -319,7 +313,7 @@ class Manager implements IManager {
 	}
 
 	/**
-	 * @return list<IProvider>
+	 * @return IProvider[]
 	 */
 	private function getPreferredProviders() {
 		$providers = $this->getProviders();

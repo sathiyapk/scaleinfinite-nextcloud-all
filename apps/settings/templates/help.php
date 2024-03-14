@@ -12,7 +12,7 @@
 				} ?>
 					href="<?php print_unescaped($_['urlUserDocs']); ?>">
 					<span class="help-list__text">
-						<?php p($l->t('Account documentation')); ?>
+						<?php p($l->t('User documentation')); ?>
 					</span>
 				</a>
 			</li>
@@ -25,7 +25,7 @@
 				} ?>
 					href="<?php print_unescaped($_['urlAdminDocs']); ?>">
 					<span class="help-list__text">
-						<?php p($l->t('Administration documentation')); ?>
+						<?php p($l->t('Administrator documentation')); ?>
 					</span>
 				</a>
 			</li>

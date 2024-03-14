@@ -41,13 +41,13 @@ namespace OCP\AppFramework\Http;
  */
 class ContentSecurityPolicy extends EmptyContentSecurityPolicy {
 	/** @var bool Whether inline JS snippets are allowed */
-	protected $inlineScriptAllowed = false;
+	protected $inlineScriptAllowed = true;
 	/** @var bool Whether eval in JS scripts is allowed */
-	protected $evalScriptAllowed = false;
+	protected $evalScriptAllowed = true;
 	/** @var bool Whether WebAssembly compilation is allowed */
-	protected ?bool $evalWasmAllowed = false;
+	protected ?bool $evalWasmAllowed = true;
 	/** @var bool Whether strict-dynamic should be set */
-	protected $strictDynamicAllowed = false;
+	protected $strictDynamicAllowed = true;
 	/** @var bool Whether strict-dynamic should be set for 'script-src-elem' */
 	protected $strictDynamicAllowedOnScripts = true;
 	/** @var array Domains from which scripts can get loaded */

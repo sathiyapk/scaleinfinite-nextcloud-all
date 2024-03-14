@@ -55,7 +55,6 @@ class SystemConfig {
 		'secret' => true,
 		'updater.secret' => true,
 		'trusted_proxies' => true,
-		'preview_imaginary_url' => true,
 		'proxyuserpwd' => true,
 		'sentry.dsn' => true,
 		'sentry.public-dsn' => true,
@@ -124,9 +123,11 @@ class SystemConfig {
 		],
 	];
 
-	public function __construct(
-		private Config $config,
-	) {
+	/** @var Config */
+	private $config;
+
+	public function __construct(Config $config) {
+		$this->config = $config;
 	}
 
 	/**

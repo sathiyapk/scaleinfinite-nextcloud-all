@@ -30,7 +30,6 @@ use OCA\Files\Event\LoadAdditionalScriptsEvent;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 
-/** @template-implements IEventListener<LoadAdditionalScriptsEvent> */
 class LoadAdditionalScriptsListener implements IEventListener {
 	/** @var FederatedShareProvider */
 	protected $federatedShareProvider;

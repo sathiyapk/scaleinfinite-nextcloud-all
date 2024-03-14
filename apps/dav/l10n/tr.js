@@ -2,7 +2,7 @@ OC.L10N.register(
     "dav",
     {
     "Calendar" : "Takvim",
-    "Tasks" : "Görevler",
+    "To-dos" : "Yapılacak işler",
     "Personal" : "Kişisel",
     "{actor} created calendar {calendar}" : "{actor}, {calendar} takvimini ekledi",
     "You created calendar {calendar}" : "{calendar} takvimini eklediniz",
@@ -143,6 +143,7 @@ OC.L10N.register(
     "Configures a CalDAV account" : "Bir CalDAV hesabı yapılandırır",
     "Configures a CardDAV account" : "Bir CardDAV hesabı yapılandırır",
     "Events" : "Etkinlikler",
+    "Tasks" : "Görevler",
     "Untitled task" : "Adlandırılmamış görev",
     "Completed on %s" : "%s tarihinde tamamlandı",
     "Due on %s by %s" : "%s tarihine kadar %s tarafından",
@@ -184,7 +185,7 @@ OC.L10N.register(
     "Saved availability" : "Uygunluk kaydedildi",
     "Failed to save availability" : "Uygunluk kaydedilemedi",
     "Availability" : "Uygunluk",
-    "If you configure your working hours, other people will see when you are out of office when they book a meeting." : "Çalışma saatlerinizi ayarlarsanız, diğer kişiler bir toplantı ayarladıklarında ofis dışında olduğunuzu görürler.",
+    "If you configure your working hours, other users will see when you are out of office when they book a meeting." : "Çalışma saatlerinizi ayarlarsanız, diğer kullanıcılar bir toplantı ayarladıklarında ofis dışında olduğunuzu görürler.",
     "Absence" : "İşe gelmeme",
     "Configure your next absence period." : "Sonraki işe gelmeme aralığınızı yapılandırın.",
     "Calendar server" : "Takvim sunucusu",
@@ -203,8 +204,6 @@ OC.L10N.register(
     "Please contact the organizer directly." : "Lütfen düzenleyici ile doğrudan görüşün.",
     "Are you accepting the invitation?" : "Çağrıyı kabul ediyor musunuz?",
     "Tentative" : "Kesin değil",
-    "Your attendance was updated successfully." : "Katılımınız güncellendi.",
-    "To-dos" : "Yapılacak işler",
-    "If you configure your working hours, other users will see when you are out of office when they book a meeting." : "Çalışma saatlerinizi ayarlarsanız, diğer kullanıcılar bir toplantı ayarladıklarında ofis dışında olduğunuzu görürler."
+    "Your attendance was updated successfully." : "Katılımınız güncellendi."
 },
 "nplurals=2; plural=(n > 1);");

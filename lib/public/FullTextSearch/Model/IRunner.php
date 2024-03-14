@@ -40,19 +40,8 @@ namespace OCP\FullTextSearch\Model;
  *
  */
 interface IRunner {
-	/**
-	 * @since 15.0.0
-	 */
 	public const RESULT_TYPE_SUCCESS = 1;
-
-	/**
-	 * @since 15.0.0
-	 */
 	public const RESULT_TYPE_WARNING = 4;
-
-	/**
-	 * @since 15.0.0
-	 */
 	public const RESULT_TYPE_FAIL = 9;
 
 

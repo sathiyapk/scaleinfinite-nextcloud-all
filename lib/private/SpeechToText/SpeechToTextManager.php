@@ -36,12 +36,9 @@ use OCP\Files\InvalidPathException;
 use OCP\Files\NotFoundException;
 use OCP\IConfig;
 use OCP\IServerContainer;
-use OCP\IUserSession;
 use OCP\PreConditionNotMetException;
 use OCP\SpeechToText\ISpeechToTextManager;
 use OCP\SpeechToText\ISpeechToTextProvider;
-use OCP\SpeechToText\ISpeechToTextProviderWithId;
-use OCP\SpeechToText\ISpeechToTextProviderWithUserId;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use Psr\Log\LoggerInterface;
@@ -58,7 +55,6 @@ class SpeechToTextManager implements ISpeechToTextManager {
 		private LoggerInterface $logger,
 		private IJobList $jobList,
 		private IConfig $config,
-		private IUserSession $userSession,
 	) {
 	}
 
@@ -121,13 +117,8 @@ class SpeechToTextManager implements ISpeechToTextManager {
 
 		$json = $this->config->getAppValue('core', 'ai.stt_provider', '');
 		if ($json !== '') {
-			$classNameOrId = json_decode($json, true);
-			$provider = current(array_filter($providers, function ($provider) use ($classNameOrId) {
-				if ($provider instanceof ISpeechToTextProviderWithId) {
-					return $provider->getId() === $classNameOrId;
-				}
-				return $provider::class === $classNameOrId;
-			}));
+			$className = json_decode($json, true);
+			$provider = current(array_filter($providers, fn ($provider) => $provider::class === $className));
 			if ($provider !== false) {
 				$providers = [$provider];
 			}
@@ -135,13 +126,9 @@ class SpeechToTextManager implements ISpeechToTextManager {
 
 		foreach ($providers as $provider) {
 			try {
-				if ($provider instanceof ISpeechToTextProviderWithUserId) {
-					$provider->setUserId($this->userSession->getUser()?->getUID());
-				}
 				return $provider->transcribeFile($file);
 			} catch (\Throwable $e) {
 				$this->logger->info('SpeechToText transcription using provider ' . $provider->getName() . ' failed', ['exception' => $e]);
-				throw new RuntimeException('SpeechToText transcription using provider "' . $provider->getName() . '" failed: ' . $e->getMessage());
 			}
 		}
 

@@ -43,35 +43,48 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Log\LoggerInterface;
 
 class Manager implements IManager {
+	/** @var IValidator */
+	protected $validator;
+	/** @var IUserManager */
+	private $userManager;
 	/** @var ICache */
-	protected ICache $cache;
+	protected $cache;
+	/** @var IRegistry */
+	protected $subscription;
+	/** @var LoggerInterface */
+	protected $logger;
+	/** @var Coordinator */
+	private $coordinator;
 
 	/** @var IApp[] */
-	protected array $apps;
+	protected $apps;
 	/** @var string[] */
-	protected array $appClasses;
+	protected $appClasses;
 
 	/** @var INotifier[] */
-	protected array $notifiers;
+	protected $notifiers;
 	/** @var string[] */
-	protected array $notifierClasses;
+	protected $notifierClasses;
 
 	/** @var bool */
-	protected bool $preparingPushNotification;
+	protected $preparingPushNotification;
 	/** @var bool */
-	protected bool $deferPushing;
+	protected $deferPushing;
 	/** @var bool */
-	private bool $parsedRegistrationContext;
+	private $parsedRegistrationContext;
 
-	public function __construct(
-		protected IValidator $validator,
-		private IUserManager $userManager,
+	public function __construct(IValidator $validator,
+		IUserManager $userManager,
 		ICacheFactory $cacheFactory,
-		protected IRegistry $subscription,
-		protected LoggerInterface $logger,
-		private Coordinator $coordinator,
-	) {
+		IRegistry $subscription,
+		LoggerInterface $logger,
+		Coordinator $coordinator) {
+		$this->validator = $validator;
+		$this->userManager = $userManager;
 		$this->cache = $cacheFactory->createDistributed('notifications');
+		$this->subscription = $subscription;
+		$this->logger = $logger;
+		$this->coordinator = $coordinator;
 
 		$this->apps = [];
 		$this->notifiers = [];
@@ -98,7 +111,7 @@ class Manager implements IManager {
 	 * @deprecated 17.0.0 use registerNotifierService instead.
 	 * @since 8.2.0 - Parameter $info was added in 9.0.0
 	 */
-	public function registerNotifier(\Closure $service, \Closure $info): void {
+	public function registerNotifier(\Closure $service, \Closure $info) {
 		$infoData = $info();
 		$exception = new \InvalidArgumentException(
 			'Notifier ' . $infoData['name'] . ' (id: ' . $infoData['id'] . ') is not considered because it is using the old way to register.'
@@ -366,7 +379,6 @@ class Manager implements IManager {
 		}
 
 		if (!$notification->isValidParsed()) {
-			$this->logger->info('Notification was not parsed by any notifier [app: ' . $notification->getApp() . ', subject: ' . $notification->getSubject() . ']');
 			throw new \InvalidArgumentException('The given notification has not been handled');
 		}
 

@@ -35,6 +35,7 @@ use OC\Tagging\TagMapper;
 use OCP\DB\Exception;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IDBConnection;
+use OCP\ILogger;
 use OCP\ITags;
 use OCP\Share_Backend;
 use Psr\Log\LoggerInterface;
@@ -234,7 +235,7 @@ class Tags implements ITags {
 		}
 
 		if ($tagId === false) {
-			$l10n = \OCP\Util::getL10N('core');
+			$l10n = \OC::$server->getL10N('core');
 			throw new \Exception(
 				$l10n->t('Could not find category "%s"', [$tag])
 			);
@@ -485,13 +486,11 @@ class Tags implements ITags {
 		try {
 			return $this->getIdsForTag(ITags::TAG_FAVORITE);
 		} catch (\Exception $e) {
-			\OCP\Server::get(LoggerInterface::class)->error(
-				$e->getMessage(),
-				[
-					'app' => 'core',
-					'exception' => $e,
-				]
-			);
+			\OC::$server->getLogger()->logException($e, [
+				'message' => __METHOD__,
+				'level' => ILogger::ERROR,
+				'app' => 'core',
+			]);
 			return [];
 		}
 	}
@@ -550,7 +549,7 @@ class Tags implements ITags {
 		try {
 			$qb->executeStatement();
 		} catch (\Exception $e) {
-			\OCP\Server::get(LoggerInterface::class)->error($e->getMessage(), [
+			\OC::$server->getLogger()->error($e->getMessage(), [
 				'app' => 'core',
 				'exception' => $e,
 			]);

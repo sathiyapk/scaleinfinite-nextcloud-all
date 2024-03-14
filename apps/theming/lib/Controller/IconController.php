@@ -32,7 +32,6 @@ use OC\IntegrityCheck\Helpers\FileAccessHelper;
 use OCA\Theming\IconBuilder;
 use OCA\Theming\ImageManager;
 use OCA\Theming\ThemingDefaults;
-use OCP\App\IAppManager;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\DataDisplayResponse;
@@ -51,17 +50,24 @@ class IconController extends Controller {
 	private $imageManager;
 	/** @var FileAccessHelper */
 	private $fileAccessHelper;
-	/** @var IAppManager */
-	private $appManager;
 
+	/**
+	 * IconController constructor.
+	 *
+	 * @param string $appName
+	 * @param IRequest $request
+	 * @param ThemingDefaults $themingDefaults
+	 * @param IconBuilder $iconBuilder
+	 * @param ImageManager $imageManager
+	 * @param FileAccessHelper $fileAccessHelper
+	 */
 	public function __construct(
 		$appName,
 		IRequest $request,
 		ThemingDefaults $themingDefaults,
 		IconBuilder $iconBuilder,
 		ImageManager $imageManager,
-		FileAccessHelper $fileAccessHelper,
-		IAppManager $appManager
+		FileAccessHelper $fileAccessHelper
 	) {
 		parent::__construct($appName, $request);
 
@@ -69,7 +75,6 @@ class IconController extends Controller {
 		$this->iconBuilder = $iconBuilder;
 		$this->imageManager = $imageManager;
 		$this->fileAccessHelper = $fileAccessHelper;
-		$this->appManager = $appManager;
 	}
 
 	/**
@@ -87,11 +92,6 @@ class IconController extends Controller {
 	 * 404: Themed icon not found
 	 */
 	public function getThemedIcon(string $app, string $image): Response {
-		if ($app !== 'core' && !$this->appManager->isEnabledForUser($app)) {
-			$app = 'core';
-			$image = 'favicon.png';
-		}
-
 		$color = $this->themingDefaults->getColorPrimary();
 		try {
 			$iconFileName = $this->imageManager->getCachedImage('icon-' . $app . '-' . $color . str_replace('/', '_', $image));
@@ -121,10 +121,6 @@ class IconController extends Controller {
 	 * 404: Favicon not found
 	 */
 	public function getFavicon(string $app = 'core'): Response {
-		if ($app !== 'core' && !$this->appManager->isEnabledForUser($app)) {
-			$app = 'core';
-		}
-
 		$response = null;
 		$iconFile = null;
 		try {
@@ -167,10 +163,6 @@ class IconController extends Controller {
 	 * 404: Touch icon not found
 	 */
 	public function getTouchIcon(string $app = 'core'): Response {
-		if ($app !== 'core' && !$this->appManager->isEnabledForUser($app)) {
-			$app = 'core';
-		}
-
 		$response = null;
 		try {
 			$iconFile = $this->imageManager->getImage('favicon');

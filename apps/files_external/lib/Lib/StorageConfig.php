@@ -40,8 +40,6 @@ use OCA\Files_External\ResponseDefinitions;
  */
 class StorageConfig implements \JsonSerializable {
 	public const MOUNT_TYPE_ADMIN = 1;
-	public const MOUNT_TYPE_PERSONAL = 2;
-	/** @deprecated use MOUNT_TYPE_PERSONAL (full uppercase) instead */
 	public const MOUNT_TYPE_PERSONAl = 2;
 
 	/**
@@ -386,14 +384,14 @@ class StorageConfig implements \JsonSerializable {
 	}
 
 	/**
-	 * @return int self::MOUNT_TYPE_ADMIN or self::MOUNT_TYPE_PERSONAL
+	 * @return int self::MOUNT_TYPE_ADMIN or self::MOUNT_TYPE_PERSONAl
 	 */
 	public function getType() {
 		return $this->type;
 	}
 
 	/**
-	 * @param int $type self::MOUNT_TYPE_ADMIN or self::MOUNT_TYPE_PERSONAL
+	 * @param int $type self::MOUNT_TYPE_ADMIN or self::MOUNT_TYPE_PERSONAl
 	 */
 	public function setType($type) {
 		$this->type = $type;
@@ -437,7 +435,7 @@ class StorageConfig implements \JsonSerializable {
 			$result['statusMessage'] = $this->statusMessage;
 		}
 		$result['userProvided'] = $this->authMechanism instanceof IUserProvided;
-		$result['type'] = ($this->getType() === self::MOUNT_TYPE_PERSONAL) ? 'personal': 'system';
+		$result['type'] = ($this->getType() === self::MOUNT_TYPE_PERSONAl) ? 'personal': 'system';
 		return $result;
 	}
 

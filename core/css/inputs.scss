@@ -22,11 +22,10 @@ input, textarea, select, button, div[contenteditable=true], div[contenteditable=
 	font-family: var(--font-face) !important;
 }
 .select2-container.select2-drop-above .select2-choice {
-	background-image: unset !important;
+    background-image: unset !important;
 }
 
 $default-height: 36px;
-$opacity-disabled: .7;
 
 /* Simple selector to allow easy overriding */
 select,
@@ -45,24 +44,13 @@ div[contenteditable=false] {
 }
 
 /**
- * color-main-text			normal state
- * color-main-text			active state
- * color-text-maxcontrast	disabled state
+ * color-text-lighter		normal state
+ * color-text-lighter		active state
+ * color-text-maxcontrast 	disabled state
  */
 
-button:not(.button-vue),
-input:not([type='range']),
-textarea {
-	&:disabled {
-		cursor: default;
-		color: var(--color-text-maxcontrast);
-		border-color: var(--color-border-dark);
-		opacity: $opacity-disabled;
-	}
-}
-
 input:not([type="range"]) {
-	outline: none;
+    outline: none;
 }
 
 /* Default global values */
@@ -103,7 +91,7 @@ button:not(
 			&:active {
 				outline: none;
 				background-color: var(--color-main-background);
-				color: var(--color-main-text);
+				color: var(--color-text-light);
 			}
 		}
 		&:focus-visible {
@@ -165,13 +153,13 @@ div[contenteditable=false] {
 	padding: 7px 6px;
 	font-size: 13px;
 	background-color: var(--color-main-background);
-	color: var(--color-text-maxcontrast);
+	color: var(--color-text-lighter);
 	border: 1px solid var(--color-background-darker);
 	outline: none;
 	border-radius: var(--border-radius);
 
 	background-color: var(--color-background-dark);
-	color: var(--color-text-maxcontrast);
+	color: var(--color-text-lighter);
 	cursor: default;
 	opacity: 0.5;
 }
@@ -181,7 +169,6 @@ input {
 	&:not([type='radio']):not([type='checkbox']):not([type='range']):not([type='submit']):not([type='button']):not([type='reset']):not([type='color']):not([type='file']):not([type='image']) {
 		-webkit-appearance: textfield;
 		-moz-appearance: textfield;
-		appearance: textfield;
 		// force height for inline elements like inputs (not textarea, contenteditable...)
 		height: $default-height;
 	}
@@ -440,7 +427,7 @@ input {
 				vertical-align: middle;
 				border-radius: 50%;
 				margin: 0 6px 3px 3px;
-				border: 1px solid var(--color-text-maxcontrast);
+				border: 1px solid var(--color-text-lighter);
 			}
 			&:not(:disabled):not(:checked) + label:hover:before,
 			&:focus + label:before {
@@ -461,7 +448,7 @@ input {
 				border-color: var(--color-primary-element);
 			}
 			&:disabled + label:before {
-				border: 1px solid var(--color-text-maxcontrast);
+				border: 1px solid var(--color-text-lighter);
 				background-color: var(--color-text-maxcontrast) !important; /* override other status */
 			}
 			&:checked:disabled + label:before {
@@ -579,7 +566,7 @@ div.select2-drop {
 			padding: 12px;
 			background-color: transparent;
 			cursor: pointer;
-			color: var(--color-text-maxcontrast);
+			color: var(--color-text-lighter);
 		}
 		.select2-result {
 			&.select2-selected {
@@ -606,7 +593,7 @@ div.select2-container-multi {
 		white-space: nowrap;
 		text-overflow: ellipsis;
 		background: var(--color-main-background);
-		color: var(--color-text-maxcontrast) !important;
+		color: var(--color-text-lighter) !important;
 		box-sizing: content-box;
 		border-radius: var(--border-radius-large);
 		border: 2px solid var(--color-border-dark);
@@ -625,7 +612,7 @@ div.select2-container-multi {
 			& {
 				background-image: none;
 				background-color: var(--color-main-background);
-				color: var(--color-text-maxcontrast);
+				color: var(--color-text-lighter);
 				border: 1px solid var(--color-border-dark);
 			}
 			.select2-search-choice-close {
@@ -657,7 +644,7 @@ div.select2-container {
 		white-space: nowrap;
 		text-overflow: ellipsis;
 		background: var(--color-main-background);
-		color: var(--color-text-maxcontrast) !important;
+		color: var(--color-text-lighter) !important;
 		box-sizing: content-box;
 		border-radius: var(--border-radius-large);
 		border: 2px solid var(--color-border-dark);
@@ -714,7 +701,7 @@ div.select2-container {
 			padding-left: 5px;
 			background-image: none;
 			background-color: var(--color-main-background);
-			color: var(--color-text-maxcontrast);
+			color: var(--color-text-lighter);
 			border: 1px solid var(--color-border-dark);
 			display: inline-flex;
 			align-items: center;
@@ -731,7 +718,7 @@ div.select2-container {
 			display: list-item;
 			background-color: transparent;
 			cursor: pointer;
-			color: var(--color-text-maxcontrast);
+			color: var(--color-text-lighter);
 			a {
 				white-space: nowrap;
 				overflow: hidden;

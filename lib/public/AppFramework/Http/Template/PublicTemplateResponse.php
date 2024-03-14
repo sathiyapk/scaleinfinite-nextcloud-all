@@ -38,10 +38,10 @@ use OCP\AppFramework\Http\TemplateResponse;
  * @template-extends TemplateResponse<int, array<string, mixed>>
  */
 class PublicTemplateResponse extends TemplateResponse {
-	private $headerTitle = '';
+	 private $headerTitle = '';
 	private $headerDetails = '';
 	private $headerActions = [];
-	private $footerVisible = true;
+	private $footerVisible = false;
 
 	/**
 	 * PublicTemplateResponse constructor.

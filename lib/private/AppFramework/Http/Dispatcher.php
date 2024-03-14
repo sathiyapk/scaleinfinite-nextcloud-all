@@ -38,7 +38,6 @@ use OC\AppFramework\Utility\ControllerMethodReflector;
 use OC\DB\ConnectionAdapter;
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\DataResponse;
-use OCP\AppFramework\Http\ParameterOutOfRangeException;
 use OCP\AppFramework\Http\Response;
 use OCP\Diagnostics\IEventLogger;
 use OCP\IConfig;
@@ -198,7 +197,7 @@ class Dispatcher {
 	private function executeController(Controller $controller, string $methodName): Response {
 		$arguments = [];
 
-		// valid types that will be cast
+		// valid types that will be casted
 		$types = ['int', 'integer', 'bool', 'boolean', 'float', 'double'];
 
 		foreach ($this->reflector->getParameters() as $param => $default) {
@@ -220,7 +219,6 @@ class Dispatcher {
 				$value = false;
 			} elseif ($value !== null && \in_array($type, $types, true)) {
 				settype($value, $type);
-				$this->ensureParameterValueSatisfiesRange($param, $value);
 			} elseif ($value === null && $type !== null && $this->appContainer->has($type)) {
 				$value = $this->appContainer->get($type);
 			}
@@ -251,23 +249,5 @@ class Dispatcher {
 		}
 
 		return $response;
-	}
-
-	/**
-	 * @psalm-param mixed $value
-	 * @throws ParameterOutOfRangeException
-	 */
-	private function ensureParameterValueSatisfiesRange(string $param, $value): void {
-		$rangeInfo = $this->reflector->getRange($param);
-		if ($rangeInfo) {
-			if ($value < $rangeInfo['min'] || $value > $rangeInfo['max']) {
-				throw new ParameterOutOfRangeException(
-					$param,
-					$value,
-					$rangeInfo['min'],
-					$rangeInfo['max'],
-				);
-			}
-		}
 	}
 }

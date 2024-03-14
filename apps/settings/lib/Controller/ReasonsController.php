@@ -27,10 +27,10 @@ declare(strict_types=1);
 namespace OCA\Settings\Controller;
 
 use OCP\AppFramework\Controller;
-use OCP\AppFramework\Http\Attribute\OpenAPI;
+use OCP\AppFramework\Http\Attribute\IgnoreOpenAPI;
 use OCP\AppFramework\Http\DataDisplayResponse;
 
-#[OpenAPI(scope: OpenAPI::SCOPE_IGNORE)]
+#[IgnoreOpenAPI]
 class ReasonsController extends Controller {
 
 	/**

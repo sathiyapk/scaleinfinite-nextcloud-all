@@ -95,6 +95,81 @@
 			return deferred.promise();
 		},
 
+
+		/**
+		 * Check whether the .well-known URLs works.
+		 *
+		 * @param url the URL to test
+		 * @param placeholderUrl the placeholder URL - can be found at OC.theme.docPlaceholderUrl
+		 * @param {boolean} runCheck if this is set to false the check is skipped and no error is returned
+		 *
+		 * @return $.Deferred object resolved with an array of error messages
+		 */
+		checkProviderUrl: function(url, placeholderUrl, runCheck) {
+			var expectedStatus = [200];
+			var deferred = $.Deferred();
+
+			if(runCheck === false) {
+				deferred.resolve([]);
+				return deferred.promise();
+			}
+			var afterCall = function(xhr) {
+				var messages = [];
+				if (expectedStatus.indexOf(xhr.status) === -1) {
+					var docUrl = placeholderUrl.replace('PLACEHOLDER', 'admin-nginx');
+					messages.push({
+						msg: t('core', 'Your web server is not properly set up to resolve "{url}". This is most likely related to a web server configuration that was not updated to deliver this folder directly. Please compare your configuration against the shipped rewrite rules in ".htaccess" for Apache or the provided one in the documentation for Nginx at it\'s {linkstart}documentation page ↗{linkend}. On Nginx those are typically the lines starting with "location ~" that need an update.', { docLink: docUrl, url: url })
+							.replace('{linkstart}', '<a target="_blank" rel="noreferrer noopener" class="external" href="' + docUrl + '">')
+							.replace('{linkend}', '</a>'),
+						type: OC.SetupChecks.MESSAGE_TYPE_WARNING
+					});
+				}
+				deferred.resolve(messages);
+			};
+
+			$.ajax({
+				type: 'GET',
+				url: url,
+				complete: afterCall,
+				allowAuthErrors: true
+			});
+			return deferred.promise();
+		},
+
+
+		/**
+		 * Check whether the WOFF2 URLs works.
+		 *
+		 * @param url the URL to test
+		 * @param placeholderUrl the placeholder URL - can be found at OC.theme.docPlaceholderUrl
+		 * @return $.Deferred object resolved with an array of error messages
+		 */
+		checkWOFF2Loading: function(url, placeholderUrl) {
+			var deferred = $.Deferred();
+
+			var afterCall = function(xhr) {
+				var messages = [];
+				if (xhr.status !== 200) {
+					var docUrl = placeholderUrl.replace('PLACEHOLDER', 'admin-nginx');
+					messages.push({
+						msg: t('core', 'Your web server is not properly set up to deliver .woff2 files. This is typically an issue with the Nginx configuration. For Nextcloud 15 it needs an adjustement to also deliver .woff2 files. Compare your Nginx configuration to the recommended configuration in our {linkstart}documentation ↗{linkend}.', { docLink: docUrl, url: url })
+							.replace('{linkstart}', '<a target="_blank" rel="noreferrer noopener" class="external" href="' + docUrl + '">')
+							.replace('{linkend}', '</a>'),
+						type: OC.SetupChecks.MESSAGE_TYPE_WARNING
+					});
+				}
+				deferred.resolve(messages);
+			};
+
+			$.ajax({
+				type: 'GET',
+				url: url,
+				complete: afterCall,
+				allowAuthErrors: true
+			});
+			return deferred.promise();
+		},
+
 		/**
 		 * Runs setup checks on the server side
 		 *
@@ -105,6 +180,72 @@
 			var afterCall = function(data, statusText, xhr) {
 				var messages = [];
 				if (xhr.status === 200 && data) {
+					if (!data.isFairUseOfFreePushService) {
+						messages.push({
+							msg: t('core', 'This is the unsupported community build of Nextcloud. Given the size of this instance, performance, reliability and scalability cannot be guaranteed. Push notifications are limited to avoid overloading our free service. Learn more about the benefits of Nextcloud Enterprise at {linkstart}https://nextcloud.com/enterprise{linkend}.')
+								.replace('{linkstart}', '<a target="_blank" rel="noreferrer noopener" class="external" href="https://nextcloud.com/enterprise">')
+								.replace('{linkend}', '</a>'),
+							type: OC.SetupChecks.MESSAGE_TYPE_ERROR
+						});
+					}
+					if(!data.isCorrectMemcachedPHPModuleInstalled) {
+						messages.push({
+							msg: t('core', 'Memcached is configured as distributed cache, but the wrong PHP module "memcache" is installed. \\OC\\Memcache\\Memcached only supports "memcached" and not "memcache". See the {linkstart}memcached wiki about both modules ↗{linkend}.')
+								.replace('{linkstart}', '<a target="_blank" rel="noreferrer noopener" class="external" href="https://code.google.com/p/memcached/wiki/PHPClientComparison">')
+								.replace('{linkend}', '</a>'),
+							type: OC.SetupChecks.MESSAGE_TYPE_WARNING
+						});
+					}
+					if(!data.isSettimelimitAvailable) {
+						messages.push({
+							msg: t('core', 'The PHP function "set_time_limit" is not available. This could result in scripts being halted mid-execution, breaking your installation. Enabling this function is strongly recommended.'),
+							type: OC.SetupChecks.MESSAGE_TYPE_WARNING
+						});
+					}
+					if (!data.areWebauthnExtensionsEnabled) {
+						messages.push({
+							msg: t(
+								'core',
+								'The PHP modules "gmp" and/or "bcmath" are not enabled. If you use WebAuthn passwordless authentication, these modules are required.'
+							),
+							type: OC.SetupChecks.MESSAGE_TYPE_INFO
+						})
+					}
+
+					if (data.isMysqlUsedWithoutUTF8MB4) {
+						messages.push({
+							msg: t('core', 'MySQL is used as database but does not support 4-byte characters. To be able to handle 4-byte characters (like emojis) without issues in filenames or comments for example it is recommended to enable the 4-byte support in MySQL. For further details read {linkstart}the documentation page about this ↗{linkend}.')
+								.replace('{linkstart}', '<a target="_blank" rel="noreferrer noopener" class="external" href="' + OC.theme.docPlaceholderUrl.replace('PLACEHOLDER', 'admin-mysql-utf8mb4') + '">')
+								.replace('{linkend}', '</a>'),
+							type: OC.SetupChecks.MESSAGE_TYPE_WARNING
+						})
+					}
+					if (!data.isEnoughTempSpaceAvailableIfS3PrimaryStorageIsUsed) {
+						messages.push({
+							msg: t('core', 'This instance uses an S3 based object store as primary storage. The uploaded files are stored temporarily on the server and thus it is recommended to have 50 GB of free space available in the temp directory of PHP. Check the logs for full details about the path and the available space. To improve this please change the temporary directory in the php.ini or make more space available in that path.'),
+							type: OC.SetupChecks.MESSAGE_TYPE_WARNING
+						})
+					}
+					if (!data.temporaryDirectoryWritable) {
+						messages.push({
+							msg: t('core', 'The temporary directory of this instance points to an either non-existing or non-writable directory.'),
+							type: OC.SetupChecks.MESSAGE_TYPE_WARNING
+						})
+					}
+					if (window.location.protocol === 'https:' && data.reverseProxyGeneratedURL.split('/')[0] !== 'https:') {
+						messages.push({
+							msg: t('core', 'You are accessing your instance over a secure connection, however your instance is generating insecure URLs. This most likely means that you are behind a reverse proxy and the overwrite config variables are not set correctly. Please read {linkstart}the documentation page about this ↗{linkend}.')
+								.replace('{linkstart}', '<a target="_blank" rel="noreferrer noopener" class="external" href="' + data.reverseProxyDocs + '">')
+								.replace('{linkend}', '</a>'),
+							type: OC.SetupChecks.MESSAGE_TYPE_WARNING
+						})
+					}
+					if (window.oc_debug) {
+						messages.push({
+							msg: t('core', 'This instance is running in debug mode. Only enable this for local development and not in production environments.'),
+							type: OC.SetupChecks.MESSAGE_TYPE_WARNING
+						})
+					}
 					if (Object.keys(data.generic).length > 0) {
 						Object.keys(data.generic).forEach(function(key){
 							Object.keys(data.generic[key]).forEach(function(title){
@@ -231,6 +372,32 @@
 			return deferred.promise();
 		},
 
+		checkDataProtected: function() {
+			var deferred = $.Deferred();
+			if(oc_dataURL === false){
+				return deferred.resolve([]);
+			}
+			var afterCall = function(xhr) {
+				var messages = [];
+				// .ocdata is an empty file in the data directory - if this is readable then the data dir is not protected
+				if (xhr.status === 200 && xhr.responseText === '') {
+					messages.push({
+						msg: t('core', 'Your data directory and files are probably accessible from the internet. The .htaccess file is not working. It is strongly recommended that you configure your web server so that the data directory is no longer accessible, or move the data directory outside the web server document root.'),
+						type: OC.SetupChecks.MESSAGE_TYPE_ERROR
+					});
+				}
+				deferred.resolve(messages);
+			};
+
+			$.ajax({
+				type: 'GET',
+				url: OC.linkTo('', oc_dataURL+'/.ocdata?t=' + (new Date()).getTime()),
+				complete: afterCall,
+				allowAuthErrors: true
+			});
+			return deferred.promise();
+		},
+
 		/**
 		 * Runs check for some generic security headers on the server side
 		 *
@@ -332,6 +499,13 @@
 							type: OC.SetupChecks.MESSAGE_TYPE_WARNING
 						});
 					}
+				} else if (!/(?:^(?:localhost|127\.0\.0\.1|::1)|\.onion)$/.exec(window.location.hostname)) {
+					messages.push({
+						msg: t('core', 'Accessing site insecurely via HTTP. You are strongly advised to set up your server to require HTTPS instead, as described in the {linkstart}security tips ↗{linkend}. Without it some important web functionality like "copy to clipboard" or "service workers" will not work!')
+							.replace('{linkstart}', '<a target="_blank" rel="noreferrer noopener" class="external" href="' + tipsUrl + '">')
+							.replace('{linkend}', '</a>'),
+						type: OC.SetupChecks.MESSAGE_TYPE_ERROR
+					});
 				}
 			} else {
 				messages.push({

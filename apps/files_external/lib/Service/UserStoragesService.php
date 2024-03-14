@@ -31,6 +31,7 @@ namespace OCA\Files_External\Service;
 use OC\Files\Filesystem;
 use OCA\Files_External\Lib\StorageConfig;
 use OCA\Files_External\NotFoundException;
+
 use OCP\EventDispatcher\IEventDispatcher;
 use OCP\Files\Config\IUserMountCache;
 use OCP\IUserSession;
@@ -102,7 +103,7 @@ class UserStoragesService extends StoragesService {
 	}
 
 	protected function getType() {
-		return DBConfigService::MOUNT_TYPE_PERSONAL;
+		return DBConfigService::MOUNT_TYPE_PERSONAl;
 	}
 
 	/**
@@ -143,7 +144,7 @@ class UserStoragesService extends StoragesService {
 	}
 
 	protected function isApplicable(StorageConfig $config) {
-		return ($config->getApplicableUsers() === [$this->getUser()->getUID()]) && $config->getType() === StorageConfig::MOUNT_TYPE_PERSONAL;
+		return ($config->getApplicableUsers() === [$this->getUser()->getUID()]) && $config->getType() === StorageConfig::MOUNT_TYPE_PERSONAl;
 	}
 
 	public function removeStorage($id) {

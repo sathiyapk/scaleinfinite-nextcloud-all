@@ -95,7 +95,6 @@ interface IURLGenerator {
 	 * @param string $appName the name of the app
 	 * @param string $file the name of the file
 	 * @return string the url
-	 * @throws \RuntimeException If the image does not exist
 	 * @since 6.0.0
 	 */
 	public function imagePath(string $appName, string $file): string;

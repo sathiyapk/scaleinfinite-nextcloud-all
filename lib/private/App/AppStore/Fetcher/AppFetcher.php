@@ -39,6 +39,12 @@ use OCP\Support\Subscription\IRegistry;
 use Psr\Log\LoggerInterface;
 
 class AppFetcher extends Fetcher {
+	/** @var CompareVersion */
+	private $compareVersion;
+
+	/** @var IRegistry */
+	protected $registry;
+
 	/** @var bool */
 	private $ignoreMaxVersion;
 
@@ -46,10 +52,9 @@ class AppFetcher extends Fetcher {
 		IClientService $clientService,
 		ITimeFactory $timeFactory,
 		IConfig $config,
-		private CompareVersion $compareVersion,
+		CompareVersion $compareVersion,
 		LoggerInterface $logger,
-		protected IRegistry $registry,
-	) {
+		IRegistry $registry) {
 		parent::__construct(
 			$appDataFactory,
 			$clientService,
@@ -58,6 +63,9 @@ class AppFetcher extends Fetcher {
 			$logger,
 			$registry
 		);
+
+		$this->compareVersion = $compareVersion;
+		$this->registry = $registry;
 
 		$this->fileName = 'apps.json';
 		$this->endpointName = 'apps.json';

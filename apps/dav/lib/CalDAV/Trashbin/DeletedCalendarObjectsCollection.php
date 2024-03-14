@@ -31,15 +31,11 @@ use Sabre\DAV\Exception\BadRequest;
 use Sabre\DAV\Exception\Forbidden;
 use Sabre\DAV\Exception\NotFound;
 use Sabre\DAV\Exception\NotImplemented;
-use Sabre\DAVACL\ACLTrait;
-use Sabre\DAVACL\IACL;
 use function array_map;
 use function implode;
 use function preg_match;
 
-class DeletedCalendarObjectsCollection implements ICalendarObjectContainer, IACL {
-	use ACLTrait;
-
+class DeletedCalendarObjectsCollection implements ICalendarObjectContainer {
 	public const NAME = 'objects';
 
 	/** @var CalDavBackend */
@@ -132,24 +128,5 @@ class DeletedCalendarObjectsCollection implements ICalendarObjectContainer, IACL
 			'.',
 			[$calendarInfo['id'], 'ics'],
 		);
-	}
-
-	public function getOwner() {
-		return $this->principalInfo['uri'];
-	}
-
-	public function getACL(): array {
-		return [
-			[
-				'privilege' => '{DAV:}read',
-				'principal' => $this->getOwner(),
-				'protected' => true,
-			],
-			[
-				'privilege' => '{DAV:}unbind',
-				'principal' => '{DAV:}owner',
-				'protected' => true,
-			]
-		];
 	}
 }

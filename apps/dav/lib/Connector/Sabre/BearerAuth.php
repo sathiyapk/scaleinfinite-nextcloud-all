@@ -47,7 +47,7 @@ class BearerAuth extends AbstractBearer {
 
 		// setup realm
 		$defaults = new \OCP\Defaults();
-		$this->realm = $defaults->getName() ?: 'Nextcloud';
+		$this->realm = $defaults->getName();
 	}
 
 	private function setupUserFs($userId) {

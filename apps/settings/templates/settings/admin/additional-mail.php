@@ -45,7 +45,7 @@ if ($_['mail_smtpmode'] === 'qmail') {
 
 $mail_sendmailmode = [
 	'smtp' => 'smtp (-bs)',
-	'pipe' => 'pipe (-t -i)'
+	'pipe' => 'pipe (-t)'
 ];
 
 ?>
@@ -53,11 +53,9 @@ $mail_sendmailmode = [
 <div class="section" id="mail_general_settings">
 	<form id="mail_general_settings_form" class="mail_settings">
 		<h2><?php p($l->t('Email server'));?></h2>
-		<a 	target="_blank"
-			rel="noreferrer noopener" class="icon-info"
-			title="<?php p($l->t('Open documentation'));?>"
-			href="<?php p(link_to_docs('admin-email')); ?>"
-			aria-label="<?php p($l->t('Open documentation'));?>"></a>
+		<a target="_blank" rel="noreferrer noopener" class="icon-info"
+					title="<?php p($l->t('Open documentation'));?>"
+					href="<?php p(link_to_docs('admin-email')); ?>"></a>
 		<p class="settings-hint">
 			  <?php p($l->t('It is important to set up this server to be able to send emails, like for password reset and notifications.')); ?>
 		</p>
@@ -148,7 +146,7 @@ $mail_sendmailmode = [
 			print_unescaped(' class="hidden"');
 		} ?>>
 			<label for="mail_smtpname"><?php p($l->t('Credentials')); ?></label>
-			<input type="text" name="mail_smtpname" id="mail_smtpname" placeholder="<?php p($l->t('SMTP Login'))?>"
+			<input type="text" name="mail_smtpname" id="mail_smtpname" placeholder="<?php p($l->t('SMTP Username'))?>"
 				   value="<?php p($_['mail_smtpname']) ?>" />
 			<input type="text" name="mail_smtppassword" id="mail_smtppassword" autocomplete="off"
 				   placeholder="<?php p($l->t('SMTP Password'))?>" value="<?php p($_['mail_smtppassword']) ?>" />

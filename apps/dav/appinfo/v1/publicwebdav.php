@@ -43,7 +43,7 @@ OC_Util::obEnd();
 \OC::$server->getSession()->close();
 
 // Backends
-$authBackend = new OCA\DAV\Connector\LegacyPublicAuth(
+$authBackend = new OCA\DAV\Connector\PublicAuth(
 	\OC::$server->getRequest(),
 	\OC::$server->getShareManager(),
 	\OC::$server->getSession(),
@@ -73,7 +73,7 @@ $linkCheckPlugin = new \OCA\DAV\Files\Sharing\PublicLinkCheckPlugin();
 $filesDropPlugin = new \OCA\DAV\Files\Sharing\FilesDropPlugin();
 
 $server = $serverFactory->createServer($baseuri, $requestUri, $authPlugin, function (\Sabre\DAV\Server $server) use ($authBackend, $linkCheckPlugin, $filesDropPlugin) {
-	$isAjax = in_array('XMLHttpRequest', explode(',', $_SERVER['HTTP_X_REQUESTED_WITH'] ?? ''));
+	$isAjax = (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest');
 	/** @var \OCA\FederatedFileSharing\FederatedShareProvider $shareProvider */
 	$federatedShareProvider = \OC::$server->query(\OCA\FederatedFileSharing\FederatedShareProvider::class);
 	if ($federatedShareProvider->isOutgoingServer2serverShareEnabled() === false && !$isAjax) {

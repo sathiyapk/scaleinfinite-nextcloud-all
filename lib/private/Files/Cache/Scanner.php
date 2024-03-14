@@ -203,9 +203,7 @@ class Scanner extends BasicEmitter implements IScanner {
 						$fileId = $cacheData['fileid'];
 						$data['fileid'] = $fileId;
 						// only reuse data if the file hasn't explicitly changed
-						$mtimeUnchanged = isset($data['storage_mtime']) && isset($cacheData['storage_mtime']) && $data['storage_mtime'] === $cacheData['storage_mtime'];
-						// if the folder is marked as unscanned, never reuse etags
-						if ($mtimeUnchanged && $cacheData['size'] !== -1) {
+						if (isset($data['storage_mtime']) && isset($cacheData['storage_mtime']) && $data['storage_mtime'] === $cacheData['storage_mtime']) {
 							$data['mtime'] = $cacheData['mtime'];
 							if (($reuseExisting & self::REUSE_SIZE) && ($data['size'] === -1)) {
 								$data['size'] = $cacheData['size'];
@@ -222,11 +220,6 @@ class Scanner extends BasicEmitter implements IScanner {
 
 						// Only update metadata that has changed
 						$newData = array_diff_assoc($data, $cacheData->getData());
-
-						// make it known to the caller that etag has been changed and needs propagation
-						if (isset($newData['etag'])) {
-							$data['etag_changed'] = true;
-						}
 					} else {
 						// we only updated unencrypted_size if it's already set
 						unset($data['unencrypted_size']);
@@ -395,20 +388,16 @@ class Scanner extends BasicEmitter implements IScanner {
 	 * @param int|float $oldSize the size of the folder before (re)scanning the children
 	 * @return int|float the size of the scanned folder or -1 if the size is unknown at this stage
 	 */
-	protected function scanChildren(string $path, $recursive, int $reuse, int $folderId, bool $lock, int|float $oldSize, &$etagChanged = false) {
+	protected function scanChildren(string $path, $recursive, int $reuse, int $folderId, bool $lock, int|float $oldSize) {
 		if ($reuse === -1) {
 			$reuse = ($recursive === self::SCAN_SHALLOW) ? self::REUSE_ETAG | self::REUSE_SIZE : self::REUSE_ETAG;
 		}
 		$this->emit('\OC\Files\Cache\Scanner', 'scanFolder', [$path, $this->storageId]);
 		$size = 0;
-		$childQueue = $this->handleChildren($path, $recursive, $reuse, $folderId, $lock, $size, $etagChanged);
+		$childQueue = $this->handleChildren($path, $recursive, $reuse, $folderId, $lock, $size);
 
 		foreach ($childQueue as $child => [$childId, $childSize]) {
-			// "etag changed" propagates up, but not down, so we pass `false` to the children even if we already know that the etag of the current folder changed
-			$childEtagChanged = false;
-			$childSize = $this->scanChildren($child, $recursive, $reuse, $childId, $lock, $childSize, $childEtagChanged);
-			$etagChanged |= $childEtagChanged;
-
+			$childSize = $this->scanChildren($child, $recursive, $reuse, $childId, $lock, $childSize);
 			if ($childSize === -1) {
 				$size = -1;
 			} elseif ($size !== -1) {
@@ -421,17 +410,8 @@ class Scanner extends BasicEmitter implements IScanner {
 		if ($this->storage->instanceOfStorage(Encryption::class)) {
 			$this->cache->calculateFolderSize($path);
 		} else {
-			if ($this->cacheActive) {
-				$updatedData = [];
-				if ($oldSize !== $size) {
-					$updatedData['size'] = $size;
-				}
-				if ($etagChanged) {
-					$updatedData['etag'] = uniqid();
-				}
-				if ($updatedData) {
-					$this->cache->update($folderId, $updatedData);
-				}
+			if ($this->cacheActive && $oldSize !== $size) {
+				$this->cache->update($folderId, ['size' => $size]);
 			}
 		}
 		$this->emit('\OC\Files\Cache\Scanner', 'postScanFolder', [$path, $this->storageId]);
@@ -441,7 +421,7 @@ class Scanner extends BasicEmitter implements IScanner {
 	/**
 	 * @param bool|IScanner::SCAN_RECURSIVE_INCOMPLETE $recursive
 	 */
-	private function handleChildren(string $path, $recursive, int $reuse, int $folderId, bool $lock, int|float &$size, bool &$etagChanged): array {
+	private function handleChildren(string $path, $recursive, int $reuse, int $folderId, bool $lock, int|float &$size): array {
 		// we put this in it's own function so it cleans up the memory before we start recursing
 		$existingChildren = $this->getExistingChildren($folderId);
 		$newChildren = iterator_to_array($this->storage->getDirectoryContent($path));
@@ -488,10 +468,6 @@ class Scanner extends BasicEmitter implements IScanner {
 						$size = -1;
 					} elseif ($size !== -1) {
 						$size += $data['size'];
-					}
-
-					if (isset($data['etag_changed']) && $data['etag_changed']) {
-						$etagChanged = true;
 					}
 				}
 			} catch (Exception $ex) {

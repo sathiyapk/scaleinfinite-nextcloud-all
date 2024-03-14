@@ -2,7 +2,7 @@ OC.L10N.register(
     "dav",
     {
     "Calendar" : "Calendar",
-    "Tasks" : "Tasks",
+    "To-dos" : "To-dos",
     "Personal" : "Personal",
     "{actor} created calendar {calendar}" : "{actor} created calendar {calendar}",
     "You created calendar {calendar}" : "You created calendar {calendar}",
@@ -143,6 +143,7 @@ OC.L10N.register(
     "Configures a CalDAV account" : "Configures a CalDAV account",
     "Configures a CardDAV account" : "Configures a CardDAV account",
     "Events" : "Events",
+    "Tasks" : "Tasks",
     "Untitled task" : "Untitled task",
     "Completed on %s" : "Completed on %s",
     "Due on %s by %s" : "Due on %s by %s",
@@ -170,7 +171,6 @@ OC.L10N.register(
     "Delete slot" : "Delete slot",
     "No working hours set" : "No working hours set",
     "Add slot" : "Add slot",
-    "Weekdays" : "Weekdays",
     "Monday" : "Monday",
     "Tuesday" : "Tuesday",
     "Wednesday" : "Wednesday",
@@ -185,7 +185,7 @@ OC.L10N.register(
     "Saved availability" : "Saved availability",
     "Failed to save availability" : "Failed to save availability",
     "Availability" : "Availability",
-    "If you configure your working hours, other people will see when you are out of office when they book a meeting." : "If you configure your working hours, other people will see when you are out of office when they book a meeting.",
+    "If you configure your working hours, other users will see when you are out of office when they book a meeting." : "If you configure your working hours, other users will see when you are out of office when they book a meeting.",
     "Absence" : "Absence",
     "Configure your next absence period." : "Configure your next absence period.",
     "Calendar server" : "Calendar server",
@@ -204,8 +204,6 @@ OC.L10N.register(
     "Please contact the organizer directly." : "Please contact the organiser directly.",
     "Are you accepting the invitation?" : "Are you accepting the invitation?",
     "Tentative" : "Tentative",
-    "Your attendance was updated successfully." : "Your attendance was updated successfully.",
-    "To-dos" : "To-dos",
-    "If you configure your working hours, other users will see when you are out of office when they book a meeting." : "If you configure your working hours, other users will see when you are out of office when they book a meeting."
+    "Your attendance was updated successfully." : "Your attendance was updated successfully."
 },
 "nplurals=2; plural=(n != 1);");

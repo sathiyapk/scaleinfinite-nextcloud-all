@@ -69,9 +69,10 @@ OCA.Sharing.PublicApp = {
 			var filesClient = new OC.Files.Client({
 				host: OC.getHost(),
 				port: OC.getPort(),
+				userName: token,
 				// note: password not be required, the endpoint
 				// will recognize previous validation from the session
-				root: OC.getRootPath() + '/public.php/dav/files/' + token + '/',
+				root: OC.getRootPath() + '/public.php/webdav',
 				useHTTPS: OC.getProtocol() === 'https'
 			});
 
@@ -166,10 +167,11 @@ OCA.Sharing.PublicApp = {
 				return;
 			}
 			// Undocumented Url to public WebDAV endpoint
-			var url = parent.location.protocol + '//' + location.host + OC.linkTo('', 'public.php/dav/files/'+ token);
+			var url = parent.location.protocol + '//' + location.host + OC.linkTo('', 'public.php/webdav');
 			$.ajax({
 				url: url,
 				headers: {
+					Authorization: 'Basic ' + btoa(token + ':'),
 					Range: 'bytes=0-10000'
 				}
 			}).then(function (data) {
@@ -245,9 +247,7 @@ OCA.Sharing.PublicApp = {
 					// also add auth in URL due to POST workaround
 					base = OC.getProtocol() + '://' + token + '@' + OC.getHost() + (OC.getPort() ? ':' + OC.getPort() : '');
 				}
-				
-				// encodedPath starts with a leading slash
-				return base + OC.getRootPath() + '/public.php/dav/files/' + token + encodedPath;
+				return base + OC.getRootPath() + '/public.php/webdav' + encodedPath;
 			};
 
 			this.fileList.getAjaxUrl = function (action, params) {

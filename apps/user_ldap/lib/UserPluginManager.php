@@ -26,7 +26,6 @@
 namespace OCA\User_LDAP;
 
 use OC\User\Backend;
-use Psr\Log\LoggerInterface;
 
 class UserPluginManager {
 	private int $respondToActions = 0;
@@ -63,12 +62,12 @@ class UserPluginManager {
 		foreach ($this->which as $action => $v) {
 			if (is_int($action) && (bool)($respondToActions & $action)) {
 				$this->which[$action] = $plugin;
-				\OCP\Server::get(LoggerInterface::class)->debug("Registered action ".$action." to plugin ".get_class($plugin), ['app' => 'user_ldap']);
+				\OC::$server->getLogger()->debug("Registered action ".$action." to plugin ".get_class($plugin), ['app' => 'user_ldap']);
 			}
 		}
 		if (method_exists($plugin, 'deleteUser')) {
 			$this->which['deleteUser'] = $plugin;
-			\OCP\Server::get(LoggerInterface::class)->debug("Registered action deleteUser to plugin ".get_class($plugin), ['app' => 'user_ldap']);
+			\OC::$server->getLogger()->debug("Registered action deleteUser to plugin ".get_class($plugin), ['app' => 'user_ldap']);
 		}
 	}
 

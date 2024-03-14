@@ -28,13 +28,11 @@ declare(strict_types=1);
 namespace OC\Authentication\Token;
 
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
-use OC\Authentication\Exceptions\InvalidTokenException as OcInvalidTokenException;
+use OC\Authentication\Exceptions\ExpiredTokenException;
+use OC\Authentication\Exceptions\InvalidTokenException;
 use OC\Authentication\Exceptions\PasswordlessTokenException;
-use OCP\Authentication\Exceptions\ExpiredTokenException;
-use OCP\Authentication\Exceptions\InvalidTokenException;
-use OCP\Authentication\Exceptions\WipeTokenException;
+use OC\Authentication\Exceptions\WipeTokenException;
 use OCP\Authentication\Token\IProvider as OCPIProvider;
-use OCP\Authentication\Token\IToken as OCPIToken;
 
 class Manager implements IProvider, OCPIProvider {
 	/** @var PublicKeyTokenProvider */
@@ -54,15 +52,15 @@ class Manager implements IProvider, OCPIProvider {
 	 * @param string $name Name will be trimmed to 120 chars when longer
 	 * @param int $type token type
 	 * @param int $remember whether the session token should be used for remember-me
-	 * @return OCPIToken
+	 * @return IToken
 	 */
 	public function generateToken(string $token,
 		string $uid,
 		string $loginName,
 		$password,
 		string $name,
-		int $type = OCPIToken::TEMPORARY_TOKEN,
-		int $remember = OCPIToken::DO_NOT_REMEMBER): OCPIToken {
+		int $type = IToken::TEMPORARY_TOKEN,
+		int $remember = IToken::DO_NOT_REMEMBER): IToken {
 		if (mb_strlen($name) > 128) {
 			$name = mb_substr($name, 0, 120) . '…';
 		}
@@ -95,10 +93,10 @@ class Manager implements IProvider, OCPIProvider {
 	/**
 	 * Save the updated token
 	 *
-	 * @param OCPIToken $token
+	 * @param IToken $token
 	 * @throws InvalidTokenException
 	 */
-	public function updateToken(OCPIToken $token) {
+	public function updateToken(IToken $token) {
 		$provider = $this->getProvider($token);
 		$provider->updateToken($token);
 	}
@@ -107,16 +105,16 @@ class Manager implements IProvider, OCPIProvider {
 	 * Update token activity timestamp
 	 *
 	 * @throws InvalidTokenException
-	 * @param OCPIToken $token
+	 * @param IToken $token
 	 */
-	public function updateTokenActivity(OCPIToken $token) {
+	public function updateTokenActivity(IToken $token) {
 		$provider = $this->getProvider($token);
 		$provider->updateTokenActivity($token);
 	}
 
 	/**
 	 * @param string $uid
-	 * @return OCPIToken[]
+	 * @return IToken[]
 	 */
 	public function getTokenByUser(string $uid): array {
 		return $this->publicKeyTokenProvider->getTokenByUser($uid);
@@ -128,9 +126,9 @@ class Manager implements IProvider, OCPIProvider {
 	 * @param string $tokenId
 	 * @throws InvalidTokenException
 	 * @throws \RuntimeException when OpenSSL reports a problem
-	 * @return OCPIToken
+	 * @return IToken
 	 */
-	public function getToken(string $tokenId): OCPIToken {
+	public function getToken(string $tokenId): IToken {
 		try {
 			return $this->publicKeyTokenProvider->getToken($tokenId);
 		} catch (WipeTokenException $e) {
@@ -147,9 +145,9 @@ class Manager implements IProvider, OCPIProvider {
 	 *
 	 * @param int $tokenId
 	 * @throws InvalidTokenException
-	 * @return OCPIToken
+	 * @return IToken
 	 */
-	public function getTokenById(int $tokenId): OCPIToken {
+	public function getTokenById(int $tokenId): IToken {
 		try {
 			return $this->publicKeyTokenProvider->getTokenById($tokenId);
 		} catch (ExpiredTokenException $e) {
@@ -165,9 +163,9 @@ class Manager implements IProvider, OCPIProvider {
 	 * @param string $oldSessionId
 	 * @param string $sessionId
 	 * @throws InvalidTokenException
-	 * @return OCPIToken
+	 * @return IToken
 	 */
-	public function renewSessionToken(string $oldSessionId, string $sessionId): OCPIToken {
+	public function renewSessionToken(string $oldSessionId, string $sessionId): IToken {
 		try {
 			return $this->publicKeyTokenProvider->renewSessionToken($oldSessionId, $sessionId);
 		} catch (ExpiredTokenException $e) {
@@ -178,18 +176,18 @@ class Manager implements IProvider, OCPIProvider {
 	}
 
 	/**
-	 * @param OCPIToken $savedToken
+	 * @param IToken $savedToken
 	 * @param string $tokenId session token
 	 * @throws InvalidTokenException
 	 * @throws PasswordlessTokenException
 	 * @return string
 	 */
-	public function getPassword(OCPIToken $savedToken, string $tokenId): string {
+	public function getPassword(IToken $savedToken, string $tokenId): string {
 		$provider = $this->getProvider($savedToken);
 		return $provider->getPassword($savedToken, $tokenId);
 	}
 
-	public function setPassword(OCPIToken $token, string $tokenId, string $password) {
+	public function setPassword(IToken $token, string $tokenId, string $password) {
 		$provider = $this->getProvider($token);
 		$provider->setPassword($token, $tokenId, $password);
 	}
@@ -211,37 +209,35 @@ class Manager implements IProvider, OCPIProvider {
 	}
 
 	/**
-	 * @param OCPIToken $token
+	 * @param IToken $token
 	 * @param string $oldTokenId
 	 * @param string $newTokenId
-	 * @return OCPIToken
+	 * @return IToken
 	 * @throws InvalidTokenException
 	 * @throws \RuntimeException when OpenSSL reports a problem
 	 */
-	public function rotate(OCPIToken $token, string $oldTokenId, string $newTokenId): OCPIToken {
+	public function rotate(IToken $token, string $oldTokenId, string $newTokenId): IToken {
 		if ($token instanceof PublicKeyToken) {
 			return $this->publicKeyTokenProvider->rotate($token, $oldTokenId, $newTokenId);
 		}
 
-		/** @psalm-suppress DeprecatedClass We have to throw the OC version so both OC and OCP catches catch it */
-		throw new OcInvalidTokenException();
+		throw new InvalidTokenException();
 	}
 
 	/**
-	 * @param OCPIToken $token
+	 * @param IToken $token
 	 * @return IProvider
 	 * @throws InvalidTokenException
 	 */
-	private function getProvider(OCPIToken $token): IProvider {
+	private function getProvider(IToken $token): IProvider {
 		if ($token instanceof PublicKeyToken) {
 			return $this->publicKeyTokenProvider;
 		}
-		/** @psalm-suppress DeprecatedClass We have to throw the OC version so both OC and OCP catches catch it */
-		throw new OcInvalidTokenException();
+		throw new InvalidTokenException();
 	}
 
 
-	public function markPasswordInvalid(OCPIToken $token, string $tokenId) {
+	public function markPasswordInvalid(IToken $token, string $tokenId) {
 		$this->getProvider($token)->markPasswordInvalid($token, $tokenId);
 	}
 

@@ -115,7 +115,7 @@ class Manager implements IManager {
 				$endTime = microtime(true);
 				$duration = $endTime - $startTime;
 				if ($duration > 1) {
-					\OC::$server->get(LoggerInterface::class)->info(
+					\OC::$server->get(LoggerInterface::class)->error(
 						'Dashboard widget {widget} took {duration} seconds to load.',
 						[
 							'widget' => $widget->getId(),

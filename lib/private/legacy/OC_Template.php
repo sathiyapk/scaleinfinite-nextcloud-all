@@ -21,7 +21,6 @@
  * @author Roeland Jago Douma <roeland@famdouma.nl>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
  * @author Vincent Petry <vincent@nextcloud.com>
- * @author Richard Steinmetz <richard@steinmetz.cloud>
  *
  * @license AGPL-3.0
  *
@@ -39,9 +38,7 @@
  *
  */
 use OC\TemplateLayout;
-use OCP\AppFramework\Http\Events\BeforeTemplateRenderedEvent;
 use OCP\AppFramework\Http\TemplateResponse;
-use OCP\EventDispatcher\IEventDispatcher;
 
 require_once __DIR__.'/template/functions.php';
 
@@ -252,44 +249,20 @@ class OC_Template extends \OC\Template\Base {
 			// If the hint is the same as the message there is no need to display it twice.
 			$hint = '';
 		}
-		$errors = [['error' => $error_msg, 'hint' => $hint]];
 
 		http_response_code($statusCode);
 		try {
-			// Try rendering themed html error page
-			$response = new TemplateResponse(
-				'',
-				'error',
-				['errors' => $errors],
-				TemplateResponse::RENDER_AS_ERROR,
-				$statusCode,
-			);
-			$event = new BeforeTemplateRenderedEvent(false, $response);
-			\OC::$server->get(IEventDispatcher::class)->dispatchTyped($event);
-			print($response->render());
-		} catch (\Throwable $e1) {
+			$content = new \OC_Template('', 'error', 'error', false);
+			$errors = [['error' => $error_msg, 'hint' => $hint]];
+			$content->assign('errors', $errors);
+			$content->printPage();
+		} catch (\Exception $e) {
 			$logger = \OC::$server->getLogger();
-			$logger->logException($e1, [
-				'app' => 'core',
-				'message' => 'Rendering themed error page failed. Falling back to unthemed error page.'
-			]);
+			$logger->error("$error_msg $hint", ['app' => 'core']);
+			$logger->logException($e, ['app' => 'core']);
 
-			try {
-				// Try rendering unthemed html error page
-				$content = new \OC_Template('', 'error', 'error', false);
-				$content->assign('errors', $errors);
-				$content->printPage();
-			} catch (\Exception $e2) {
-				// If nothing else works, fall back to plain text error page
-				$logger->error("$error_msg $hint", ['app' => 'core']);
-				$logger->logException($e2, [
-					'app' => 'core',
-					'message' => 'Rendering unthemed error page failed. Falling back to plain text error page.'
-				]);
-
-				header('Content-Type: text/plain; charset=utf-8');
-				print("$error_msg $hint");
-			}
+			header('Content-Type: text/plain; charset=utf-8');
+			print("$error_msg $hint");
 		}
 		die();
 	}
@@ -302,10 +275,8 @@ class OC_Template extends \OC\Template\Base {
 	 * @suppress PhanAccessMethodInternal
 	 */
 	public static function printExceptionErrorPage($exception, $statusCode = 503) {
-		$debug = false;
 		http_response_code($statusCode);
 		try {
-			$debug = \OC::$server->getSystemConfig()->getValue('debug', false);
 			$request = \OC::$server->getRequest();
 			$content = new \OC_Template('', 'exception', 'error', false);
 			$content->assign('errorClass', get_class($exception));
@@ -314,7 +285,7 @@ class OC_Template extends \OC\Template\Base {
 			$content->assign('file', $exception->getFile());
 			$content->assign('line', $exception->getLine());
 			$content->assign('exception', $exception);
-			$content->assign('debugMode', $debug);
+			$content->assign('debugMode', \OC::$server->getSystemConfig()->getValue('debug', false));
 			$content->assign('remoteAddr', $request->getRemoteAddress());
 			$content->assign('requestID', $request->getId());
 			$content->printPage();
@@ -325,28 +296,22 @@ class OC_Template extends \OC\Template\Base {
 				$logger->logException($e, ['app' => 'core']);
 			} catch (Throwable $e) {
 				// no way to log it properly - but to avoid a white page of death we send some output
-				self::printPlainErrorPage($e, $debug);
+				header('Content-Type: text/plain; charset=utf-8');
+				print("Internal Server Error\n\n");
+				print("The server encountered an internal error and was unable to complete your request.\n");
+				print("Please contact the server administrator if this error reappears multiple times, please include the technical details below in your report.\n");
+				print("More details can be found in the server log.\n");
 
 				// and then throw it again to log it at least to the web server error log
 				throw $e;
 			}
 
-			self::printPlainErrorPage($e, $debug);
+			header('Content-Type: text/plain; charset=utf-8');
+			print("Internal Server Error\n\n");
+			print("The server encountered an internal error and was unable to complete your request.\n");
+			print("Please contact the server administrator if this error reappears multiple times, please include the technical details below in your report.\n");
+			print("More details can be found in the server log.\n");
 		}
 		die();
-	}
-
-	private static function printPlainErrorPage(\Throwable $exception, bool $debug = false) {
-		header('Content-Type: text/plain; charset=utf-8');
-		print("Internal Server Error\n\n");
-		print("The server encountered an internal error and was unable to complete your request.\n");
-		print("Please contact the server administrator if this error reappears multiple times, please include the technical details below in your report.\n");
-		print("More details can be found in the server log.\n");
-
-		if ($debug) {
-			print("\n");
-			print($exception->getMessage() . ' ' . $exception->getFile() . ' at ' . $exception->getLine() . "\n");
-			print($exception->getTraceAsString());
-		}
 	}
 }

@@ -27,7 +27,7 @@
 namespace OCA\Settings\Controller;
 
 use OCP\AppFramework\Controller;
-use OCP\AppFramework\Http\Attribute\OpenAPI;
+use OCP\AppFramework\Http\Attribute\IgnoreOpenAPI;
 use OCP\AppFramework\Http\TemplateResponse;
 use OCP\Group\ISubAdmin;
 use OCP\IGroupManager;
@@ -37,7 +37,7 @@ use OCP\IUserSession;
 use OCP\Settings\IManager as ISettingsManager;
 use OCP\Template;
 
-#[OpenAPI(scope: OpenAPI::SCOPE_IGNORE)]
+#[IgnoreOpenAPI]
 class PersonalSettingsController extends Controller {
 	use CommonSettingsTrait;
 

@@ -1,0 +1,15 @@
+footer {
+	.info .entity-name {
+		font-weight: bold;
+	}
+
+	&.guest-box {
+		padding: 6px 24px;
+		margin-bottom: 1rem;
+		display: none !important;
+
+		.info {
+			margin: 0;
+		}
+	}
+}

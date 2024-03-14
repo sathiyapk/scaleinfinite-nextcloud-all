@@ -27,17 +27,13 @@ namespace OC\Files\Search;
 
 use OCP\Files\Search\ISearchComparison;
 
-/**
- * @psalm-import-type ParamValue from ISearchComparison
- */
 class SearchComparison implements ISearchComparison {
 	private array $hints = [];
 
 	public function __construct(
 		private string $type,
 		private string $field,
-		/** @var ParamValue $value */
-		private \DateTime|int|string|bool|array $value,
+		private \DateTime|int|string|bool $value,
 		private string $extra = ''
 	) {
 	}
@@ -56,7 +52,10 @@ class SearchComparison implements ISearchComparison {
 		return $this->field;
 	}
 
-	public function getValue(): string|int|bool|\DateTime|array {
+	/**
+	 * @return \DateTime|int|string|bool
+	 */
+	public function getValue(): string|int|bool|\DateTime {
 		return $this->value;
 	}
 
@@ -78,9 +77,5 @@ class SearchComparison implements ISearchComparison {
 
 	public static function escapeLikeParameter(string $param): string {
 		return addcslashes($param, '\\_%');
-	}
-
-	public function __toString(): string {
-		return $this->field . ' ' . $this->type . ' ' . json_encode($this->value);
 	}
 }

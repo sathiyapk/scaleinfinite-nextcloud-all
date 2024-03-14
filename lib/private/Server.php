@@ -68,7 +68,6 @@ use OC\Authentication\Listeners\UserLoggedInListener;
 use OC\Authentication\LoginCredentials\Store;
 use OC\Authentication\Token\IProvider;
 use OC\Avatar\AvatarManager;
-use OC\Blurhash\Listener\GenerateBlurhashMetadata;
 use OC\Collaboration\Collaborators\GroupPlugin;
 use OC\Collaboration\Collaborators\MailPlugin;
 use OC\Collaboration\Collaborators\RemoteGroupPlugin;
@@ -174,7 +173,6 @@ use OCA\Theming\ThemingDefaults;
 use OCA\Theming\Util;
 use OCP\Accounts\IAccountManager;
 use OCP\App\IAppManager;
-use OCP\AppFramework\Utility\ITimeFactory;
 use OCP\Authentication\LoginCredentials\IStore;
 use OCP\Authentication\Token\IProvider as OCPIProvider;
 use OCP\BackgroundJob\IJobList;
@@ -716,7 +714,7 @@ class Server extends ServerContainer implements IServerContainer {
 
 		$this->registerService('RedisFactory', function (Server $c) {
 			$systemConfig = $c->get(SystemConfig::class);
-			return new RedisFactory($systemConfig, $c->get(IEventLogger::class));
+			return new RedisFactory($systemConfig, $c->getEventLogger());
 		});
 
 		$this->registerService(\OCP\Activity\IManager::class, function (Server $c) {
@@ -844,7 +842,8 @@ class Server extends ServerContainer implements IServerContainer {
 			if (!$factory->isValidType($type)) {
 				throw new \OC\DatabaseException('Invalid database type');
 			}
-			$connection = $factory->getConnection($type, []);
+			$connectionParams = $factory->createConnectionParams();
+			$connection = $factory->getConnection($type, $connectionParams);
 			return $connection;
 		});
 		/** @deprecated 19.0.0 */
@@ -976,8 +975,7 @@ class Server extends ServerContainer implements IServerContainer {
 			return $backend;
 		});
 
-		$this->registerDeprecatedAlias('IntegrityCodeChecker', Checker::class);
-		$this->registerService(Checker::class, function (ContainerInterface $c) {
+		$this->registerService('IntegrityCodeChecker', function (ContainerInterface $c) {
 			// IConfig and IAppManager requires a working database. This code
 			// might however be called when ownCloud is not yet setup.
 			if (\OC::$server->get(SystemConfig::class)->getValue('installed', false)) {
@@ -1081,8 +1079,7 @@ class Server extends ServerContainer implements IServerContainer {
 				$memcacheFactory = $c->get(ICacheFactory::class);
 				$memcache = $memcacheFactory->createLocking('lock');
 				if (!($memcache instanceof \OC\Memcache\NullCache)) {
-					$timeFactory = $c->get(ITimeFactory::class);
-					return new MemcacheLockingProvider($memcache, $timeFactory, $ttl);
+					return new MemcacheLockingProvider($memcache, $ttl);
 				}
 				return new DBLockingProvider(
 					$c->get(IDBConnection::class),
@@ -1155,7 +1152,7 @@ class Server extends ServerContainer implements IServerContainer {
 				$userDisplayName = $manager->getDisplayName($id);
 				if ($userDisplayName === null) {
 					$l = $c->get(IFactory::class)->get('core');
-					return $l->t('Unknown account');
+					return $l->t('Unknown user');
 				}
 				return $userDisplayName;
 			});
@@ -1174,7 +1171,7 @@ class Server extends ServerContainer implements IServerContainer {
 				$classExists = false;
 			}
 
-			if ($classExists && $c->get(\OCP\IConfig::class)->getSystemValueBool('installed', false) && $c->get(IAppManager::class)->isInstalled('theming') && $c->get(TrustedDomainHelper::class)->isTrustedDomain($c->getRequest()->getInsecureServerHost())) {
+			if ($classExists && $c->get(\OCP\IConfig::class)->getSystemValueBool('installed', false) && $c->get(IAppManager::class)->isInstalled('theming') && $c->getTrustedDomainHelper()->isTrustedDomain($c->getRequest()->getInsecureServerHost())) {
 				$imageManager = new ImageManager(
 					$c->get(\OCP\IConfig::class),
 					$c->getAppDataDir('theming'),
@@ -1266,8 +1263,7 @@ class Server extends ServerContainer implements IServerContainer {
 				$c->get(IEventDispatcher::class),
 				$c->get(IUserSession::class),
 				$c->get(KnownUserService::class),
-				$c->get(ShareDisableChecker::class),
-				$c->get(IDateTimeZone::class),
+				$c->get(ShareDisableChecker::class)
 			);
 
 			return $manager;
@@ -1485,7 +1481,6 @@ class Server extends ServerContainer implements IServerContainer {
 		$eventDispatcher->addServiceListener(BeforeUserDeletedEvent::class, BeforeUserDeletedListener::class);
 
 		FilesMetadataManager::loadListeners($eventDispatcher);
-		GenerateBlurhashMetadata::loadListeners($eventDispatcher);
 	}
 
 	/**
@@ -1662,7 +1657,6 @@ class Server extends ServerContainer implements IServerContainer {
 
 	/**
 	 * @param \OCP\ISession $session
-	 * @return void
 	 */
 	public function setSession(\OCP\ISession $session) {
 		$this->get(SessionStorage::class)->setSession($session);
@@ -1726,7 +1720,7 @@ class Server extends ServerContainer implements IServerContainer {
 	 * @param string $app appid
 	 * @param string $lang
 	 * @return IL10N
-	 * @deprecated 20.0.0 use DI of {@see IL10N} or {@see IFactory} instead, or {@see \OCP\Util::getL10N()} as a last resort
+	 * @deprecated 20.0.0
 	 */
 	public function getL10N($app, $lang = null) {
 		return $this->get(IFactory::class)->get($app, $lang);

@@ -36,15 +36,25 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 
 class ResetUser extends Command {
+	/** @var DeletedUsersIndex */
+	protected $dui;
+	/** @var IUserManager */
+	private $userManager;
+	/** @var UserPluginManager */
+	private $pluginManager;
+
 	public function __construct(
-		protected DeletedUsersIndex $dui,
-		private IUserManager $userManager,
-		private UserPluginManager $pluginManager,
+		DeletedUsersIndex $dui,
+		IUserManager $userManager,
+		UserPluginManager $pluginManager
 	) {
+		$this->dui = $dui;
+		$this->userManager = $userManager;
+		$this->pluginManager = $pluginManager;
 		parent::__construct();
 	}
 
-	protected function configure(): void {
+	protected function configure() {
 		$this
 			->setName('ldap:reset-user')
 			->setDescription('deletes an LDAP user independent of the user state')
@@ -86,16 +96,16 @@ class ResetUser extends Command {
 			$pluginManagerSuppressed = $this->pluginManager->setSuppressDeletion(true);
 			if ($user->delete()) {
 				$this->pluginManager->setSuppressDeletion($pluginManagerSuppressed);
-				return self::SUCCESS;
+				return 0;
 			}
 		} catch (\Throwable $e) {
 			if (isset($pluginManagerSuppressed)) {
 				$this->pluginManager->setSuppressDeletion($pluginManagerSuppressed);
 			}
 			$output->writeln('<error>' . $e->getMessage() . '</error>');
-			return self::FAILURE;
+			return 1;
 		}
 		$output->writeln('<error>Error while resetting user</error>');
-		return self::INVALID;
+		return 2;
 	}
 }

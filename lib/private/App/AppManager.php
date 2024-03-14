@@ -74,6 +74,14 @@ class AppManager implements IAppManager {
 		'prevent_group_restriction',
 	];
 
+	private IUserSession $userSession;
+	private IConfig $config;
+	private AppConfig $appConfig;
+	private IGroupManager $groupManager;
+	private ICacheFactory $memCacheFactory;
+	private IEventDispatcher $dispatcher;
+	private LoggerInterface $logger;
+
 	/** @var string[] $appId => $enabled */
 	private array $installedAppsCache = [];
 
@@ -96,15 +104,20 @@ class AppManager implements IAppManager {
 	/** @var array<string, true> */
 	private array $loadedApps = [];
 
-	public function __construct(
-		private IUserSession $userSession,
-		private IConfig $config,
-		private AppConfig $appConfig,
-		private IGroupManager $groupManager,
-		private ICacheFactory $memCacheFactory,
-		private IEventDispatcher $dispatcher,
-		private LoggerInterface $logger,
-	) {
+	public function __construct(IUserSession $userSession,
+		IConfig $config,
+		AppConfig $appConfig,
+		IGroupManager $groupManager,
+		ICacheFactory $memCacheFactory,
+		IEventDispatcher $dispatcher,
+		LoggerInterface $logger) {
+		$this->userSession = $userSession;
+		$this->config = $config;
+		$this->appConfig = $appConfig;
+		$this->groupManager = $groupManager;
+		$this->memCacheFactory = $memCacheFactory;
+		$this->dispatcher = $dispatcher;
+		$this->logger = $logger;
 	}
 
 	/**
@@ -276,7 +289,7 @@ class AppManager implements IAppManager {
 	 * Check if an app is enabled for user
 	 *
 	 * @param string $appId
-	 * @param \OCP\IUser|null $user (optional) if not defined, the currently logged in user will be used
+	 * @param \OCP\IUser $user (optional) if not defined, the currently logged in user will be used
 	 * @return bool
 	 */
 	public function isEnabledForUser($appId, $user = null) {
@@ -689,7 +702,10 @@ class AppManager implements IAppManager {
 	/**
 	 * Returns the app information from "appinfo/info.xml".
 	 *
-	 * @param string|null $lang
+	 * @param string $appId app id
+	 *
+	 * @param bool $path
+	 * @param null $lang
 	 * @return array|null app info
 	 */
 	public function getAppInfo(string $appId, bool $path = false, $lang = null) {
@@ -801,7 +817,7 @@ class AppManager implements IAppManager {
 	/**
 	 * @inheritdoc
 	 */
-	public function getDefaultEnabledApps(): array {
+	public function getDefaultEnabledApps():array {
 		$this->loadShippedJson();
 
 		return $this->defaultEnabled;

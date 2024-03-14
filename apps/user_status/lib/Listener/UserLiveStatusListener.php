@@ -32,18 +32,15 @@ use OCA\UserStatus\Db\UserStatusMapper;
 use OCA\UserStatus\Service\StatusService;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Utility\ITimeFactory;
-use OCP\DB\Exception;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 use OCP\User\Events\UserLiveStatusEvent;
 use OCP\UserStatus\IUserStatus;
-use Psr\Log\LoggerInterface;
 
 /**
  * Class UserDeletedListener
  *
  * @package OCA\UserStatus\Listener
- * @template-implements IEventListener<UserLiveStatusEvent>
  */
 class UserLiveStatusListener implements IEventListener {
 	private UserStatusMapper $mapper;
@@ -53,8 +50,7 @@ class UserLiveStatusListener implements IEventListener {
 	public function __construct(UserStatusMapper $mapper,
 		StatusService $statusService,
 		ITimeFactory $timeFactory,
-		private CalendarStatusService $calendarStatusService,
-		private LoggerInterface $logger) {
+		private CalendarStatusService $calendarStatusService) {
 		$this->mapper = $mapper;
 		$this->statusService = $statusService;
 		$this->timeFactory = $timeFactory;
@@ -114,19 +110,7 @@ class UserLiveStatusListener implements IEventListener {
 			$userStatus->setIsUserDefined(false);
 
 			if ($userStatus->getId() === null) {
-				try {
-					$this->mapper->insert($userStatus);
-				} catch (Exception $e) {
-					if ($e->getReason() === Exception::REASON_UNIQUE_CONSTRAINT_VIOLATION) {
-						// A different process might have written another status
-						// update to the DB while we're processing our stuff.
-						// We can safely ignore it as we're only changing between AWAY and ONLINE
-						// and not doing anything with the message or icon.
-						$this->logger->debug('Unique constraint violation for live user status', ['exception' => $e]);
-						return;
-					}
-					throw $e;
-				}
+				$this->mapper->insert($userStatus);
 			} else {
 				$this->mapper->update($userStatus);
 			}

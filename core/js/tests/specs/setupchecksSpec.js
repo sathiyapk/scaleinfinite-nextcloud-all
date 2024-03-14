@@ -107,6 +107,112 @@ describe('OC.SetupChecks tests', function() {
 		});
 	});
 
+	describe('checkProviderUrl', function() {
+		it('should fail with another response status code than the expected one', function(done) {
+			var async = OC.SetupChecks.checkProviderUrl('/ocm-provider/', 'http://example.org/PLACEHOLDER', true);
+
+			suite.server.requests[0].respond(302);
+
+			async.done(function( data, s, x ){
+				expect(data).toEqual([{
+					msg: 'Your web server is not properly set up to resolve "/ocm-provider/". This is most likely related to a web server configuration that was not updated to deliver this folder directly. Please compare your configuration against the shipped rewrite rules in ".htaccess" for Apache or the provided one in the documentation for Nginx at it\'s <a target="_blank" rel="noreferrer noopener" class="external" href="http://example.org/admin-nginx">documentation page ↗</a>. On Nginx those are typically the lines starting with "location ~" that need an update.',
+					type: OC.SetupChecks.MESSAGE_TYPE_WARNING
+				}]);
+				done();
+			});
+		});
+
+		it('should return no error with the expected response status code', function(done) {
+			var async = OC.SetupChecks.checkProviderUrl('/ocm-provider/', 'http://example.org/PLACEHOLDER', true);
+
+			suite.server.requests[0].respond(200);
+
+			async.done(function( data, s, x ){
+				expect(data).toEqual([]);
+				done();
+			});
+		});
+
+		it('should return no error when no check should be run', function(done) {
+			var async = OC.SetupChecks.checkProviderUrl('/ocm-provider/', 'http://example.org/PLACEHOLDER', false);
+
+			async.done(function( data, s, x ){
+				expect(data).toEqual([]);
+				done();
+			});
+		});
+	});
+
+	describe('checkWOFF2Loading', function() {
+		it('should fail with another response status code than the expected one', function(done) {
+			var async = OC.SetupChecks.checkWOFF2Loading(OC.filePath('core', '', 'fonts/NotoSans-Regular-latin.woff2'), 'http://example.org/PLACEHOLDER');
+
+			suite.server.requests[0].respond(302);
+
+			async.done(function( data, s, x ){
+				expect(data).toEqual([{
+					msg: 'Your web server is not properly set up to deliver .woff2 files. This is typically an issue with the Nginx configuration. For Nextcloud 15 it needs an adjustement to also deliver .woff2 files. Compare your Nginx configuration to the recommended configuration in our <a target="_blank" rel="noreferrer noopener" class="external" href="http://example.org/admin-nginx">documentation ↗</a>.',
+					type: OC.SetupChecks.MESSAGE_TYPE_WARNING
+				}]);
+				done();
+			});
+		});
+
+		it('should return no error with the expected response status code', function(done) {
+			var async = OC.SetupChecks.checkWOFF2Loading(OC.filePath('core', '', 'fonts/NotoSans-Regular-latin.woff2'), 'http://example.org/PLACEHOLDER');
+
+			suite.server.requests[0].respond(200);
+
+			async.done(function( data, s, x ){
+				expect(data).toEqual([]);
+				done();
+			});
+		});
+	});
+
+	describe('checkDataProtected', function() {
+
+		oc_dataURL = "data";
+
+		it('should return an error if data directory is not protected', function(done) {
+			var async = OC.SetupChecks.checkDataProtected();
+
+			suite.server.requests[0].respond(200, {'Content-Type': 'text/plain'}, '');
+
+			async.done(function( data, s, x ){
+				expect(data).toEqual([
+					{
+						msg: 'Your data directory and files are probably accessible from the internet. The .htaccess file is not working. It is strongly recommended that you configure your web server so that the data directory is no longer accessible, or move the data directory outside the web server document root.',
+						type: OC.SetupChecks.MESSAGE_TYPE_ERROR
+					}]);
+				done();
+			});
+		});
+
+		it('should not return an error if data directory is protected', function(done) {
+			var async = OC.SetupChecks.checkDataProtected();
+
+			suite.server.requests[0].respond(403);
+
+			async.done(function( data, s, x ){
+				expect(data).toEqual([]);
+				done();
+			});
+		});
+
+		it('should return an error if data directory is a boolean', function(done) {
+
+			oc_dataURL = false;
+
+			var async = OC.SetupChecks.checkDataProtected();
+
+			async.done(function( data, s, x ){
+				expect(data).toEqual([]);
+				done();
+			});
+		});
+	});
+
 	describe('checkSetup', function() {
 		it('should return an error if server has no internet connection', function(done) {
 			var async = OC.SetupChecks.checkSetup();
@@ -117,6 +223,14 @@ describe('OC.SetupChecks tests', function() {
 					'Content-Type': 'application/json'
 				},
 				JSON.stringify({
+					isFairUseOfFreePushService: true,
+					isCorrectMemcachedPHPModuleInstalled: true,
+					isSettimelimitAvailable: true,
+					areWebauthnExtensionsEnabled: true,
+					isMysqlUsedWithoutUTF8MB4: false,
+					isEnoughTempSpaceAvailableIfS3PrimaryStorageIsUsed: true,
+					reverseProxyGeneratedURL: 'https://server',
+					temporaryDirectoryWritable: true,
 					generic: {
 						network: {
 							"Internet connectivity": {
@@ -149,6 +263,14 @@ describe('OC.SetupChecks tests', function() {
 					'Content-Type': 'application/json'
 				},
 				JSON.stringify({
+					isFairUseOfFreePushService: true,
+					isCorrectMemcachedPHPModuleInstalled: true,
+					isSettimelimitAvailable: true,
+					areWebauthnExtensionsEnabled: true,
+					isMysqlUsedWithoutUTF8MB4: false,
+					isEnoughTempSpaceAvailableIfS3PrimaryStorageIsUsed: true,
+					reverseProxyGeneratedURL: 'https://server',
+					temporaryDirectoryWritable: true,
 					generic: {
 						network: {
 							"Internet connectivity": {
@@ -181,6 +303,14 @@ describe('OC.SetupChecks tests', function() {
 					'Content-Type': 'application/json',
 				},
 				JSON.stringify({
+					isFairUseOfFreePushService: true,
+					isCorrectMemcachedPHPModuleInstalled: true,
+					isSettimelimitAvailable: true,
+					areWebauthnExtensionsEnabled: true,
+					isMysqlUsedWithoutUTF8MB4: false,
+					isEnoughTempSpaceAvailableIfS3PrimaryStorageIsUsed: true,
+					reverseProxyGeneratedURL: 'https://server',
+					temporaryDirectoryWritable: true,
 					generic: {
 						network: {
 							"Internet connectivity": {
@@ -204,6 +334,83 @@ describe('OC.SetupChecks tests', function() {
 			});
 		});
 
+		it('should return an error if the wrong memcache PHP module is installed', function(done) {
+			var async = OC.SetupChecks.checkSetup();
+
+			suite.server.requests[0].respond(
+				200,
+				{
+					'Content-Type': 'application/json',
+				},
+				JSON.stringify({
+					isFairUseOfFreePushService: true,
+					isCorrectMemcachedPHPModuleInstalled: false,
+					isSettimelimitAvailable: true,
+					areWebauthnExtensionsEnabled: true,
+					isMysqlUsedWithoutUTF8MB4: false,
+					isEnoughTempSpaceAvailableIfS3PrimaryStorageIsUsed: true,
+					reverseProxyGeneratedURL: 'https://server',
+					temporaryDirectoryWritable: true,
+					generic: {
+						network: {
+							"Internet connectivity": {
+								severity: "success",
+								description: null,
+								linkToDoc: null
+							}
+						},
+					},
+				})
+			);
+
+			async.done(function( data, s, x ){
+				expect(data).toEqual([{
+					msg: 'Memcached is configured as distributed cache, but the wrong PHP module "memcache" is installed. \\OC\\Memcache\\Memcached only supports "memcached" and not "memcache". See the <a target="_blank" rel="noreferrer noopener" class="external" href="https://code.google.com/p/memcached/wiki/PHPClientComparison">memcached wiki about both modules ↗</a>.',
+					type: OC.SetupChecks.MESSAGE_TYPE_WARNING
+				}]);
+				done();
+			});
+		});
+
+		it('should return an error if set_time_limit is unavailable', function(done) {
+			var async = OC.SetupChecks.checkSetup();
+
+			suite.server.requests[0].respond(
+				200,
+				{
+					'Content-Type': 'application/json',
+				},
+				JSON.stringify({
+					isFairUseOfFreePushService: true,
+					reverseProxyDocs: 'https://docs.nextcloud.com/foo/bar.html',
+					isCorrectMemcachedPHPModuleInstalled: true,
+					isSettimelimitAvailable: false,
+					areWebauthnExtensionsEnabled: true,
+					isMysqlUsedWithoutUTF8MB4: false,
+					isEnoughTempSpaceAvailableIfS3PrimaryStorageIsUsed: true,
+					reverseProxyGeneratedURL: 'https://server',
+					temporaryDirectoryWritable: true,
+					generic: {
+						network: {
+							"Internet connectivity": {
+								severity: "success",
+								description: null,
+								linkToDoc: null
+							}
+						},
+					},
+				})
+			);
+
+			async.done(function( data, s, x ){
+				expect(data).toEqual([{
+					msg: 'The PHP function "set_time_limit" is not available. This could result in scripts being halted mid-execution, breaking your installation. Enabling this function is strongly recommended.',
+					type: OC.SetupChecks.MESSAGE_TYPE_WARNING
+				}]);
+				done();
+			});
+		});
+
 		it('should return a warning if the memory limit is below the recommended value', function(done) {
 			var async = OC.SetupChecks.checkSetup();
 
@@ -213,6 +420,15 @@ describe('OC.SetupChecks tests', function() {
 					'Content-Type': 'application/json',
 				},
 				JSON.stringify({
+					isFairUseOfFreePushService: true,
+					reverseProxyDocs: 'https://docs.nextcloud.com/foo/bar.html',
+					isCorrectMemcachedPHPModuleInstalled: true,
+					isSettimelimitAvailable: true,
+					areWebauthnExtensionsEnabled: true,
+					isMysqlUsedWithoutUTF8MB4: false,
+					isEnoughTempSpaceAvailableIfS3PrimaryStorageIsUsed: true,
+					reverseProxyGeneratedURL: 'https://server',
+					temporaryDirectoryWritable: true,
 					generic: {
 						network: {
 							"Internet connectivity": {
@@ -275,6 +491,14 @@ describe('OC.SetupChecks tests', function() {
 					'Content-Type': 'application/json',
 				},
 				JSON.stringify({
+					isFairUseOfFreePushService: true,
+					isCorrectMemcachedPHPModuleInstalled: true,
+					isSettimelimitAvailable: true,
+					areWebauthnExtensionsEnabled: true,
+					isMysqlUsedWithoutUTF8MB4: false,
+					isEnoughTempSpaceAvailableIfS3PrimaryStorageIsUsed: true,
+					reverseProxyGeneratedURL: 'https://server',
+					temporaryDirectoryWritable: true,
 					generic: {
 						network: {
 							"Internet connectivity": {
@@ -303,6 +527,44 @@ describe('OC.SetupChecks tests', function() {
 			});
 		});
 
+		it('should return an error if the php version is no longer supported', function(done) {
+			var async = OC.SetupChecks.checkSetup();
+
+			suite.server.requests[0].respond(
+				200,
+				{
+					'Content-Type': 'application/json',
+				},
+				JSON.stringify({
+					isFairUseOfFreePushService: true,
+					isCorrectMemcachedPHPModuleInstalled: true,
+					isSettimelimitAvailable: true,
+					areWebauthnExtensionsEnabled: true,
+					isMysqlUsedWithoutUTF8MB4: true,
+					isEnoughTempSpaceAvailableIfS3PrimaryStorageIsUsed: true,
+					reverseProxyGeneratedURL: 'https://server',
+					temporaryDirectoryWritable: true,
+					generic: {
+						network: {
+							"Internet connectivity": {
+								severity: "success",
+								description: null,
+								linkToDoc: null
+							}
+						},
+					},
+				})
+			);
+
+			async.done(function( data, s, x ){
+				expect(data).toEqual([{
+					msg: 'MySQL is used as database but does not support 4-byte characters. To be able to handle 4-byte characters (like emojis) without issues in filenames or comments for example it is recommended to enable the 4-byte support in MySQL. For further details read <a target="_blank" rel="noreferrer noopener" class="external" href="https://docs.example.org/admin-mysql-utf8mb4">the documentation page about this ↗</a>.',
+					type: OC.SetupChecks.MESSAGE_TYPE_WARNING
+				}]);
+				done();
+			});
+		});
+
     // THe following test is invalid as the code in core/js/setupchecks.js is calling
     // window.location.protocol which always return http during tests
     // if there is a way to trick window.location.protocol during test, then we could re-activate it
@@ -316,6 +578,15 @@ describe('OC.SetupChecks tests', function() {
 					'Content-Type': 'application/json',
 				},
 				JSON.stringify({
+					isFairUseOfFreePushService: true,
+					isCorrectMemcachedPHPModuleInstalled: true,
+					isSettimelimitAvailable: true,
+					areWebauthnExtensionsEnabled: true,
+					isMysqlUsedWithoutUTF8MB4: false,
+					isEnoughTempSpaceAvailableIfS3PrimaryStorageIsUsed: true,
+					reverseProxyDocs: 'https://docs.nextcloud.com/foo/bar.html',
+					reverseProxyGeneratedURL: 'http://server',
+					temporaryDirectoryWritable: true,
 					generic: {
 						network: {
 							"Internet connectivity": {
@@ -346,6 +617,15 @@ describe('OC.SetupChecks tests', function() {
 					'Content-Type': 'application/json',
 				},
 				JSON.stringify({
+					isFairUseOfFreePushService: true,
+					isCorrectMemcachedPHPModuleInstalled: true,
+					isSettimelimitAvailable: true,
+					areWebauthnExtensionsEnabled: true,
+					isMysqlUsedWithoutUTF8MB4: false,
+					isEnoughTempSpaceAvailableIfS3PrimaryStorageIsUsed: true,
+					reverseProxyDocs: 'https://docs.nextcloud.com/foo/bar.html',
+					reverseProxyGeneratedURL: 'http://server',
+					temporaryDirectoryWritable: true,
 					generic: {
 						network: {
 							"Internet connectivity": {
@@ -364,6 +644,82 @@ describe('OC.SetupChecks tests', function() {
 			});
 		});
 
+		it('should return an error if there is not enough free space in the temp directory', function(done) {
+			var async = OC.SetupChecks.checkSetup();
+
+			suite.server.requests[0].respond(
+				200,
+				{
+					'Content-Type': 'application/json',
+				},
+				JSON.stringify({
+					isFairUseOfFreePushService: true,
+					isCorrectMemcachedPHPModuleInstalled: true,
+					isSettimelimitAvailable: true,
+					areWebauthnExtensionsEnabled: true,
+					isMysqlUsedWithoutUTF8MB4: false,
+					isEnoughTempSpaceAvailableIfS3PrimaryStorageIsUsed: false,
+					reverseProxyGeneratedURL: 'https://server',
+					temporaryDirectoryWritable: true,
+					generic: {
+						network: {
+							"Internet connectivity": {
+								severity: "success",
+								description: null,
+								linkToDoc: null
+							}
+						},
+					},
+				})
+			);
+
+			async.done(function( data, s, x ){
+				expect(data).toEqual([{
+					msg: 'This instance uses an S3 based object store as primary storage. The uploaded files are stored temporarily on the server and thus it is recommended to have 50 GB of free space available in the temp directory of PHP. Check the logs for full details about the path and the available space. To improve this please change the temporary directory in the php.ini or make more space available in that path.',
+					type: OC.SetupChecks.MESSAGE_TYPE_WARNING
+				}]);
+				done();
+			});
+		});
+
+		it('should return an error if gmp or bcmath are not enabled', function(done) {
+			var async = OC.SetupChecks.checkSetup();
+
+			suite.server.requests[0].respond(
+				200,
+				{
+					'Content-Type': 'application/json',
+				},
+				JSON.stringify({
+					isFairUseOfFreePushService: true,
+					isCorrectMemcachedPHPModuleInstalled: true,
+					isSettimelimitAvailable: true,
+					areWebauthnExtensionsEnabled: false,
+					isMysqlUsedWithoutUTF8MB4: false,
+					isEnoughTempSpaceAvailableIfS3PrimaryStorageIsUsed: true,
+					reverseProxyGeneratedURL: 'https://server',
+					temporaryDirectoryWritable: true,
+					generic: {
+						network: {
+							"Internet connectivity": {
+								severity: "success",
+								description: null,
+								linkToDoc: null
+							}
+						},
+					},
+				})
+			);
+
+			async.done(function( data, s, x ){
+				expect(data).toEqual([{
+					msg: 'The PHP modules "gmp" and/or "bcmath" are not enabled. If you use WebAuthn passwordless authentication, these modules are required.',
+					type: OC.SetupChecks.MESSAGE_TYPE_INFO
+				}]);
+				done();
+			});
+		});
+
 		it('should return an info if there is no default phone region', function(done) {
 			var async = OC.SetupChecks.checkSetup();
 
@@ -373,6 +729,14 @@ describe('OC.SetupChecks tests', function() {
 					'Content-Type': 'application/json',
 				},
 				JSON.stringify({
+					isFairUseOfFreePushService: true,
+					isCorrectMemcachedPHPModuleInstalled: true,
+					isSettimelimitAvailable: true,
+					areWebauthnExtensionsEnabled: true,
+					isMysqlUsedWithoutUTF8MB4: false,
+					isEnoughTempSpaceAvailableIfS3PrimaryStorageIsUsed: true,
+					reverseProxyGeneratedURL: 'https://server',
+					temporaryDirectoryWritable: true,
 					generic: {
 						network: {
 							"Internet connectivity": {
@@ -396,6 +760,44 @@ describe('OC.SetupChecks tests', function() {
 				expect(data).toEqual([{
 					msg: 'Your installation has no default phone region set. This is required to validate phone numbers in the profile settings without a country code. To allow numbers without a country code, please add &quot;default_phone_region&quot; with the respective ISO 3166-1 code of the region to your config file. For more details see the <a target="_blank" rel="noreferrer noopener" class="external" href="https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2#Officially_assigned_code_elements">documentation ↗</a>.',
 					type: OC.SetupChecks.MESSAGE_TYPE_INFO
+				}]);
+				done();
+			});
+		});
+
+		it('should return an info if the temporary directory is either non-existent or non-writable', function(done) {
+			var async = OC.SetupChecks.checkSetup();
+
+			suite.server.requests[0].respond(
+				200,
+				{
+					'Content-Type': 'application/json',
+				},
+				JSON.stringify({
+					isFairUseOfFreePushService: true,
+					isCorrectMemcachedPHPModuleInstalled: true,
+					isSettimelimitAvailable: true,
+					areWebauthnExtensionsEnabled: true,
+					isMysqlUsedWithoutUTF8MB4: false,
+					isEnoughTempSpaceAvailableIfS3PrimaryStorageIsUsed: true,
+					reverseProxyGeneratedURL: 'https://server',
+					temporaryDirectoryWritable: false,
+					generic: {
+						network: {
+							"Internet connectivity": {
+								severity: "success",
+								description: null,
+								linkToDoc: null
+							}
+						},
+					},
+				})
+			);
+
+			async.done(function( data, s, x ){
+				expect(data).toEqual([{
+					msg: 'The temporary directory of this instance points to an either non-existing or non-writable directory.',
+					type: OC.SetupChecks.MESSAGE_TYPE_WARNING
 				}]);
 				done();
 			});

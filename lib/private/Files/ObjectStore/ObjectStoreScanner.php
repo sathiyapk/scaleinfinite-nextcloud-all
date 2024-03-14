@@ -39,7 +39,7 @@ class ObjectStoreScanner extends Scanner {
 		return [];
 	}
 
-	protected function scanChildren(string $path, $recursive, int $reuse, int $folderId, bool $lock, int|float $oldSize, &$etagChanged = false) {
+	protected function scanChildren(string $path, $recursive, int $reuse, int $folderId, bool $lock, int|float $oldSize) {
 		return 0;
 	}
 

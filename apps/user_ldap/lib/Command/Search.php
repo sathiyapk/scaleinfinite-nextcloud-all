@@ -39,15 +39,21 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class Search extends Command {
-	public function __construct(
-		protected IConfig $ocConfig,
-		private User_Proxy $userProxy,
-		private Group_Proxy $groupProxy,
-	) {
+	/** @var \OCP\IConfig */
+	protected $ocConfig;
+	/** @var User_Proxy */
+	private $userProxy;
+	/** @var Group_Proxy */
+	private $groupProxy;
+
+	public function __construct(IConfig $ocConfig, User_Proxy $userProxy, Group_Proxy $groupProxy) {
 		parent::__construct();
+		$this->ocConfig = $ocConfig;
+		$this->userProxy = $userProxy;
+		$this->groupProxy = $groupProxy;
 	}
 
-	protected function configure(): void {
+	protected function configure() {
 		$this
 			->setName('ldap:search')
 			->setDescription('executes a user or group search')
@@ -81,10 +87,11 @@ class Search extends Command {
 
 	/**
 	 * Tests whether the offset and limit options are valid
-	 *
+	 * @param int $offset
+	 * @param int $limit
 	 * @throws \InvalidArgumentException
 	 */
-	protected function validateOffsetAndLimit(int $offset, int $limit): void {
+	protected function validateOffsetAndLimit($offset, $limit) {
 		if ($limit < 0) {
 			throw new \InvalidArgumentException('limit must be  0 or greater');
 		}
@@ -128,6 +135,6 @@ class Search extends Command {
 			$line = $name . ($printID ? ' ('.$id.')' : '');
 			$output->writeln($line);
 		}
-		return self::SUCCESS;
+		return 0;
 	}
 }

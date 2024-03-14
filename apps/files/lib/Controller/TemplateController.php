@@ -37,6 +37,7 @@ use OCP\Files\Template\TemplateFileCreator;
 use OCP\IRequest;
 
 /**
+ * @psalm-import-type FilesTemplate from ResponseDefinitions
  * @psalm-import-type FilesTemplateFile from ResponseDefinitions
  * @psalm-import-type FilesTemplateFileCreator from ResponseDefinitions
  */

@@ -32,55 +32,33 @@
  */
 require_once __DIR__ . '/lib/versioncheck.php';
 
-use Psr\Log\LoggerInterface;
-
-/**
- * @param $service
- * @return string
- */
-function resolveService(string $service): string {
-	$services = [
-		'webdav' => 'dav/appinfo/v1/publicwebdav.php',
-		'dav' => 'dav/appinfo/v2/publicremote.php',
-	];
-	if (isset($services[$service])) {
-		return $services[$service];
-	}
-
-	return \OC::$server->getConfig()->getAppValue('core', 'remote_' . $service);
-}
-
 try {
 	require_once __DIR__ . '/lib/base.php';
-
-	// All resources served via the DAV endpoint should have the strictest possible
-	// policy. Exempted from this is the SabreDAV browser plugin which overwrites
-	// this policy with a softer one if debug mode is enabled.
-	header("Content-Security-Policy: default-src 'none';");
-
 	if (\OCP\Util::needUpgrade()) {
 		// since the behavior of apps or remotes are unpredictable during
 		// an upgrade, return a 503 directly
-		throw new RemoteException('Service unavailable', 503);
+		OC_Template::printErrorPage('Service unavailable', '', 503);
+		exit;
 	}
 
+	OC::checkMaintenanceMode(\OC::$server->get(\OC\SystemConfig::class));
 	$request = \OC::$server->getRequest();
 	$pathInfo = $request->getPathInfo();
-	if ($pathInfo === false || $pathInfo === '') {
-		throw new RemoteException('Path not found', 404);
-	}
-	if (!$pos = strpos($pathInfo, '/', 1)) {
-		$pos = strlen($pathInfo);
-	}
-	$service = substr($pathInfo, 1, $pos - 1);
 
-	$file = resolveService($service);
-
-	if (!$file) {
-		throw new RemoteException('Path not found', 404);
+	if (!$pathInfo && $request->getParam('service', '') === '') {
+		http_response_code(404);
+		exit;
+	} elseif ($request->getParam('service', '')) {
+		$service = $request->getParam('service', '');
+	} else {
+		$pathInfo = trim($pathInfo, '/');
+		[$service] = explode('/', $pathInfo);
 	}
-
-	$file = ltrim($file, '/');
+	$file = \OC::$server->getConfig()->getAppValue('core', 'public_' . strip_tags($service));
+	if ($file === '') {
+		http_response_code(404);
+		exit;
+	}
 
 	$parts = explode('/', $file, 2);
 	$app = $parts[0];
@@ -92,23 +70,25 @@ try {
 	OC_App::loadApps(['filesystem', 'logging']);
 
 	if (!\OC::$server->getAppManager()->isInstalled($app)) {
-		throw new RemoteException('App not installed: ' . $app);
+		http_response_code(404);
+		exit;
 	}
 	OC_App::loadApp($app);
 	OC_User::setIncognitoMode(true);
 
-	$baseuri = OC::$WEBROOT . '/public.php/'.$service.'/';
-	require_once $file;
+	$baseuri = OC::$WEBROOT . '/public.php/' . $service . '/';
+
+	require_once OC_App::getAppPath($app) . '/' . $parts[1];
 } catch (Exception $ex) {
 	$status = 500;
 	if ($ex instanceof \OC\ServiceUnavailableException) {
 		$status = 503;
 	}
 	//show the user a detailed error page
-	\OCP\Server::get(LoggerInterface::class)->error($ex->getMessage(), ['app' => 'public', 'exception' => $ex]);
+	\OC::$server->getLogger()->logException($ex, ['app' => 'public']);
 	OC_Template::printExceptionErrorPage($ex, $status);
 } catch (Error $ex) {
 	//show the user a detailed error page
-	\OCP\Server::get(LoggerInterface::class)->error($ex->getMessage(), ['app' => 'public', 'exception' => $ex]);
+	\OC::$server->getLogger()->logException($ex, ['app' => 'public']);
 	OC_Template::printExceptionErrorPage($ex, 500);
 }

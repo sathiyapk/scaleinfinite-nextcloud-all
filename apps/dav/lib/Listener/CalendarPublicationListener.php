@@ -32,7 +32,6 @@ use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 use Psr\Log\LoggerInterface;
 
-/** @template-implements IEventListener<CalendarPublishedEvent|CalendarUnpublishedEvent> */
 class CalendarPublicationListener implements IEventListener {
 	private Backend $activityBackend;
 	private LoggerInterface $logger;

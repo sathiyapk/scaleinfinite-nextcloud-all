@@ -48,7 +48,6 @@ use OCP\Files\Storage\IStorageFactory;
 use OCP\IUser;
 use OCP\IUserManager;
 use OCP\IUserSession;
-use Psr\Log\LoggerInterface;
 
 class Filesystem {
 	private static ?Mount\Manager $mounts = null;
@@ -201,7 +200,7 @@ class Filesystem {
 	 */
 	public static function addStorageWrapper($wrapperName, $wrapper, $priority = 50) {
 		if (self::$logWarningWhenAddingStorageWrapper) {
-			\OCP\Server::get(LoggerInterface::class)->warning("Storage wrapper '{wrapper}' was not registered via the 'OC_Filesystem - preSetup' hook which could cause potential problems.", [
+			\OC::$server->getLogger()->warning("Storage wrapper '{wrapper}' was not registered via the 'OC_Filesystem - preSetup' hook which could cause potential problems.", [
 				'wrapper' => $wrapperName,
 				'app' => 'filesystem',
 			]);

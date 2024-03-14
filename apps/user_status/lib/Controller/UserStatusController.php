@@ -39,7 +39,6 @@ use OCA\UserStatus\ResponseDefinitions;
 use OCA\UserStatus\Service\StatusService;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Http;
-use OCP\AppFramework\Http\Attribute\ApiRoute;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\OCS\OCSBadRequestException;
 use OCP\AppFramework\OCS\OCSNotFoundException;
@@ -48,7 +47,6 @@ use OCP\IRequest;
 use Psr\Log\LoggerInterface;
 
 /**
- * @psalm-import-type UserStatusType from ResponseDefinitions
  * @psalm-import-type UserStatusPrivate from ResponseDefinitions
  */
 class UserStatusController extends OCSController {
@@ -73,7 +71,6 @@ class UserStatusController extends OCSController {
 	 *
 	 * 200: The status was found successfully
 	 */
-	#[ApiRoute(verb: 'GET', url: '/api/v1/user_status')]
 	public function getStatus(): DataResponse {
 		try {
 			$this->calendarStatusService->processCalendarStatus($this->userId);
@@ -96,7 +93,6 @@ class UserStatusController extends OCSController {
 	 *
 	 * 200: The status was updated successfully
 	 */
-	#[ApiRoute(verb: 'PUT', url: '/api/v1/user_status/status')]
 	public function setStatus(string $statusType): DataResponse {
 		try {
 			$status = $this->service->setStatus($this->userId, $statusType, null, true);
@@ -121,7 +117,6 @@ class UserStatusController extends OCSController {
 	 *
 	 * 200: The message was updated successfully
 	 */
-	#[ApiRoute(verb: 'PUT', url: '/api/v1/user_status/message/predefined')]
 	public function setPredefinedMessage(string $messageId,
 		?int $clearAt): DataResponse {
 		try {
@@ -150,12 +145,11 @@ class UserStatusController extends OCSController {
 	 *
 	 * 200: The message was updated successfully
 	 */
-	#[ApiRoute(verb: 'PUT', url: '/api/v1/user_status/message/custom')]
 	public function setCustomMessage(?string $statusIcon,
 		?string $message,
 		?int $clearAt): DataResponse {
 		try {
-			if (($statusIcon !== null && $statusIcon !== '') || ($message !== null && $message !== '') || ($clearAt !== null && $clearAt !== 0)) {
+			if (($message !== null && $message !== '') || ($clearAt !== null && $clearAt !== 0)) {
 				$status = $this->service->setCustomMessage($this->userId, $statusIcon, $message, $clearAt);
 			} else {
 				$this->service->clearMessage($this->userId);
@@ -184,7 +178,6 @@ class UserStatusController extends OCSController {
 	 *
 	 * 200: Message cleared successfully
 	 */
-	#[ApiRoute(verb: 'DELETE', url: '/api/v1/user_status/message')]
 	public function clearMessage(): DataResponse {
 		$this->service->clearMessage($this->userId);
 		return new DataResponse([]);
@@ -201,7 +194,6 @@ class UserStatusController extends OCSController {
 	 *
 	 * 200: Status reverted
 	 */
-	#[ApiRoute(verb: 'DELETE', url: '/api/v1/user_status/revert/{messageId}')]
 	public function revertStatus(string $messageId): DataResponse {
 		$backupStatus = $this->service->revertUserStatus($this->userId, $messageId, true);
 		if ($backupStatus) {
@@ -215,8 +207,6 @@ class UserStatusController extends OCSController {
 	 * @return UserStatusPrivate
 	 */
 	private function formatStatus(UserStatus $status): array {
-		/** @var UserStatusType $visibleStatus */
-		$visibleStatus = $status->getStatus();
 		return [
 			'userId' => $status->getUserId(),
 			'message' => $status->getCustomMessage(),
@@ -224,7 +214,7 @@ class UserStatusController extends OCSController {
 			'messageIsPredefined' => $status->getMessageId() !== null,
 			'icon' => $status->getCustomIcon(),
 			'clearAt' => $status->getClearAt(),
-			'status' => $visibleStatus,
+			'status' => $status->getStatus(),
 			'statusIsUserDefined' => $status->getIsUserDefined(),
 		];
 	}

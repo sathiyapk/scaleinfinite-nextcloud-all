@@ -38,7 +38,6 @@ use OC\AppFramework\Routing\RouteConfig;
 use OC\Route\Router;
 use OC\ServerContainer;
 use OCP\Route\IRouter;
-use Psr\Log\LoggerInterface;
 
 /**
  * Class App
@@ -99,9 +98,8 @@ class App {
 			}
 
 			if (!$setUpViaQuery && $applicationClassName !== \OCP\AppFramework\App::class) {
-				\OCP\Server::get(LoggerInterface::class)->error($e->getMessage(), [
+				\OC::$server->getLogger()->logException($e, [
 					'app' => $appName,
-					'exception' => $e,
 				]);
 			}
 		}

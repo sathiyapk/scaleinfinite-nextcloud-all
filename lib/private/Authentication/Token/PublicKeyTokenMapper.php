@@ -29,7 +29,6 @@ namespace OC\Authentication\Token;
 
 use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\AppFramework\Db\QBMapper;
-use OCP\Authentication\Token\IToken;
 use OCP\DB\QueryBuilder\IQueryBuilder;
 use OCP\IDBConnection;
 
@@ -43,6 +42,8 @@ class PublicKeyTokenMapper extends QBMapper {
 
 	/**
 	 * Invalidate (delete) a given token
+	 *
+	 * @param string $token
 	 */
 	public function invalidate(string $token) {
 		/* @var $qb IQueryBuilder */
@@ -149,15 +150,14 @@ class PublicKeyTokenMapper extends QBMapper {
 		return $entities;
 	}
 
-	public function getTokenByUserAndId(string $uid, int $id): ?string {
+	public function deleteById(string $uid, int $id) {
 		/* @var $qb IQueryBuilder */
 		$qb = $this->db->getQueryBuilder();
-		$qb->select('token')
-			->from($this->tableName)
+		$qb->delete($this->tableName)
 			->where($qb->expr()->eq('id', $qb->createNamedParameter($id)))
 			->andWhere($qb->expr()->eq('uid', $qb->createNamedParameter($uid)))
 			->andWhere($qb->expr()->eq('version', $qb->createNamedParameter(PublicKeyToken::VERSION, IQueryBuilder::PARAM_INT)));
-		return $qb->executeQuery()->fetchOne() ?: null;
+		$qb->execute();
 	}
 
 	/**

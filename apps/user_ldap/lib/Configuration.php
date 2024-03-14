@@ -35,8 +35,6 @@
  */
 namespace OCA\User_LDAP;
 
-use Psr\Log\LoggerInterface;
-
 /**
  * @property int ldapPagingSize holds an integer
  * @property string ldapUserAvatarRule
@@ -600,7 +598,7 @@ class Configuration {
 			return [strtolower($attribute)];
 		}
 		if ($value !== self::AVATAR_PREFIX_DEFAULT) {
-			\OCP\Server::get(LoggerInterface::class)->warning('Invalid config value to ldapUserAvatarRule; falling back to default.');
+			\OC::$server->getLogger()->warning('Invalid config value to ldapUserAvatarRule; falling back to default.');
 		}
 		return $defaultAttributes;
 	}
@@ -609,7 +607,6 @@ class Configuration {
 	 * Returns TRUE if the ldapHost variable starts with 'ldapi://'
 	 */
 	public function usesLdapi(): bool {
-		$host = $this->config['ldapHost'];
-		return is_string($host) && (substr($host, 0, strlen('ldapi://')) === 'ldapi://');
+		return (substr($this->config['ldapHost'], 0, strlen('ldapi://')) === 'ldapi://');
 	}
 }

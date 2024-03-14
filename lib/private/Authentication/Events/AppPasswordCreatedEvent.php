@@ -25,14 +25,16 @@ declare(strict_types=1);
  */
 namespace OC\Authentication\Events;
 
-use OCP\Authentication\Token\IToken;
+use OC\Authentication\Token\IToken;
 use OCP\EventDispatcher\Event;
 
 class AppPasswordCreatedEvent extends Event {
-	public function __construct(
-		private IToken $token,
-	) {
+	/** @var IToken */
+	private $token;
+
+	public function __construct(IToken $token) {
 		parent::__construct();
+		$this->token = $token;
 	}
 
 	public function getToken(): IToken {

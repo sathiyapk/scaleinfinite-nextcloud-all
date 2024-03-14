@@ -133,12 +133,13 @@
 	}
 	.logo {
 		display: inline-flex;
-		background-image: var(--image-logoheader, var(--image-logo, url('../img/logo/logo.svg')));
+		// background-image: var(--image-logoheader, var(--image-logo, url('../img/logo/logo.svg')));
+		background-image: url('../img/logo/logo.svg');
 		background-repeat: no-repeat;
 		background-size: contain;
 		background-position: center;
-		width: 62px;
-		position: absolute;
+		width: 200px;
+		// position: absolute;
 		left: 12px;
 		top: 1px;
 		bottom: 1px;
@@ -171,15 +172,20 @@
 
 	/* Right header standard */
 	.header-right {
-		> .header-menu:not(.user-menu):not(.unified-search-menu) {
+		> .header-menu:not(.user-menu) {
 			// For general
 			> .header-menu__trigger {
-				filter: var(--background-image-invert-if-bright);
+				filter: var(--background-image-invert-if-bright) !important;
 			}
 
 			// For assistant button
 			> .trigger {
-				filter: var(--background-image-invert-if-bright);
+				filter: var(--background-image-invert-if-bright) !important;
+			}
+
+			// For unified search button
+			.unified-search__trigger {
+				filter: var(--background-image-invert-if-bright) !important;
 			}
 		}
 		> div,

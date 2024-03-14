@@ -39,6 +39,8 @@
 namespace OC\User;
 
 use OC;
+use OC\Authentication\Exceptions\ExpiredTokenException;
+use OC\Authentication\Exceptions\InvalidTokenException;
 use OC\Authentication\Exceptions\PasswordlessTokenException;
 use OC\Authentication\Exceptions\PasswordLoginForbiddenException;
 use OC\Authentication\Token\IProvider;
@@ -49,8 +51,6 @@ use OC_User;
 use OC_Util;
 use OCA\DAV\Connector\Sabre\Auth;
 use OCP\AppFramework\Utility\ITimeFactory;
-use OCP\Authentication\Exceptions\ExpiredTokenException;
-use OCP\Authentication\Exceptions\InvalidTokenException;
 use OCP\EventDispatcher\GenericEvent;
 use OCP\EventDispatcher\IEventDispatcher;
 use OCP\Files\NotPermittedException;
@@ -367,7 +367,7 @@ class Session implements IUserSession, Emitter {
 		if (!$user->isEnabled()) {
 			// disabled users can not log in
 			// injecting l10n does not work - there is a circular dependency between session and \OCP\L10N\IFactory
-			$message = \OCP\Util::getL10N('lib')->t('Account disabled');
+			$message = \OC::$server->getL10N('lib')->t('User disabled');
 			throw new LoginException($message);
 		}
 
@@ -406,7 +406,7 @@ class Session implements IUserSession, Emitter {
 			return true;
 		}
 
-		$message = \OCP\Util::getL10N('lib')->t('Login canceled by app');
+		$message = \OC::$server->getL10N('lib')->t('Login canceled by app');
 		throw new LoginException($message);
 	}
 
@@ -456,18 +456,8 @@ class Session implements IUserSession, Emitter {
 				$this->handleLoginFailed($throttler, $currentDelay, $remoteAddress, $user, $password);
 				return false;
 			}
-
-			if ($isTokenPassword) {
-				$dbToken = $this->tokenProvider->getToken($password);
-				$userFromToken = $this->manager->get($dbToken->getUID());
-				$isValidEmailLogin = $userFromToken->getEMailAddress() === $user
-					&& $this->validateTokenLoginName($userFromToken->getEMailAddress(), $dbToken);
-			} else {
-				$users = $this->manager->getByEmail($user);
-				$isValidEmailLogin = (\count($users) === 1 && $this->login($users[0]->getUID(), $password));
-			}
-
-			if (!$isValidEmailLogin) {
+			$users = $this->manager->getByEmail($user);
+			if (!(\count($users) === 1 && $this->login($users[0]->getUID(), $password))) {
 				$this->handleLoginFailed($throttler, $currentDelay, $remoteAddress, $user, $password);
 				return false;
 			}
@@ -801,7 +791,18 @@ class Session implements IUserSession, Emitter {
 			return false;
 		}
 
-		if (!is_null($user) && !$this->validateTokenLoginName($user, $dbToken)) {
+		// Check if login names match
+		if (!is_null($user) && $dbToken->getLoginName() !== $user) {
+			// TODO: this makes it impossible to use different login names on browser and client
+			// e.g. login by e-mail 'user@example.com' on browser for generating the token will not
+			//      allow to use the client token with the login name 'user'.
+			$this->logger->error('App token login name does not match', [
+				'tokenLoginName' => $dbToken->getLoginName(),
+				'sessionLoginName' => $user,
+				'app' => 'core',
+				'user' => $dbToken->getUID(),
+			]);
+
 			return false;
 		}
 
@@ -822,27 +823,6 @@ class Session implements IUserSession, Emitter {
 	}
 
 	/**
-	 * Check if login names match
-	 */
-	private function validateTokenLoginName(?string $loginName, IToken $token): bool {
-		if ($token->getLoginName() !== $loginName) {
-			// TODO: this makes it impossible to use different login names on browser and client
-			// e.g. login by e-mail 'user@example.com' on browser for generating the token will not
-			//      allow to use the client token with the login name 'user'.
-			$this->logger->error('App token login name does not match', [
-				'tokenLoginName' => $token->getLoginName(),
-				'sessionLoginName' => $loginName,
-				'app' => 'core',
-				'user' => $token->getUID(),
-			]);
-
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
 	 * Tries to login the user with auth token header
 	 *
 	 * @param IRequest $request
@@ -853,16 +833,13 @@ class Session implements IUserSession, Emitter {
 		$authHeader = $request->getHeader('Authorization');
 		if (str_starts_with($authHeader, 'Bearer ')) {
 			$token = substr($authHeader, 7);
-		} elseif ($request->getCookie($this->config->getSystemValueString('instanceid')) !== null) {
-			// No auth header, let's try session id, but only if this is an existing
-			// session and the request has a session cookie
+		} else {
+			// No auth header, let's try session id
 			try {
 				$token = $this->session->getId();
 			} catch (SessionNotAvailableException $ex) {
 				return false;
 			}
-		} else {
-			return false;
 		}
 
 		if (!$this->loginWithToken($token)) {

@@ -7,7 +7,6 @@
  * @author Jörn Friedrich Dreyer <jfd@butonic.de>
  * @author Morris Jobke <hey@morrisjobke.de>
  * @author Roeland Jago Douma <roeland@famdouma.nl>
- * @author Thomas Citharel <nextcloud@tcit.fr>
  *
  * @license AGPL-3.0
  *
@@ -26,28 +25,23 @@
  */
 namespace OC\Files\ObjectStore;
 
-use Exception;
-use OCP\Files\IHomeStorage;
+use OC\User\User;
 use OCP\IUser;
 
-class HomeObjectStoreStorage extends ObjectStoreStorage implements IHomeStorage {
-	protected IUser $user;
-
+class HomeObjectStoreStorage extends ObjectStoreStorage implements \OCP\Files\IHomeStorage {
 	/**
 	 * The home user storage requires a user object to create a unique storage id
-	 *
 	 * @param array $params
-	 * @throws Exception
 	 */
 	public function __construct($params) {
-		if (! isset($params['user']) || ! $params['user'] instanceof IUser) {
-			throw new Exception('missing user object in parameters');
+		if (! isset($params['user']) || ! $params['user'] instanceof User) {
+			throw new \Exception('missing user object in parameters');
 		}
 		$this->user = $params['user'];
 		parent::__construct($params);
 	}
 
-	public function getId(): string {
+	public function getId() {
 		return 'object::user:' . $this->user->getUID();
 	}
 
@@ -55,13 +49,20 @@ class HomeObjectStoreStorage extends ObjectStoreStorage implements IHomeStorage 
 	 * get the owner of a path
 	 *
 	 * @param string $path The path to get the owner
-	 * @return string uid
+	 * @return false|string uid
 	 */
-	public function getOwner($path): string {
-		return $this->user->getUID();
+	public function getOwner($path) {
+		if (is_object($this->user)) {
+			return $this->user->getUID();
+		}
+		return false;
 	}
 
-	public function getUser(): IUser {
+	/**
+	 * @param string $path, optional
+	 * @return \OC\User\User
+	 */
+	public function getUser($path = null): IUser {
 		return $this->user;
 	}
 }

@@ -101,10 +101,6 @@ class DefaultTheme implements ITheme {
 		return '';
 	}
 
-	public function getMeta(): array {
-		return [];
-	}
-
 	public function getCSSVariables(): array {
 		$colorMainText = '#222222';
 		$colorMainTextRgb = join(',', $this->util->hexToRGB($colorMainText));
@@ -115,8 +111,8 @@ class DefaultTheme implements ITheme {
 		$colorBoxShadow = $this->util->darken($colorMainBackground, 70);
 		$colorBoxShadowRGB = join(',', $this->util->hexToRGB($colorBoxShadow));
 
-		$colorError = '#DB0606';
-		$colorWarning = '#A37200';
+		$colorError = '#d91812';
+		$colorWarning = '#b88100';
 		$colorSuccess = '#2d7b41';
 		$colorInfo = '#0071ad';
 
@@ -152,14 +148,14 @@ class DefaultTheme implements ITheme {
 			'--color-error' => $colorError,
 			'--color-error-rgb' => join(',', $this->util->hexToRGB($colorError)),
 			'--color-error-hover' => $this->util->mix($colorError, $colorMainBackground, 75),
-			'--color-error-text' => $this->util->darken($colorError, 5),
+			'--color-error-text' => $this->util->darken($colorError, 4),
 			'--color-warning' => $colorWarning,
 			'--color-warning-rgb' => join(',', $this->util->hexToRGB($colorWarning)),
-			'--color-warning-hover' => $this->util->darken($colorWarning, 5),
-			'--color-warning-text' => $this->util->darken($colorWarning, 7),
+			'--color-warning-hover' => $this->util->mix($colorWarning, $colorMainBackground, 60),
+			'--color-warning-text' => $this->util->darken($colorWarning, 10),
 			'--color-success' => $colorSuccess,
 			'--color-success-rgb' => join(',', $this->util->hexToRGB($colorSuccess)),
-			'--color-success-hover' => $this->util->mix($colorSuccess, $colorMainBackground, 80),
+			'--color-success-hover' => $this->util->mix($colorSuccess, $colorMainBackground, 78),
 			'--color-success-text' => $this->util->darken($colorSuccess, 4),
 			'--color-info' => $colorInfo,
 			'--color-info-rgb' => join(',', $this->util->hexToRGB($colorInfo)),
@@ -175,7 +171,7 @@ class DefaultTheme implements ITheme {
 
 			'--color-border' => $this->util->darken($colorMainBackground, 7),
 			'--color-border-dark' => $this->util->darken($colorMainBackground, 14),
-			'--color-border-maxcontrast' => $this->util->darken($colorMainBackground, 51),
+			'--color-border-maxcontrast' => $this->util->darken($colorMainBackground, 42),
 
 			'--font-face' => "system-ui, -apple-system, 'Segoe UI', Roboto, Oxygen-Sans, Cantarell, Ubuntu, 'Helvetica Neue', 'Noto Sans', 'Liberation Sans', Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'",
 			'--default-font-size' => '15px',

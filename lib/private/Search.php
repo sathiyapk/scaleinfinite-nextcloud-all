@@ -30,7 +30,6 @@ namespace OC;
 use OCP\ISearch;
 use OCP\Search\PagedProvider;
 use OCP\Search\Provider;
-use Psr\Log\LoggerInterface;
 
 /**
  * Provide an interface to all search providers
@@ -66,7 +65,7 @@ class Search implements ISearch {
 					$results = array_merge($results, $providerResults);
 				}
 			} else {
-				\OCP\Server::get(LoggerInterface::class)->warning('Ignoring Unknown search provider', ['provider' => $provider]);
+				\OC::$server->getLogger()->warning('Ignoring Unknown search provider', ['provider' => $provider]);
 			}
 		}
 		return $results;

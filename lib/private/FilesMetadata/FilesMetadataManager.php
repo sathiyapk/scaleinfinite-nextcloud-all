@@ -176,8 +176,7 @@ class FilesMetadataManager implements IFilesMetadataManager {
 
 		$json = json_encode($filesMetadata->jsonSerialize());
 		if (strlen($json) > self::JSON_MAXSIZE) {
-			$this->logger->debug('huge metadata content detected: ' . $json);
-			throw new FilesMetadataException('json cannot exceed ' . self::JSON_MAXSIZE . ' characters long; fileId: ' . $filesMetadata->getFileId() . '; size: ' . strlen($json));
+			throw new FilesMetadataException('json cannot exceed ' . self::JSON_MAXSIZE . ' characters long');
 		}
 
 		try {

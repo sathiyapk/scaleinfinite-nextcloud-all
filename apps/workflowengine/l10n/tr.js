@@ -113,9 +113,8 @@ OC.L10N.register(
     "between" : "şunların arasında olan",
     "not between" : "şunların arasında olmayan",
     "Request user agent" : "Kullanıcı uygulaması istensin",
-    "Group membership" : "Grup üyeliği",
+    "User group membership" : "Kullanıcı grubu üyeliği",
     "is member of" : "şunun üyesi olan",
-    "is not member of" : "şunun üyesi olmayan",
-    "User group membership" : "Kullanıcı grubu üyeliği"
+    "is not member of" : "şunun üyesi olmayan"
 },
 "nplurals=2; plural=(n > 1);");

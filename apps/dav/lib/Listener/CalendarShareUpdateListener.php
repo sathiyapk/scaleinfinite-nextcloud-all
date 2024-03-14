@@ -31,7 +31,6 @@ use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 use Psr\Log\LoggerInterface;
 
-/** @template-implements IEventListener<CalendarShareUpdatedEvent> */
 class CalendarShareUpdateListener implements IEventListener {
 	private Backend $activityBackend;
 	private LoggerInterface $logger;

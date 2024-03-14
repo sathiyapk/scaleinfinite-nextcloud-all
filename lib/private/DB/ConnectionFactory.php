@@ -32,6 +32,7 @@ use Doctrine\Common\EventManager;
 use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Event\Listeners\OracleSessionInit;
+use Doctrine\DBAL\Event\Listeners\SQLSessionInit;
 use OC\SystemConfig;
 
 /**
@@ -126,8 +127,11 @@ class ConnectionFactory {
 		$normalizedType = $this->normalizeType($type);
 		$eventManager = new EventManager();
 		$eventManager->addEventSubscriber(new SetTransactionIsolationLevel());
-		$additionalConnectionParams = array_merge($this->createConnectionParams(), $additionalConnectionParams);
 		switch ($normalizedType) {
+			case 'mysql':
+				$eventManager->addEventSubscriber(
+					new SQLSessionInit("SET SESSION AUTOCOMMIT=1"));
+				break;
 			case 'oci':
 				$eventManager->addEventSubscriber(new OracleSessionInit);
 				// the driverOptions are unused in dbal and need to be mapped to the parameters
@@ -155,7 +159,7 @@ class ConnectionFactory {
 		}
 		/** @var Connection $connection */
 		$connection = DriverManager::getConnection(
-			$additionalConnectionParams,
+			array_merge($this->getDefaultConnectionParams($type), $additionalConnectionParams),
 			new Configuration(),
 			$eventManager
 		);
@@ -191,10 +195,10 @@ class ConnectionFactory {
 	public function createConnectionParams(string $configPrefix = '') {
 		$type = $this->config->getValue('dbtype', 'sqlite');
 
-		$connectionParams = array_merge($this->getDefaultConnectionParams($type), [
+		$connectionParams = [
 			'user' => $this->config->getValue($configPrefix . 'dbuser', $this->config->getValue('dbuser', '')),
 			'password' => $this->config->getValue($configPrefix . 'dbpassword', $this->config->getValue('dbpassword', '')),
-		]);
+		];
 		$name = $this->config->getValue($configPrefix . 'dbname', $this->config->getValue('dbname', self::DEFAULT_DBNAME));
 
 		if ($this->normalizeType($type) === 'sqlite3') {
@@ -233,11 +237,7 @@ class ConnectionFactory {
 			$connectionParams['persistent'] = true;
 		}
 
-		$replica = $this->config->getValue('dbreplica', []) ?: [$connectionParams];
-		return array_merge($connectionParams, [
-			'primary' => $connectionParams,
-			'replica' => $replica,
-		]);
+		return $connectionParams;
 	}
 
 	/**

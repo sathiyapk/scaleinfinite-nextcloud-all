@@ -140,11 +140,7 @@
                         "description": "Whether to show the password",
                         "schema": {
                             "type": "integer",
-                            "default": 0,
-                            "enum": [
-                                0,
-                                1
-                            ]
+                            "default": 0
                         }
                     },
                     {

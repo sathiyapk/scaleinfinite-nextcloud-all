@@ -32,18 +32,20 @@ use OCP\IURLGenerator;
  * @package OC\OCS
  */
 class CoreCapabilities implements ICapability {
+	/** @var IConfig */
+	private $config;
+
 	/**
 	 * @param IConfig $config
 	 */
-	public function __construct(
-		private IConfig $config,
-	) {
+	public function __construct(IConfig $config) {
+		$this->config = $config;
 	}
 
 	/**
 	 * Return this classes capabilities
 	 */
-	public function getCapabilities(): array {
+	public function getCapabilities() {
 		return [
 			'core' => [
 				'pollinterval' => $this->config->getSystemValue('pollinterval', 60),

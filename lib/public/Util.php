@@ -51,7 +51,6 @@ use OC\AppScriptDependency;
 use OC\AppScriptSort;
 use OCP\Share\IManager;
 use Psr\Container\ContainerExceptionInterface;
-use Psr\Log\LoggerInterface;
 
 /**
  * This class provides different helper functions to make the life of a developer easier
@@ -127,10 +126,13 @@ class Util {
 
 	/**
 	 * get l10n object
+	 * @param string $application
+	 * @param string|null $language
+	 * @return \OCP\IL10N
 	 * @since 6.0.0 - parameter $language was added in 8.0.0
 	 */
-	public static function getL10N(string $application, ?string $language = null): IL10N {
-		return Server::get(\OCP\L10N\IFactory::class)->get($application, $language);
+	public static function getL10N($application, $language = null) {
+		return \OC::$server->getL10N($application, $language);
 	}
 
 	/**
@@ -522,31 +524,10 @@ class Util {
 	}
 
 	/**
-	 * Get a list of characters forbidden in file names
-	 * @return string[]
-	 * @since 29.0.0
-	 */
-	public static function getForbiddenFileNameChars(): array {
-		// Get always forbidden characters
-		$invalidChars = str_split(\OCP\Constants::FILENAME_INVALID_CHARS);
-		if ($invalidChars === false) {
-			$invalidChars = [];
-		}
-
-		// Get admin defined invalid characters
-		$additionalChars = \OCP\Server::get(IConfig::class)->getSystemValue('forbidden_chars', []);
-		if (!is_array($additionalChars)) {
-			\OCP\Server::get(LoggerInterface::class)->error('Invalid system config value for "forbidden_chars" is ignored.');
-			$additionalChars = [];
-		}
-		return array_merge($invalidChars, $additionalChars);
-	}
-
-	/**
 	 * Returns whether the given file name is valid
 	 * @param string $file file name to check
 	 * @return bool true if the file name is valid, false otherwise
-	 * @deprecated 8.1.0 use OCP\Files\Storage\IStorage::verifyPath()
+	 * @deprecated 8.1.0 use \OC\Files\View::verifyPath()
 	 * @since 7.0.0
 	 * @suppress PhanDeprecatedFunction
 	 */

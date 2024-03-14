@@ -151,7 +151,6 @@ trait CommonSettingsTrait {
 		if ($activeSection) {
 			$templateParams['pageTitle'] = $activeSection->getName();
 			$templateParams['activeSectionId'] = $activeSection->getID();
-			$templateParams['activeSectionType'] = $type;
 		}
 
 		return new TemplateResponse('settings', 'settings/frame', $templateParams);

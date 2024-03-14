@@ -33,7 +33,7 @@ use Psr\Log\LoggerInterface;
 use Throwable;
 
 /**
- * @template-implements IEventListener<CalendarDeletedEvent>
+ * @template-implements IEventListener<\OCA\DAV\Events\CalendarDeletedEvent>
  */
 class CalendarDeletionDefaultUpdaterListener implements IEventListener {
 

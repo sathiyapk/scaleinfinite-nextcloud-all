@@ -30,32 +30,33 @@
 namespace OC\Files\Cache\Wrapper;
 
 use OC\Files\Cache\Cache;
-use OC\Files\Cache\CacheDependencies;
+use OC\Files\Cache\QuerySearchHelper;
 use OCP\Files\Cache\ICache;
 use OCP\Files\Cache\ICacheEntry;
+use OCP\Files\IMimeTypeLoader;
 use OCP\Files\Search\ISearchOperator;
 use OCP\Files\Search\ISearchQuery;
-use OCP\Server;
+use OCP\IDBConnection;
 
 class CacheWrapper extends Cache {
 	/**
-	 * @var ?ICache
+	 * @var \OCP\Files\Cache\ICache
 	 */
 	protected $cache;
 
-	public function __construct(?ICache $cache, CacheDependencies $dependencies = null) {
+	/**
+	 * @param \OCP\Files\Cache\ICache $cache
+	 */
+	public function __construct($cache) {
 		$this->cache = $cache;
-		if (!$dependencies && $cache instanceof Cache) {
+		if ($cache instanceof Cache) {
 			$this->mimetypeLoader = $cache->mimetypeLoader;
 			$this->connection = $cache->connection;
 			$this->querySearchHelper = $cache->querySearchHelper;
 		} else {
-			if (!$dependencies) {
-				$dependencies = Server::get(CacheDependencies::class);
-			}
-			$this->mimetypeLoader = $dependencies->getMimeTypeLoader();
-			$this->connection = $dependencies->getConnection();
-			$this->querySearchHelper = $dependencies->getQuerySearchHelper();
+			$this->mimetypeLoader = \OC::$server->get(IMimeTypeLoader::class);
+			$this->connection = \OC::$server->get(IDBConnection::class);
+			$this->querySearchHelper = \OC::$server->get(QuerySearchHelper::class);
 		}
 	}
 
@@ -90,7 +91,7 @@ class CacheWrapper extends Cache {
 	 */
 	public function get($file) {
 		$result = $this->getCache()->get($file);
-		if ($result instanceof ICacheEntry) {
+		if ($result) {
 			$result = $this->formatCacheEntry($result);
 		}
 		return $result;

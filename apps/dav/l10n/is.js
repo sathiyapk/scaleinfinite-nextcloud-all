@@ -2,7 +2,7 @@ OC.L10N.register(
     "dav",
     {
     "Calendar" : "Dagatal",
-    "Tasks" : "Verkefni",
+    "To-dos" : "Verkþættir",
     "Personal" : "Einka",
     "{actor} created calendar {calendar}" : "{actor} bjó til dagatalið {calendar}",
     "You created calendar {calendar}" : "Þú bjóst til dagatalið {calendar}",
@@ -143,6 +143,7 @@ OC.L10N.register(
     "Configures a CalDAV account" : "Setur upp CalDAV aðgang",
     "Configures a CardDAV account" : "Setur upp CardDAV aðgang",
     "Events" : "Atburðir",
+    "Tasks" : "Verkefni",
     "Untitled task" : "Ónefnt verkefni",
     "Completed on %s" : "Lokið þann %s",
     "Due on %s by %s" : "Á að ljúka %s af %s",
@@ -184,6 +185,7 @@ OC.L10N.register(
     "Saved availability" : "Vistaði lausa tíma",
     "Failed to save availability" : "Mistókst að hlaða vista lausa tíma",
     "Availability" : "Aðgengileiki",
+    "If you configure your working hours, other users will see when you are out of office when they book a meeting." : "Ef þú stillir vinnutímana þína, geta aðrir séð hvenæt þú sért fjarverandi þegar þeir bóka fundi með þér.",
     "Absence" : "Fjarverandi",
     "Configure your next absence period." : "Stilltu næsta fjarvistatímabilið þitt",
     "Calendar server" : "Dagatalaþjónn",
@@ -202,8 +204,6 @@ OC.L10N.register(
     "Please contact the organizer directly." : "Hafðu samband beint við skipuleggjendurna.",
     "Are you accepting the invitation?" : "Ætlar þú að samþykkja boðið?",
     "Tentative" : "Bráðabirgða",
-    "Your attendance was updated successfully." : "Mætingarstaða þín var uppfærð.",
-    "To-dos" : "Verkþættir",
-    "If you configure your working hours, other users will see when you are out of office when they book a meeting." : "Ef þú stillir vinnutímana þína, geta aðrir séð hvenæt þú sért fjarverandi þegar þeir bóka fundi með þér."
+    "Your attendance was updated successfully." : "Mætingarstaða þín var uppfærð."
 },
 "nplurals=2; plural=(n % 10 != 1 || n % 100 == 11);");

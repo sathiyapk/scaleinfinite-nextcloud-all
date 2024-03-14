@@ -31,7 +31,6 @@ namespace OC\Encryption;
 use OC\Encryption\Exceptions\DecryptionFailedException;
 use OC\Files\View;
 use OCP\Encryption\IEncryptionModule;
-use OCP\Encryption\IManager;
 use OCP\IUserManager;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
@@ -44,14 +43,31 @@ class DecryptAll {
 	/** @var  InputInterface */
 	protected $input;
 
+	/** @var  Manager */
+	protected $encryptionManager;
+
+	/** @var IUserManager */
+	protected $userManager;
+
+	/** @var View */
+	protected $rootView;
+
 	/** @var  array files which couldn't be decrypted */
 	protected $failed;
 
+	/**
+	 * @param Manager $encryptionManager
+	 * @param IUserManager $userManager
+	 * @param View $rootView
+	 */
 	public function __construct(
-		protected IManager $encryptionManager,
-		protected IUserManager $userManager,
-		protected View $rootView
+		Manager $encryptionManager,
+		IUserManager $userManager,
+		View $rootView
 	) {
+		$this->encryptionManager = $encryptionManager;
+		$this->userManager = $userManager;
+		$this->rootView = $rootView;
 		$this->failed = [];
 	}
 

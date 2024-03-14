@@ -38,8 +38,8 @@ use OCP\AppFramework\App;
 use OCP\AppFramework\Bootstrap\IBootContext;
 use OCP\AppFramework\Bootstrap\IBootstrap;
 use OCP\AppFramework\Bootstrap\IRegistrationContext;
-use Psr\Container\ContainerInterface;
-use Psr\Log\LoggerInterface;
+use OCP\ILogger;
+use OCP\IServerContainer;
 
 class Application extends App implements IBootstrap {
 	public const APP_ID = 'files_trashbin';
@@ -77,7 +77,7 @@ class Application extends App implements IBootstrap {
 		\OCP\Util::connectHook('OC_Filesystem', 'delete', 'OCA\Files_Trashbin\Trashbin', 'ensureFileScannedHook');
 	}
 
-	public function registerTrashBackends(ContainerInterface $serverContainer, LoggerInterface $logger, IAppManager $appManager, ITrashManager $trashManager): void {
+	public function registerTrashBackends(IServerContainer $serverContainer, ILogger $logger, IAppManager $appManager, ITrashManager $trashManager) {
 		foreach ($appManager->getInstalledApps() as $app) {
 			$appInfo = $appManager->getAppInfo($app);
 			if (isset($appInfo['trash'])) {
@@ -87,10 +87,10 @@ class Application extends App implements IBootstrap {
 					$for = $backend['@attributes']['for'];
 
 					try {
-						$backendObject = $serverContainer->get($class);
+						$backendObject = $serverContainer->query($class);
 						$trashManager->registerBackend($for, $backendObject);
 					} catch (\Exception $e) {
-						$logger->error($e->getMessage(), ['exception' => $e]);
+						$logger->logException($e);
 					}
 				}
 			}

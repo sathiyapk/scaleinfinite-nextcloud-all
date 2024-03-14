@@ -36,7 +36,6 @@ use Psr\Log\LoggerInterface;
 use Throwable;
 use function sprintf;
 
-/** @template-implements IEventListener<AddressBookCreatedEvent|AddressBookUpdatedEvent|AddressBookDeletedEvent|AddressBookShareUpdatedEvent> */
 class AddressbookListener implements IEventListener {
 	/** @var ActivityBackend */
 	private $activityBackend;

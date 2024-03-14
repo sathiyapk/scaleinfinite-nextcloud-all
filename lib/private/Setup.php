@@ -1,7 +1,4 @@
 <?php
-
-declare(strict_types=1);
-
 /**
  * @copyright Copyright (c) 2016, ownCloud, Inc.
  *
@@ -60,37 +57,48 @@ use OC\Log\Rotate;
 use OC\Preview\BackgroundCleanupJob;
 use OC\TextProcessing\RemoveOldTasksBackgroundJob;
 use OCP\AppFramework\Utility\ITimeFactory;
-use OCP\BackgroundJob\IJobList;
 use OCP\Defaults;
-use OCP\IConfig;
 use OCP\IGroup;
-use OCP\IGroupManager;
 use OCP\IL10N;
-use OCP\IRequest;
-use OCP\IUserManager;
-use OCP\IUserSession;
-use OCP\L10N\IFactory as IL10NFactory;
 use OCP\Migration\IOutput;
 use OCP\Security\ISecureRandom;
-use OCP\Server;
 use Psr\Log\LoggerInterface;
 
 class Setup {
-	protected IL10N $l10n;
+	/** @var SystemConfig */
+	protected $config;
+	/** @var IniGetWrapper */
+	protected $iniWrapper;
+	/** @var IL10N */
+	protected $l10n;
+	/** @var Defaults */
+	protected $defaults;
+	/** @var LoggerInterface */
+	protected $logger;
+	/** @var ISecureRandom */
+	protected $random;
+	/** @var Installer */
+	protected $installer;
 
 	public function __construct(
-		protected SystemConfig $config,
-		protected IniGetWrapper $iniWrapper,
-		IL10NFactory $l10nFactory,
-		protected Defaults $defaults,
-		protected LoggerInterface $logger,
-		protected ISecureRandom $random,
-		protected Installer $installer
+		SystemConfig $config,
+		IniGetWrapper $iniWrapper,
+		IL10N $l10n,
+		Defaults $defaults,
+		LoggerInterface $logger,
+		ISecureRandom $random,
+		Installer $installer
 	) {
-		$this->l10n = $l10nFactory->get('lib');
+		$this->config = $config;
+		$this->iniWrapper = $iniWrapper;
+		$this->l10n = $l10n;
+		$this->defaults = $defaults;
+		$this->logger = $logger;
+		$this->random = $random;
+		$this->installer = $installer;
 	}
 
-	protected static array $dbSetupClasses = [
+	protected static $dbSetupClasses = [
 		'mysql' => \OC\Setup\MySQL::class,
 		'pgsql' => \OC\Setup\PostgreSQL::class,
 		'oci' => \OC\Setup\OCI::class,
@@ -100,22 +108,30 @@ class Setup {
 
 	/**
 	 * Wrapper around the "class_exists" PHP function to be able to mock it
+	 *
+	 * @param string $name
+	 * @return bool
 	 */
-	protected function class_exists(string $name): bool {
+	protected function class_exists($name) {
 		return class_exists($name);
 	}
 
 	/**
 	 * Wrapper around the "is_callable" PHP function to be able to mock it
+	 *
+	 * @param string $name
+	 * @return bool
 	 */
-	protected function is_callable(string $name): bool {
+	protected function is_callable($name) {
 		return is_callable($name);
 	}
 
 	/**
 	 * Wrapper around \PDO::getAvailableDrivers
+	 *
+	 * @return array
 	 */
-	protected function getAvailableDbDriversForPdo(): array {
+	protected function getAvailableDbDriversForPdo() {
 		if (class_exists(\PDO::class)) {
 			return \PDO::getAvailableDrivers();
 		}
@@ -125,10 +141,11 @@ class Setup {
 	/**
 	 * Get the available and supported databases of this instance
 	 *
+	 * @param bool $allowAllDatabases
 	 * @return array
 	 * @throws Exception
 	 */
-	public function getSupportedDatabases(bool $allowAllDatabases = false): array {
+	public function getSupportedDatabases($allowAllDatabases = false) {
 		$availableDatabases = [
 			'sqlite' => [
 				'type' => 'pdo',
@@ -190,7 +207,7 @@ class Setup {
 	 * @return array of system info, including an "errors" value
 	 * in case of errors/warnings
 	 */
-	public function getSystemInfo(bool $allowAllDatabases = false): array {
+	public function getSystemInfo($allowAllDatabases = false) {
 		$databases = $this->getSupportedDatabases($allowAllDatabases);
 
 		$dataDir = $this->config->getValue('datadirectory', \OC::$SERVERROOT . '/data');
@@ -210,7 +227,7 @@ class Setup {
 
 			try {
 				$util = new \OC_Util();
-				$htAccessWorking = $util->isHtaccessWorking(Server::get(IConfig::class));
+				$htAccessWorking = $util->isHtaccessWorking(\OC::$server->getConfig());
 			} catch (\OCP\HintException $e) {
 				$errors[] = [
 					'error' => $e->getMessage(),
@@ -256,16 +273,17 @@ class Setup {
 	}
 
 	/**
-	 * @return array<string|array> errors
+	 * @param $options
+	 * @return array
 	 */
-	public function install(array $options, ?IOutput $output = null): array {
+	public function install($options, ?IOutput $output = null) {
 		$l = $this->l10n;
 
 		$error = [];
 		$dbType = $options['dbtype'];
 
 		if (empty($options['adminlogin'])) {
-			$error[] = $l->t('Set an admin Login.');
+			$error[] = $l->t('Set an admin username.');
 		}
 		if (empty($options['adminpass'])) {
 			$error[] = $l->t('Set an admin password.');
@@ -296,7 +314,7 @@ class Setup {
 			return $error;
 		}
 
-		$request = Server::get(IRequest::class);
+		$request = \OC::$server->getRequest();
 
 		//no errors, good
 		if (isset($options['trusted_domains'])
@@ -311,7 +329,7 @@ class Setup {
 			$dbType = 'sqlite3';
 		}
 
-		//generate a random salt that is used to salt the local  passwords
+		//generate a random salt that is used to salt the local user passwords
 		$salt = $this->random->generate(30);
 		// generate a secret
 		$secret = $this->random->generate(48);
@@ -345,7 +363,7 @@ class Setup {
 			return $error;
 		} catch (Exception $e) {
 			$error[] = [
-				'error' => 'Error while trying to create admin account: ' . $e->getMessage(),
+				'error' => 'Error while trying to create admin user: ' . $e->getMessage(),
 				'exception' => $e,
 				'hint' => '',
 			];
@@ -365,88 +383,82 @@ class Setup {
 			return $error;
 		}
 
-		$this->outputDebug($output, 'Create admin account');
-
-		// create the admin account and group
+		$this->outputDebug($output, 'Create admin user');
+		//create the user and group
 		$user = null;
 		try {
-			$user = Server::get(IUserManager::class)->createUser($username, $password);
+			$user = \OC::$server->getUserManager()->createUser($username, $password);
 			if (!$user) {
-				$error[] = "Account <$username> could not be created.";
-				return $error;
+				$error[] = "User <$username> could not be created.";
 			}
 		} catch (Exception $exception) {
 			$error[] = $exception->getMessage();
-			return $error;
 		}
 
-		$config = Server::get(IConfig::class);
-		$config->setAppValue('core', 'installedat', (string)microtime(true));
-		$config->setAppValue('core', 'lastupdatedat', (string)microtime(true));
+		if (empty($error)) {
+			$config = \OC::$server->getConfig();
+			$config->setAppValue('core', 'installedat', (string)microtime(true));
+			$config->setAppValue('core', 'lastupdatedat', (string)microtime(true));
 
-		$vendorData = $this->getVendorData();
-		$config->setAppValue('core', 'vendor', $vendorData['vendor']);
-		if ($vendorData['channel'] !== 'stable') {
-			$config->setSystemValue('updater.release.channel', $vendorData['channel']);
-		}
+			$vendorData = $this->getVendorData();
+			$config->setAppValue('core', 'vendor', $vendorData['vendor']);
+			if ($vendorData['channel'] !== 'stable') {
+				$config->setSystemValue('updater.release.channel', $vendorData['channel']);
+			}
 
-		$group = Server::get(IGroupManager::class)->createGroup('admin');
-		if ($group instanceof IGroup) {
-			$group->addUser($user);
-		}
+			$group = \OC::$server->getGroupManager()->createGroup('admin');
+			if ($group instanceof IGroup) {
+				$group->addUser($user);
+			}
 
-		// Install shipped apps and specified app bundles
-		$this->outputDebug($output, 'Install default apps');
-		Installer::installShippedApps(false, $output);
+			// Install shipped apps and specified app bundles
+			$this->outputDebug($output, 'Install default apps');
+			Installer::installShippedApps(false, $output);
 
-		// create empty file in data dir, so we can later find
-		// out that this is indeed an ownCloud data directory
-		$this->outputDebug($output, 'Setup data directory');
-		file_put_contents($config->getSystemValueString('datadirectory', \OC::$SERVERROOT . '/data') . '/.ocdata', '');
+			// create empty file in data dir, so we can later find
+			// out that this is indeed an ownCloud data directory
+			$this->outputDebug($output, 'Setup data directory');
+			file_put_contents($config->getSystemValueString('datadirectory', \OC::$SERVERROOT . '/data') . '/.ocdata', '');
 
-		// Update .htaccess files
-		self::updateHtaccess();
-		self::protectDataDirectory();
+			// Update .htaccess files
+			self::updateHtaccess();
+			self::protectDataDirectory();
 
-		$this->outputDebug($output, 'Install background jobs');
-		self::installBackgroundJobs();
+			$this->outputDebug($output, 'Install background jobs');
+			self::installBackgroundJobs();
 
-		//and we are done
-		$config->setSystemValue('installed', true);
-		if (self::shouldRemoveCanInstallFile()) {
-			unlink(\OC::$configDir.'/CAN_INSTALL');
-		}
+			//and we are done
+			$config->setSystemValue('installed', true);
+			if (self::shouldRemoveCanInstallFile()) {
+				unlink(\OC::$configDir.'/CAN_INSTALL');
+			}
 
-		$bootstrapCoordinator = \OCP\Server::get(\OC\AppFramework\Bootstrap\Coordinator::class);
-		$bootstrapCoordinator->runInitialRegistration();
+			$bootstrapCoordinator = \OCP\Server::get(\OC\AppFramework\Bootstrap\Coordinator::class);
+			$bootstrapCoordinator->runInitialRegistration();
 
-		// Create a session token for the newly created user
-		// The token provider requires a working db, so it's not injected on setup
-		/** @var \OC\User\Session $userSession */
-		$userSession = Server::get(IUserSession::class);
-		$provider = Server::get(PublicKeyTokenProvider::class);
-		$userSession->setTokenProvider($provider);
-		$userSession->login($username, $password);
-		$user = $userSession->getUser();
-		if (!$user) {
-			$error[] = "No account found in session.";
-			return $error;
-		}
-		$userSession->createSessionToken($request, $user->getUID(), $username, $password);
+			// Create a session token for the newly created user
+			// The token provider requires a working db, so it's not injected on setup
+			/* @var $userSession User\Session */
+			$userSession = \OC::$server->getUserSession();
+			$provider = \OCP\Server::get(PublicKeyTokenProvider::class);
+			$userSession->setTokenProvider($provider);
+			$userSession->login($username, $password);
+			$userSession->createSessionToken($request, $userSession->getUser()->getUID(), $username, $password);
 
-		$session = $userSession->getSession();
-		$session->set('last-password-confirm', Server::get(ITimeFactory::class)->getTime());
+			$session = $userSession->getSession();
+			$session->set('last-password-confirm', \OCP\Server::get(ITimeFactory::class)->getTime());
 
-		// Set email for admin
-		if (!empty($options['adminemail'])) {
-			$user->setSystemEMailAddress($options['adminemail']);
+			// Set email for admin
+			if (!empty($options['adminemail'])) {
+				$user->setSystemEMailAddress($options['adminemail']);
+			}
 		}
 
 		return $error;
 	}
 
-	public static function installBackgroundJobs(): void {
-		$jobList = Server::get(IJobList::class);
+	public static function installBackgroundJobs() {
+		$jobList = \OC::$server->getJobList();
 		$jobList->add(TokenCleanupJob::class);
 		$jobList->add(Rotate::class);
 		$jobList->add(BackgroundCleanupJob::class);
@@ -456,13 +468,15 @@ class Setup {
 	/**
 	 * @return string Absolute path to htaccess
 	 */
-	private function pathToHtaccess(): string {
+	private function pathToHtaccess() {
 		return \OC::$SERVERROOT . '/.htaccess';
 	}
 
 	/**
 	 * Find webroot from config
 	 *
+	 * @param SystemConfig $config
+	 * @return string
 	 * @throws InvalidArgumentException when invalid value for overwrite.cli.url
 	 */
 	private static function findWebRoot(SystemConfig $config): string {
@@ -489,8 +503,8 @@ class Setup {
 	 * @return bool True when success, False otherwise
 	 * @throws \OCP\AppFramework\QueryException
 	 */
-	public static function updateHtaccess(): bool {
-		$config = Server::get(SystemConfig::class);
+	public static function updateHtaccess() {
+		$config = \OC::$server->getSystemConfig();
 
 		try {
 			$webRoot = self::findWebRoot($config);
@@ -498,11 +512,15 @@ class Setup {
 			return false;
 		}
 
-		$setupHelper = Server::get(\OC\Setup::class);
-
-		if (!is_writable($setupHelper->pathToHtaccess())) {
-			return false;
-		}
+		$setupHelper = new \OC\Setup(
+			$config,
+			\OC::$server->get(IniGetWrapper::class),
+			\OC::$server->getL10N('lib'),
+			\OCP\Server::get(Defaults::class),
+			\OC::$server->get(LoggerInterface::class),
+			\OC::$server->getSecureRandom(),
+			\OCP\Server::get(Installer::class)
+		);
 
 		$htaccessContent = file_get_contents($setupHelper->pathToHtaccess());
 		$content = "#### DO NOT CHANGE ANYTHING ABOVE THIS LINE ####\n";
@@ -541,19 +559,23 @@ class Setup {
 			$content .= "\n</IfModule>";
 		}
 
-		// Never write file back if disk space should be too low
-		if (function_exists('disk_free_space')) {
-			$df = disk_free_space(\OC::$SERVERROOT);
-			$size = strlen($content) + 10240;
-			if ($df !== false && $df < (float)$size) {
-				throw new \Exception(\OC::$SERVERROOT . " does not have enough space for writing the htaccess file! Not writing it back!");
+		if ($content !== '') {
+			// Never write file back if disk space should be too low
+			if (function_exists('disk_free_space')) {
+				$df = disk_free_space(\OC::$SERVERROOT);
+				$size = strlen($content) + 10240;
+				if ($df !== false && $df < (float)$size) {
+					throw new \Exception(\OC::$SERVERROOT . " does not have enough space for writing the htaccess file! Not writing it back!");
+				}
 			}
+			//suppress errors in case we don't have permissions for it
+			return (bool)@file_put_contents($setupHelper->pathToHtaccess(), $htaccessContent . $content . "\n");
 		}
-		//suppress errors in case we don't have permissions for it
-		return (bool)@file_put_contents($setupHelper->pathToHtaccess(), $htaccessContent . $content . "\n");
+
+		return false;
 	}
 
-	public static function protectDataDirectory(): void {
+	public static function protectDataDirectory() {
 		//Require all denied
 		$now = date('Y-m-d H:i:s');
 		$content = "# Generated by Nextcloud on $now\n";
@@ -581,7 +603,7 @@ class Setup {
 		$content .= "  IndexIgnore *\n";
 		$content .= "</IfModule>";
 
-		$baseDir = Server::get(IConfig::class)->getSystemValueString('datadirectory', \OC::$SERVERROOT . '/data');
+		$baseDir = \OC::$server->getConfig()->getSystemValueString('datadirectory', \OC::$SERVERROOT . '/data');
 		file_put_contents($baseDir . '/.htaccess', $content);
 		file_put_contents($baseDir . '/index.html', '');
 	}
@@ -597,11 +619,17 @@ class Setup {
 		];
 	}
 
-	public function shouldRemoveCanInstallFile(): bool {
+	/**
+	 * @return bool
+	 */
+	public function shouldRemoveCanInstallFile() {
 		return \OC_Util::getChannel() !== 'git' && is_file(\OC::$configDir.'/CAN_INSTALL');
 	}
 
-	public function canInstallFileExists(): bool {
+	/**
+	 * @return bool
+	 */
+	public function canInstallFileExists() {
 		return is_file(\OC::$configDir.'/CAN_INSTALL');
 	}
 

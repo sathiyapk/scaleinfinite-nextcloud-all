@@ -61,7 +61,6 @@ class MailPlugin implements ISearchPlugin {
 		private KnownUserService $knownUserService,
 		private IUserSession $userSession,
 		private IMailer $mailer,
-		private mixed $shareWithGroupOnlyExcludeGroupsList = [],
 	) {
 		$this->shareeEnumeration = $this->config->getAppValue('core', 'shareapi_allow_share_dialog_user_enumeration', 'yes') === 'yes';
 		$this->shareWithGroupOnly = $this->config->getAppValue('core', 'shareapi_only_share_with_group_members', 'no') === 'yes';
@@ -69,10 +68,6 @@ class MailPlugin implements ISearchPlugin {
 		$this->shareeEnumerationPhone = $this->shareeEnumeration && $this->config->getAppValue('core', 'shareapi_restrict_user_enumeration_to_phone', 'no') === 'yes';
 		$this->shareeEnumerationFullMatch = $this->config->getAppValue('core', 'shareapi_restrict_user_enumeration_full_match', 'yes') === 'yes';
 		$this->shareeEnumerationFullMatchEmail = $this->config->getAppValue('core', 'shareapi_restrict_user_enumeration_full_match_email', 'yes') === 'yes';
-
-		if ($this->shareWithGroupOnly) {
-			$this->shareWithGroupOnlyExcludeGroupsList = json_decode($this->config->getAppValue('core', 'shareapi_only_share_with_group_members_exclude_group_list', ''), true) ?? [];
-		}
 	}
 
 	/**
@@ -132,10 +127,6 @@ class MailPlugin implements ISearchPlugin {
 							 * Check if the user may share with the user associated with the e-mail of the just found contact
 							 */
 							$userGroups = $this->groupManager->getUserGroupIds($this->userSession->getUser());
-
-							// ShareWithGroupOnly filtering
-							$userGroups = array_diff($userGroups, $this->shareWithGroupOnlyExcludeGroupsList);
-
 							$found = false;
 							foreach ($userGroups as $userGroup) {
 								if ($this->groupManager->isInGroup($contact['UID'], $userGroup)) {
@@ -149,7 +140,7 @@ class MailPlugin implements ISearchPlugin {
 						}
 						if ($exactEmailMatch && $this->shareeEnumerationFullMatch) {
 							try {
-								$cloud = $this->cloudIdManager->resolveCloudId($contact['CLOUD'][0] ?? '');
+								$cloud = $this->cloudIdManager->resolveCloudId($contact['CLOUD'][0]);
 							} catch (\InvalidArgumentException $e) {
 								continue;
 							}
@@ -174,7 +165,7 @@ class MailPlugin implements ISearchPlugin {
 
 						if ($this->shareeEnumeration) {
 							try {
-								$cloud = $this->cloudIdManager->resolveCloudId($contact['CLOUD'][0] ?? '');
+								$cloud = $this->cloudIdManager->resolveCloudId($contact['CLOUD'][0]);
 							} catch (\InvalidArgumentException $e) {
 								continue;
 							}

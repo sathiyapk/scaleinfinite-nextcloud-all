@@ -126,6 +126,9 @@ select {
 	text-align: center;
 	a:not(.link-button) {
 		text-decoration: underline;
+		&:hover {
+			background-color: var(--color-primary-element-hover);
+		}
 	}
 }
 
@@ -134,17 +137,17 @@ select {
 	margin: 16px;
 	padding: 14px 20px;
 	background-color: var(--color-primary-element);
-	color: var(--color-primary-element-text);
+	color: #fff;
 	border-radius: var(--border-radius-pill);
 	border: 1px solid var(--color-primary-element);
 	box-shadow: 0 2px 9px var(--color-box-shadow);
 
 	&:active,
 	&:hover,
-	&:focus,
-	&:focus-visible {
-		box-shadow: 0 0 0 4px var(--color-main-background) !important;
-		outline: 2px solid var(--color-main-text) !important;
+	&:focus {
+		color: var(--color-primary-element);
+		background-color: var(--color-primary-element-text);
+		border-color: var(--color-primary-element) !important;
 	}
 
 	&.icon-file {

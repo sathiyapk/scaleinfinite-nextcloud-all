@@ -37,15 +37,23 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class CheckUser extends Command {
-	protected User_Proxy $backend;
+	/** @var User_Proxy */
+	protected $backend;
 
-	public function __construct(
-		User_Proxy $uBackend,
-		protected Helper $helper,
-		protected DeletedUsersIndex $dui,
-		protected UserMapping $mapping,
-	) {
+	/** @var Helper */
+	protected $helper;
+
+	/** @var DeletedUsersIndex */
+	protected $dui;
+
+	/** @var UserMapping */
+	protected $mapping;
+
+	public function __construct(User_Proxy $uBackend, Helper $helper, DeletedUsersIndex $dui, UserMapping $mapping) {
 		$this->backend = $uBackend;
+		$this->helper = $helper;
+		$this->dui = $dui;
+		$this->mapping = $mapping;
 		parent::__construct();
 	}
 
@@ -90,21 +98,19 @@ class CheckUser extends Command {
 				if ($input->getOption('update')) {
 					$this->updateUser($uid, $output);
 				}
-				return self::SUCCESS;
-			}
-
-			if ($wasMapped) {
+				return 0;
+			} elseif ($wasMapped) {
 				$this->dui->markUser($uid);
 				$output->writeln('The user does not exists on LDAP anymore.');
 				$output->writeln('Clean up the user\'s remnants by: ./occ user:delete "'
 					. $uid . '"');
-				return self::SUCCESS;
+				return 0;
+			} else {
+				throw new \Exception('The given user is not a recognized LDAP user.');
 			}
-
-			throw new \Exception('The given user is not a recognized LDAP user.');
 		} catch (\Exception $e) {
 			$output->writeln('<error>' . $e->getMessage(). '</error>');
-			return self::FAILURE;
+			return 1;
 		}
 	}
 

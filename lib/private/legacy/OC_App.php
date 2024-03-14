@@ -63,7 +63,6 @@ use OCP\App\IAppManager;
 use OCP\App\ManagerEvent;
 use OCP\Authentication\IAlternativeLogin;
 use OCP\EventDispatcher\IEventDispatcher;
-use OCP\IAppConfig;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Log\LoggerInterface;
 
@@ -117,8 +116,6 @@ class OC_App {
 	 * exists.
 	 *
 	 * if $types is set to non-empty array, only apps of those types will be loaded
-	 *
-	 * @deprecated 29.0.0 use IAppManager::loadApps instead
 	 */
 	public static function loadApps(array $types = []): bool {
 		if (!\OC::$server->getSystemConfig()->getValue('installed', false)) {
@@ -284,8 +281,10 @@ class OC_App {
 
 	/**
 	 * Get the path where to install apps
+	 *
+	 * @return string|false
 	 */
-	public static function getInstallPath(): string|null {
+	public static function getInstallPath() {
 		foreach (OC::$APPSROOTS as $dir) {
 			if (isset($dir['writable']) && $dir['writable'] === true) {
 				return $dir['path'];
@@ -731,9 +730,8 @@ class OC_App {
 		static $versions;
 
 		if (!$versions) {
-			/** @var IAppConfig $appConfig */
-			$appConfig = \OCP\Server::get(IAppConfig::class);
-			$versions = $appConfig->searchValues('installed_version');
+			$appConfig = \OC::$server->getAppConfig();
+			$versions = $appConfig->getValues(false, 'installed_version');
 		}
 		return $versions;
 	}
@@ -825,7 +823,7 @@ class OC_App {
 		$dispatcher = \OC::$server->get(IEventDispatcher::class);
 
 		// load the steps
-		$r = \OCP\Server::get(Repair::class);
+		$r = new Repair([], $dispatcher, \OC::$server->get(LoggerInterface::class));
 		foreach ($steps as $step) {
 			try {
 				$r->addStep($step);

@@ -1,0 +1,18 @@
+# Query: Welcome to nextcloud
+
+5 results - 5 files
+
+core/signature.json:
+  7340:         "core\/skeleton\/Documents\/Welcome to Nextcloud Hub.docx": "b73469513ca130e6465c65720949c5ac702888e8a3e93d9f4320e50892660986f91ef228f498558a8e522775fa3e5e9700fb11f03885780bc2ea5f90b3275d8f",
+
+core/skeleton/Documents/Example.md:
+  3: **Welcome to Nextcloud Hub, your self-hosted collaboration solution.**
+
+core_backup/signature.json:
+  7335:         "core\/skeleton\/Documents\/Welcome to Nextcloud Hub.docx": "b73469513ca130e6465c65720949c5ac702888e8a3e93d9f4320e50892660986f91ef228f498558a8e522775fa3e5e9700fb11f03885780bc2ea5f90b3275d8f",
+
+core_backup/doc/user/index.html:
+  91: <p><strong>Welcome to Nextcloud: A safe home for all your data.</strong></p>
+
+core_backup/skeleton/Documents/Example.md:
+  3: **Welcome to Nextcloud Hub, your self-hosted collaboration solution.**

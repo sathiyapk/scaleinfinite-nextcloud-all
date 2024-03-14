@@ -35,7 +35,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class SetConfig extends Command {
-	protected function configure(): void {
+	protected function configure() {
 		$this
 			->setName('ldap:set-config')
 			->setDescription('modifies an LDAP configuration')
@@ -63,7 +63,7 @@ class SetConfig extends Command {
 		$configID = $input->getArgument('configID');
 		if (!in_array($configID, $availableConfigs)) {
 			$output->writeln("Invalid configID");
-			return self::FAILURE;
+			return 1;
 		}
 
 		$this->setValue(
@@ -71,13 +71,16 @@ class SetConfig extends Command {
 			$input->getArgument('configKey'),
 			$input->getArgument('configValue')
 		);
-		return self::SUCCESS;
+		return 0;
 	}
 
 	/**
 	 * save the configuration value as provided
+	 * @param string $configID
+	 * @param string $configKey
+	 * @param string $configValue
 	 */
-	protected function setValue(string $configID, string $key, string $value): void {
+	protected function setValue($configID, $key, $value) {
 		$configHolder = new Configuration($configID);
 		$configHolder->$key = $value;
 		$configHolder->saveConfiguration();

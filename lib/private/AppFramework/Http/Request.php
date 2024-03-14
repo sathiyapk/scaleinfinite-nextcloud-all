@@ -63,7 +63,6 @@ use Symfony\Component\HttpFoundation\IpUtils;
  * @property string method
  * @property mixed[] parameters
  * @property mixed[] server
- * @template-implements \ArrayAccess<string,mixed>
  */
 class Request implements \ArrayAccess, \Countable, IRequest {
 	public const USER_AGENT_IE = '/(MSIE)|(Trident)/';
@@ -574,14 +573,7 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 	 * @return boolean true if $remoteAddress matches any entry in $trustedProxies, false otherwise
 	 */
 	protected function isTrustedProxy($trustedProxies, $remoteAddress) {
-		try {
-			return IpUtils::checkIp($remoteAddress, $trustedProxies);
-		} catch (\Throwable) {
-			// We can not log to our log here as the logger is using `getRemoteAddress` which uses the function, so we would have a cyclic dependency
-			// Reaching this line means `trustedProxies` is in invalid format.
-			error_log('Nextcloud trustedProxies has malformed entries');
-			return false;
-		}
+		return IpUtils::checkIp($remoteAddress, $trustedProxies);
 	}
 
 	/**
@@ -607,15 +599,10 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 				if (isset($this->server[$header])) {
 					foreach (array_reverse(explode(',', $this->server[$header])) as $IP) {
 						$IP = trim($IP);
-						$colons = substr_count($IP, ':');
-						if ($colons > 1) {
-							// Extract IP from string with brackets and optional port
-							if (preg_match('/^\[(.+?)\](?::\d+)?$/', $IP, $matches) && isset($matches[1])) {
-								$IP = $matches[1];
-							}
-						} elseif ($colons === 1) {
-							// IPv4 with port
-							$IP = substr($IP, 0, strpos($IP, ':'));
+
+						// remove brackets from IPv6 addresses
+						if (str_starts_with($IP, '[') && str_ends_with($IP, ']')) {
+							$IP = substr($IP, 1, -1);
 						}
 
 						if ($this->isTrustedProxy($trustedProxies, $IP)) {
@@ -635,12 +622,14 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 
 	/**
 	 * Check overwrite condition
+	 * @param string $type
 	 * @return bool
 	 */
-	private function isOverwriteCondition(): bool {
+	private function isOverwriteCondition(string $type = ''): bool {
 		$regex = '/' . $this->config->getSystemValueString('overwritecondaddr', '')  . '/';
 		$remoteAddr = isset($this->server['REMOTE_ADDR']) ? $this->server['REMOTE_ADDR'] : '';
-		return $regex === '//' || preg_match($regex, $remoteAddr) === 1;
+		return $regex === '//' || preg_match($regex, $remoteAddr) === 1
+		|| $type !== 'protocol';
 	}
 
 	/**
@@ -650,7 +639,7 @@ class Request implements \ArrayAccess, \Countable, IRequest {
 	 */
 	public function getServerProtocol(): string {
 		if ($this->config->getSystemValueString('overwriteprotocol') !== ''
-			&& $this->isOverwriteCondition()) {
+			&& $this->isOverwriteCondition('protocol')) {
 			return $this->config->getSystemValueString('overwriteprotocol');
 		}
 

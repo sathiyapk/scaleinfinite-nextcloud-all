@@ -1,6 +1,6 @@
 { "translations": {
     "Calendar" : "Kalender",
-    "Tasks" : "Opgaver",
+    "To-dos" : "Opgaver",
     "Personal" : "Personligt",
     "{actor} created calendar {calendar}" : "{actor} oprettede kalenderen {calendar}",
     "You created calendar {calendar}" : "Du oprettede kalenderen {calendar}",
@@ -141,6 +141,7 @@
     "Configures a CalDAV account" : "Konfigurerer en CalDAV-konto",
     "Configures a CardDAV account" : "Konfigurerer en CardDAV-konto",
     "Events" : "Begivenheder",
+    "Tasks" : "Opgaver",
     "Untitled task" : "Unavngivet opgave",
     "Completed on %s" : "Fuldført den %s",
     "Due on %s by %s" : "Forfalder på %s til %s",
@@ -168,6 +169,7 @@
     "Saved availability" : "Gemt tilgængelighed",
     "Failed to save availability" : "Kunne ikke gemme tilgængelighed",
     "Availability" : "tilgængelighed",
+    "If you configure your working hours, other users will see when you are out of office when they book a meeting." : "Hvis du konfigurerer din arbejdstid, vil andre brugere se, når du er fraværende, når de booker et møde.",
     "Calendar server" : "Kalenderserver",
     "Send invitations to attendees" : "Send invitation til deltagere",
     "Automatically generate a birthday calendar" : "Generer en fødselsdagskalender automatisk",
@@ -184,8 +186,6 @@
     "Please contact the organizer directly." : "Kontakt venligst arrangøren direkte.",
     "Are you accepting the invitation?" : "Accepter du invitationen?",
     "Tentative" : "Foreløbig",
-    "Your attendance was updated successfully." : "Dit tilstedeværelse blev opdateret.",
-    "To-dos" : "Opgaver",
-    "If you configure your working hours, other users will see when you are out of office when they book a meeting." : "Hvis du konfigurerer din arbejdstid, vil andre brugere se, når du er fraværende, når de booker et møde."
+    "Your attendance was updated successfully." : "Dit tilstedeværelse blev opdateret."
 },"pluralForm" :"nplurals=2; plural=(n != 1);"
 }

@@ -9,13 +9,12 @@ OC.L10N.register(
     "%1$s commented on %2$s" : "%2$s について、%1$s がコメントしました",
     "{author} commented on {file}" : "{author} が{file} にコメントしました",
     "<strong>Comments</strong> for files" : "ファイルへの<strong>コメント</strong>があったとき",
+    "You were mentioned on \"{file}\", in a comment by a user that has since been deleted" : "You were mentioned on \"{file}\", in a comment by a user that has since been deleted",
     "{user} mentioned you in a comment on \"{file}\"" : "{user} さんが \"{file}\" のコメント内であなたついて言及しました",
     "Files app plugin to add comments to files" : "ファイルにコメントを追加するためのファイルアプリプラグイン",
     "Edit comment" : "コメントを編集",
     "Delete comment" : "コメントを削除",
     "Cancel edit" : "編集をキャンセル",
-    "New comment" : "新しいコメント",
-    "Write a comment …" : "コメントを書く...",
     "Post comment" : "コメントを投稿",
     "@ for mentions, : for emoji, / for smart picker" : "メンションには@、絵文字には:、スマートピッカーには/",
     "Could not reload comments" : "コメントをリロードできませんでした",
@@ -30,7 +29,6 @@ OC.L10N.register(
     "Comment deleted" : "コメントが削除されました",
     "An error occurred while trying to delete the comment" : "コメントの削除中にエラーが発生しました",
     "An error occurred while trying to create the comment" : "コメント中にエラーが発生しました",
-    "You were mentioned on \"{file}\", in a comment by a user that has since been deleted" : "You were mentioned on \"{file}\", in a comment by a user that has since been deleted",
     "_%n unread comment_::_%n unread comments_" : ["%n の未読のコメント"]
 },
 "nplurals=1; plural=0;");

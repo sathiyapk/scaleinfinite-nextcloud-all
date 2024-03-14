@@ -32,13 +32,18 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class CreateEmptyConfig extends Command {
-	public function __construct(
-		protected Helper $helper,
-	) {
+	/** @var \OCA\User_LDAP\Helper */
+	protected $helper;
+
+	/**
+	 * @param Helper $helper
+	 */
+	public function __construct(Helper $helper) {
+		$this->helper = $helper;
 		parent::__construct();
 	}
 
-	protected function configure(): void {
+	protected function configure() {
 		$this
 			->setName('ldap:create-empty-config')
 			->setDescription('creates an empty LDAP configuration')
@@ -62,6 +67,6 @@ class CreateEmptyConfig extends Command {
 			$prose = 'Created new configuration with configID ';
 		}
 		$output->writeln($prose . "{$configPrefix}");
-		return self::SUCCESS;
+		return 0;
 	}
 }

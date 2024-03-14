@@ -72,7 +72,6 @@ interface IAccountManager {
 	/**
 	 * Contact details only visible locally
 	 *
-	 * @since 15.0.0
 	 * @deprecated 21.0.1
 	 */
 	public const VISIBILITY_PRIVATE = 'private';
@@ -80,7 +79,6 @@ interface IAccountManager {
 	/**
 	 * Contact details visible on trusted federated servers.
 	 *
-	 * @since 15.0.0
 	 * @deprecated 21.0.1
 	 */
 	public const VISIBILITY_CONTACTS_ONLY = 'contacts';
@@ -88,7 +86,6 @@ interface IAccountManager {
 	/**
 	 * Contact details visible on trusted federated servers and in the public lookup server.
 	 *
-	 * @since 15.0.0
 	 * @deprecated 21.0.1
 	 */
 	public const VISIBILITY_PUBLIC = 'public';
@@ -108,49 +105,14 @@ interface IAccountManager {
 		self::VISIBILITY_PUBLIC,
 	];
 
-	/**
-	 * @since 15.0.0
-	 */
 	public const PROPERTY_AVATAR = 'avatar';
-
-	/**
-	 * @since 15.0.0
-	 */
 	public const PROPERTY_DISPLAYNAME = 'displayname';
-
-	/**
-	 * @since 27.0.0
-	 */
 	public const PROPERTY_DISPLAYNAME_LEGACY = 'display-name';
-
-	/**
-	 * @since 15.0.0
-	 */
 	public const PROPERTY_PHONE = 'phone';
-
-	/**
-	 * @since 15.0.0
-	 */
 	public const PROPERTY_EMAIL = 'email';
-
-	/**
-	 * @since 15.0.0
-	 */
 	public const PROPERTY_WEBSITE = 'website';
-
-	/**
-	 * @since 15.0.0
-	 */
 	public const PROPERTY_ADDRESS = 'address';
-
-	/**
-	 * @since 15.0.0
-	 */
 	public const PROPERTY_TWITTER = 'twitter';
-
-	/**
-	 * @since 26.0.0
-	 */
 	public const PROPERTY_FEDIVERSE = 'fediverse';
 
 	/**
@@ -199,25 +161,10 @@ interface IAccountManager {
 		self::PROPERTY_PROFILE_ENABLED,
 	];
 
-
-	/**
-	 * @since 22.0.0
-	 */
 	public const COLLECTION_EMAIL = 'additional_mail';
 
-	/**
-	 * @since 15.0.0
-	 */
 	public const NOT_VERIFIED = '0';
-
-	/**
-	 * @since 15.0.0
-	 */
 	public const VERIFICATION_IN_PROGRESS = '1';
-
-	/**
-	 * @since 15.0.0
-	 */
 	public const VERIFIED = '2';
 
 	/**

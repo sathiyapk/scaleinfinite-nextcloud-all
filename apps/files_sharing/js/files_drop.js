@@ -24,9 +24,10 @@
 			var filesClient = new OC.Files.Client({
 				host: OC.getHost(),
 				port: OC.getPort(),
+				userName: $('#sharingToken').val(),
 				// note: password not be required, the endpoint
 				// will recognize previous validation from the session
-				root: OC.getRootPath() + '/public.php/dav/files/' + $('#sharingToken').val() + '/',
+				root: OC.getRootPath() + '/public.php/webdav',
 				useHTTPS: OC.getProtocol() === 'https'
 			});
 
@@ -44,12 +45,20 @@
 				return false;
 			}
 			var base = OC.getProtocol() + '://' + OC.getHost();
-			data.url = base + OC.getRootPath() + '/public.php/dav/files/' + $('#sharingToken').val() + '/' + encodeURI(name);
+			data.url = base + OC.getRootPath() + '/public.php/webdav/' + encodeURI(name);
 
 			data.multipart = false;
 
 			if (!data.headers) {
 				data.headers = {};
+			}
+
+			var userName = filesClient.getUserName();
+			var password = filesClient.getPassword();
+			if (userName) {
+				// copy username/password from DAV client
+				data.headers['Authorization'] =
+					'Basic ' + btoa(userName + ':' + (password || ''));
 			}
 
 			$('#drop-upload-done-indicator').addClass('hidden');

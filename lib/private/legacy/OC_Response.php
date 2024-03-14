@@ -85,11 +85,13 @@ class OC_Response {
 			. 'style-src \'self\' \'unsafe-inline\'; '
 			. 'frame-src *; '
 			. 'img-src * data: blob:; '
-			. 'font-src \'self\' data:; '
+			// . 'font-src \'self\' data:; '
+			. 'font-src \'self\' data: https://fonts.gstatic.com; '
 			. 'media-src *; '
 			. 'connect-src *; '
 			. 'object-src \'none\'; '
 			. 'base-uri \'self\'; ';
+			
 		header('Content-Security-Policy:' . $policy);
 
 		// Send fallback headers for installations that don't have the possibility to send

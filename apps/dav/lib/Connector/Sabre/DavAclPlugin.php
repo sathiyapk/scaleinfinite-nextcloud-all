@@ -8,7 +8,6 @@
  * @author Robin Appelman <robin@icewind.nl>
  * @author Roeland Jago Douma <roeland@famdouma.nl>
  * @author Thomas Müller <thomas.mueller@tmit.eu>
- * @author Richard Steinmetz <richard@steinmetz.cloud>
  *
  * @license AGPL-3.0
  *
@@ -27,7 +26,6 @@
  */
 namespace OCA\DAV\Connector\Sabre;
 
-use OCA\DAV\CalDAV\Calendar;
 use OCA\DAV\CardDAV\AddressBook;
 use Sabre\CalDAV\Principal\User;
 use Sabre\DAV\Exception\NotFound;
@@ -59,9 +57,6 @@ class DavAclPlugin extends \Sabre\DAVACL\Plugin {
 			switch (get_class($node)) {
 				case AddressBook::class:
 					$type = 'Addressbook';
-					break;
-				case Calendar::class:
-					$type = 'Calendar';
 					break;
 				default:
 					$type = 'Node';
@@ -110,15 +105,11 @@ class DavAclPlugin extends \Sabre\DAVACL\Plugin {
 
 		parent::beforeMethod($request, $response);
 
-		if (!str_starts_with($path, 'addressbooks/') && !str_starts_with($path, 'calendars/')) {
-			return;
-		}
+		$createAddressbookOrCalendarRequest = ($request->getMethod() === 'MKCALENDAR' || $request->getMethod() === 'MKCOL')
+			&& (str_starts_with($path, 'addressbooks/') || str_starts_with($path, 'calendars/'));
 
-		[$parentName] = \Sabre\Uri\split($path);
-		if ($request->getMethod() === 'REPORT') {
-			// is calendars/users/bob or addressbooks/users/bob readable?
-			$this->checkPrivileges($parentName, '{DAV:}read');
-		} elseif ($request->getMethod() === 'MKCALENDAR' || $request->getMethod() === 'MKCOL') {
+		if ($createAddressbookOrCalendarRequest) {
+			[$parentName] = \Sabre\Uri\split($path);
 			// is calendars/users/bob or addressbooks/users/bob writeable?
 			$this->checkPrivileges($parentName, '{DAV:}write');
 		}

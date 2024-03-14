@@ -40,7 +40,6 @@ use Psr\Log\LoggerInterface;
 use Sabre\VObject\Component\VCard;
 use Sabre\VObject\UUIDUtil;
 
-/** @template-implements IEventListener<ContactInteractedWithEvent> */
 class ContactInteractionListener implements IEventListener {
 
 	use TTransactional;
@@ -75,7 +74,7 @@ class ContactInteractionListener implements IEventListener {
 			$uid = $event->getUid();
 			$email = $event->getEmail();
 			$federatedCloudId = $event->getFederatedCloudId();
-
+		
 			$existingContact = $this->cardSearchDao->findExisting(
 				$event->getActor(),
 				$uid,

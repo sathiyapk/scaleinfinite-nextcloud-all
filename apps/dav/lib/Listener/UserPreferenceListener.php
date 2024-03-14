@@ -31,7 +31,6 @@ use OCP\Config\BeforePreferenceSetEvent;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 
-/** @template-implements IEventListener<BeforePreferenceSetEvent|BeforePreferenceDeletedEvent> */
 class UserPreferenceListener implements IEventListener {
 
 	protected IJobList $jobList;

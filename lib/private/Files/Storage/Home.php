@@ -68,7 +68,7 @@ class Home extends Local implements \OCP\Files\IHomeStorage {
 			$storage = $this;
 		}
 		if (!isset($this->cache)) {
-			$this->cache = new \OC\Files\Cache\HomeCache($storage, $this->getCacheDependencies());
+			$this->cache = new \OC\Files\Cache\HomeCache($storage);
 		}
 		return $this->cache;
 	}

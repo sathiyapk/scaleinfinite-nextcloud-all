@@ -91,19 +91,23 @@ use Throwable;
 
 class Repair implements IOutput {
 	/** @var IRepairStep[] */
-	private array $repairSteps = [];
+	private array $repairSteps;
+
+	private IEventDispatcher $dispatcher;
 
 	private string $currentStep;
 
-	public function __construct(
-		private IEventDispatcher $dispatcher,
-		private LoggerInterface $logger
-	) {
-	}
+	private LoggerInterface $logger;
 
-	/** @param IRepairStep[] $repairSteps */
-	public function setRepairSteps(array $repairSteps): void {
+	/**
+	 * Creates a new repair step runner
+	 *
+	 * @param IRepairStep[] $repairSteps array of RepairStep instances
+	 */
+	public function __construct(array $repairSteps, IEventDispatcher $dispatcher, LoggerInterface $logger) {
 		$this->repairSteps = $repairSteps;
+		$this->dispatcher = $dispatcher;
+		$this->logger = $logger;
 	}
 
 	/**

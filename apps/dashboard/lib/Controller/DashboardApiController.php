@@ -54,14 +54,25 @@ use OCP\IRequest;
  */
 class DashboardApiController extends OCSController {
 
+	/** @var IManager */
+	private $dashboardManager;
+	/** @var IConfig */
+	private $config;
+	/** @var string|null */
+	private $userId;
+
 	public function __construct(
 		string $appName,
 		IRequest $request,
-		private IManager $dashboardManager,
-		private IConfig $config,
-		private ?string $userId,
+		IManager $dashboardManager,
+		IConfig $config,
+		?string $userId
 	) {
 		parent::__construct($appName, $request);
+
+		$this->dashboardManager = $dashboardManager;
+		$this->config = $config;
+		$this->userId = $userId;
 	}
 
 	/**
@@ -90,7 +101,6 @@ class DashboardApiController extends OCSController {
 	 *
 	 * @param array<string, string> $sinceIds Array indexed by widget Ids, contains date/id from which we want the new items
 	 * @param int $limit Limit number of result items per widget
-	 * @psalm-param int<1, 30> $limit
 	 * @param string[] $widgets Limit results to specific widgets
 	 * @return DataResponse<Http::STATUS_OK, array<string, DashboardWidgetItem[]>, array{}>
 	 *
@@ -117,8 +127,7 @@ class DashboardApiController extends OCSController {
 	 * Get the items for the widgets
 	 *
 	 * @param array<string, string> $sinceIds Array indexed by widget Ids, contains date/id from which we want the new items
-	 * @param int $limit Limit number of result items per widget, not more than 30 are allowed
-	 * @psalm-param int<1, 30> $limit
+	 * @param int $limit Limit number of result items per widget
 	 * @param string[] $widgets Limit results to specific widgets
 	 * @return DataResponse<Http::STATUS_OK, array<string, DashboardWidgetItems>, array{}>
 	 *

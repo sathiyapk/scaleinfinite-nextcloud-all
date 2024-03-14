@@ -28,10 +28,8 @@
 namespace OC\Files\Cache\Wrapper;
 
 use OC\Files\Cache\Cache;
-use OC\Files\Cache\CacheDependencies;
 use OC\Files\Search\SearchBinaryOperator;
 use OC\Files\Search\SearchComparison;
-use OCP\Files\Cache\ICache;
 use OCP\Files\Cache\ICacheEntry;
 use OCP\Files\Search\ISearchBinaryOperator;
 use OCP\Files\Search\ISearchComparison;
@@ -47,12 +45,12 @@ class CacheJail extends CacheWrapper {
 	protected $root;
 	protected $unjailedRoot;
 
-	public function __construct(
-		?ICache $cache,
-		string $root,
-		CacheDependencies $dependencies = null,
-	) {
-		parent::__construct($cache, $dependencies);
+	/**
+	 * @param ?\OCP\Files\Cache\ICache $cache
+	 * @param string $root
+	 */
+	public function __construct($cache, $root) {
+		parent::__construct($cache);
 		$this->root = $root;
 
 		if ($cache instanceof CacheJail) {

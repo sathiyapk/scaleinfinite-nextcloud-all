@@ -2,7 +2,7 @@ OC.L10N.register(
     "dav",
     {
     "Calendar" : "Календар",
-    "Tasks" : "Задачи",
+    "To-dos" : "Задачи за изпълнение",
     "Personal" : "Личен",
     "{actor} created calendar {calendar}" : "{actor} направи календар {calendar}",
     "You created calendar {calendar}" : "Създадохте календара {calendar}",
@@ -141,6 +141,7 @@ OC.L10N.register(
     "Configures a CalDAV account" : "Конфигурира профил в CalDAV",
     "Configures a CardDAV account" : "Конфигурира профил в CalDAV",
     "Events" : "Събития",
+    "Tasks" : "Задачи",
     "Untitled task" : "Задача без заглавие",
     "Completed on %s" : "Завършен на %s",
     "Due on %s by %s" : "Краен срок на %s от %s",
@@ -169,6 +170,7 @@ OC.L10N.register(
     "Saved availability" : "Запазена наличност",
     "Failed to save availability" : "Неуспешно записване на наличност",
     "Availability" : "Наличност",
+    "If you configure your working hours, other users will see when you are out of office when they book a meeting." : "Ако конфигурирате работното си време, другите потребители ще виждат кога сте извън офиса, при резервиране на среща.",
     "Calendar server" : "Сървър на календар",
     "Send invitations to attendees" : "Изпращане на покани до участниците",
     "Automatically generate a birthday calendar" : "Автоматично генериране на календар с рождени дни.",
@@ -185,8 +187,6 @@ OC.L10N.register(
     "Please contact the organizer directly." : "Моля, свържете се директно с организатора.",
     "Are you accepting the invitation?" : "Приемате ли поканата?",
     "Tentative" : "Несигурно",
-    "Your attendance was updated successfully." : "Вашето присъствие е актуализирано успешно.",
-    "To-dos" : "Задачи за изпълнение",
-    "If you configure your working hours, other users will see when you are out of office when they book a meeting." : "Ако конфигурирате работното си време, другите потребители ще виждат кога сте извън офиса, при резервиране на среща."
+    "Your attendance was updated successfully." : "Вашето присъствие е актуализирано успешно."
 },
 "nplurals=2; plural=(n != 1);");

@@ -32,7 +32,6 @@ use OCP\Config\BeforePreferenceSetEvent;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 
-/** @template-implements IEventListener<BeforePreferenceDeletedEvent|BeforePreferenceSetEvent> */
 class BeforePreferenceListener implements IEventListener {
 	public function __construct(
 		private IAppManager $appManager,

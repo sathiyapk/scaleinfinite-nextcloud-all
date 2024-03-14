@@ -113,9 +113,8 @@ OC.L10N.register(
     "between" : "بين",
     "not between" : "ليس بين",
     "Request user agent" : "وكيل المستخدم الخاص بالطلب",
-    "Group membership" : "عضوية المجموعة",
+    "User group membership" : "عضوية مجموعة المستخدمين",
     "is member of" : "عضو فى",
-    "is not member of" : "ليس عضو فى",
-    "User group membership" : "عضوية مجموعة المستخدمين"
+    "is not member of" : "ليس عضو فى"
 },
 "nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;");

@@ -81,7 +81,7 @@ OC.L10N.register(
     "Available flows" : "Verfügbare Abläufe",
     "For details on how to write your own flow, check out the development documentation." : "Informationen zur Erstellung eigener Abläufe findest du in der Entwickler-Dokumentation.",
     "No flows installed" : "Keine Abläufe installiert",
-    "Ask your administrator to install new flows." : "Bitte deinen Administrator, neue Abläufe zu installieren.",
+    "Ask your administrator to install new flows." : "Bitten Sie Ihre Administration, neue Abläufe zu installieren.",
     "More flows" : "Weitere Abläufe",
     "Browse the App Store" : "App-Store durchsuchen",
     "Show less" : "Weniger anzeigen",
@@ -113,8 +113,8 @@ OC.L10N.register(
     "between" : "zwischen",
     "not between" : "nicht zwischen",
     "Request user agent" : "User-Agent",
+    "User group membership" : "Benutzergruppen-Mitgliedschaft",
     "is member of" : "ist Mitglied von",
-    "is not member of" : "ist kein Mitglied von",
-    "User group membership" : "Benutzergruppen-Mitgliedschaft"
+    "is not member of" : "ist kein Mitglied von"
 },
 "nplurals=2; plural=(n != 1);");

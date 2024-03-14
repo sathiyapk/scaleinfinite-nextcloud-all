@@ -30,14 +30,7 @@ use OCP\Files\FileInfo;
  * @since 12.0.0
  */
 interface ISearchOrder {
-	/**
-	 * @since 12.0.0
-	 */
 	public const DIRECTION_ASCENDING = 'asc';
-
-	/**
-	 * @since 12.0.0
-	 */
 	public const DIRECTION_DESCENDING = 'desc';
 
 	/**

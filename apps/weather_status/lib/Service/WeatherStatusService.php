@@ -27,7 +27,6 @@ declare(strict_types=1);
 namespace OCA\WeatherStatus\Service;
 
 use OCA\WeatherStatus\AppInfo\Application;
-use OCA\WeatherStatus\ResponseDefinitions;
 use OCP\Accounts\IAccountManager;
 use OCP\Accounts\PropertyDoesNotExistException;
 use OCP\App\IAppManager;
@@ -44,11 +43,6 @@ use Psr\Log\LoggerInterface;
  * Class WeatherStatusService
  *
  * @package OCA\WeatherStatus\Service
- *
- * @psalm-import-type WeatherStatusForecast from ResponseDefinitions
- * @psalm-import-type WeatherStatusSuccess from ResponseDefinitions
- * @psalm-import-type WeatherStatusLocationWithSuccess from ResponseDefinitions
- * @psalm-import-type WeatherStatusLocationWithMode from ResponseDefinitions
  */
 class WeatherStatusService {
 	public const MODE_BROWSER_LOCATION = 1;
@@ -79,7 +73,7 @@ class WeatherStatusService {
 	 * - ask the browser
 	 * - use the user defined address
 	 * @param int $mode New mode
-	 * @return WeatherStatusSuccess success state
+	 * @return array success state
 	 */
 	public function setMode(int $mode): array {
 		$this->config->setUserValue($this->userId, Application::APP_ID, 'mode', strval($mode));
@@ -98,7 +92,7 @@ class WeatherStatusService {
 	/**
 	 * Set favorites list
 	 * @param string[] $favorites
-	 * @return WeatherStatusSuccess success state
+	 * @return array success state
 	 */
 	public function setFavorites(array $favorites): array {
 		$this->config->setUserValue($this->userId, Application::APP_ID, 'favorites', json_encode($favorites));
@@ -108,7 +102,7 @@ class WeatherStatusService {
 	/**
 	 * Try to use the address set in user personal settings as weather location
 	 *
-	 * @return WeatherStatusLocationWithSuccess with success state and address information
+	 * @return array with success state and address information
 	 */
 	public function usePersonalAddress(): array {
 		$account = $this->accountManager->getAccount($this->userManager->get($this->userId));
@@ -130,7 +124,7 @@ class WeatherStatusService {
 	 * @param string|null $address Any approximative or exact address
 	 * @param float|null $lat Latitude in decimal degree format
 	 * @param float|null $lon Longitude in decimal degree format
-	 * @return WeatherStatusLocationWithSuccess with success state and address information
+	 * @return array with success state and address information
 	 */
 	public function setLocation(?string $address, ?float $lat, ?float $lon): array {
 		if (!is_null($lat) && !is_null($lon)) {
@@ -234,7 +228,7 @@ class WeatherStatusService {
 	 * Set address and resolve it to get coordinates
 	 *
 	 * @param string $address Any approximative or exact address
-	 * @return WeatherStatusLocationWithSuccess with success state and address information (coordinates and formatted address)
+	 * @return array with success state and address information (coordinates and formatted address)
 	 */
 	public function setAddress(string $address): array {
 		$addressInfo = $this->searchForAddress($address);
@@ -262,7 +256,7 @@ class WeatherStatusService {
 	 * Ask nominatim information about an unformatted address
 	 *
 	 * @param string Unformatted address
-	 * @return array{display_name?: string, lat?: string, lon?: string, error?: string} Full Nominatim result for the given address
+	 * @return array Full Nominatim result for the given address
 	 */
 	private function searchForAddress(string $address): array {
 		$params = [
@@ -284,7 +278,7 @@ class WeatherStatusService {
 	/**
 	 * Get stored user location
 	 *
-	 * @return WeatherStatusLocationWithMode which contains coordinates, formatted address and current weather status mode
+	 * @return array which contains coordinates, formatted address and current weather status mode
 	 */
 	public function getLocation(): array {
 		$lat = $this->config->getUserValue($this->userId, Application::APP_ID, 'lat', '');
@@ -302,7 +296,7 @@ class WeatherStatusService {
 	/**
 	 * Get forecast for current location
 	 *
-	 * @return WeatherStatusForecast[]|array{error: string}|WeatherStatusSuccess which contains success state and filtered forecast data
+	 * @return array which contains success state and filtered forecast data
 	 */
 	public function getForecast(): array {
 		$lat = $this->config->getUserValue($this->userId, Application::APP_ID, 'lat', '');
@@ -325,7 +319,7 @@ class WeatherStatusService {
 	 * @param float $lon Longitude of requested forecast, in decimal degree format
 	 * @param float $altitude Altitude of requested forecast, in meter
 	 * @param int $nbValues Number of forecast values (hours)
-	 * @return WeatherStatusForecast[]|array{error: string} Filtered forecast data
+	 * @return array Filtered forecast data
 	 */
 	private function forecastRequest(float $lat, float $lon, float $altitude, int $nbValues = 10): array {
 		$params = [

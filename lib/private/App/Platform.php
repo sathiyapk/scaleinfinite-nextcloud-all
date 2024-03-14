@@ -36,9 +36,10 @@ use OCP\IConfig;
  * @package OC\App
  */
 class Platform {
-	public function __construct(
-		private IConfig $config,
-	) {
+	private IConfig $config;
+
+	public function __construct(IConfig $config) {
+		$this->config = $config;
 	}
 
 	public function getPhpVersion(): string {

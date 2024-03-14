@@ -24,27 +24,26 @@
  */
 namespace OC\OCS;
 
-use OCP\App\IAppManager;
-use OCP\AppFramework\Controller;
-use OCP\AppFramework\Http\JSONResponse;
-use OCP\IRequest;
+class Provider extends \OCP\AppFramework\Controller {
+	/** @var \OCP\App\IAppManager */
+	private $appManager;
 
-class Provider extends Controller {
 	/**
 	 * @param string $appName
-	 * @param IRequest $request
-	 * @param IAppManager $appManager
+	 * @param \OCP\IRequest $request
+	 * @param \OCP\App\IAppManager $appManager
 	 */
 	public function __construct($appName,
 		\OCP\IRequest $request,
-		private \OCP\App\IAppManager $appManager) {
+		\OCP\App\IAppManager $appManager) {
 		parent::__construct($appName, $request);
+		$this->appManager = $appManager;
 	}
 
 	/**
-	 * @return JSONResponse
+	 * @return \OCP\AppFramework\Http\JSONResponse
 	 */
-	public function buildProviderList(): JSONResponse {
+	public function buildProviderList() {
 		$services = [
 			'PRIVATE_DATA' => [
 				'version' => 1,
@@ -109,7 +108,7 @@ class Provider extends Controller {
 			];
 		}
 
-		return new JSONResponse([
+		return new \OCP\AppFramework\Http\JSONResponse([
 			'version' => 2,
 			'services' => $services,
 		]);
