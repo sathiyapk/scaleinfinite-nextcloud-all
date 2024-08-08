@@ -1,0 +1,491 @@
+/**
+ * SPDX-FileCopyrightText: 2017-2024 Nextcloud GmbH and Nextcloud contributors
+ * SPDX-FileCopyrightText: 2015 ownCloud, Inc.
+ * SPDX-License-Identifier: AGPL-3.0-only
+ */
+
+
+ /* Theme Colors Variable */
+ [data-theme-light] {
+	--color-main-background:#ffffff;
+	--color-main-background-rgb:255,255,255;
+	--color-main-background-translucent:rgba(var(--color-main-background-rgb), .97);
+	--color-main-background-blur:rgba(var(--color-main-background-rgb), .8);
+	--filter-background-blur:none;
+	--gradient-main-background:var(--color-main-background) 0%, var(--color-main-background-translucent) 85%, transparent 100%;
+	--color-background-hover:#f5f5f5;
+	--color-background-dark:#ededed;
+	--color-background-darker:#dbdbdb;
+	--color-placeholder-light:#e6e6e6;
+	--color-placeholder-dark:#cccccc;
+	--color-main-text:#222222;
+	/* custom */
+	--color-nav-background:##242635;
+	--color-text-maxcontrast:#6b6b6b;
+	--color-text-maxcontrast-default:#6b6b6b;
+	--color-text-maxcontrast-background-blur:#595959;
+	--color-text-light:var(--color-main-text);
+	--color-text-lighter:var(--color-text-maxcontrast);
+	--color-scrollbar:rgba(34,34,34, .15);
+	--color-error:#DB0606;
+	--color-error-rgb:219,6,6;
+	--color-error-hover:#df2525;
+	--color-error-text:#c20505;
+	--color-warning:#A37200;
+	--color-warning-rgb:163,114,0;
+	--color-warning-hover:#8a6000;
+	--color-warning-text:#7f5900;
+	--color-success:#2d7b41;
+	--color-success-rgb:45,123,65;
+	--color-success-hover:#428854;
+	--color-success-text:#286c39;
+	--color-info:#0071ad;
+	--color-info-rgb:0,113,173;
+	--color-info-hover:#197fb5;
+	--color-info-text:#006499;
+	--color-favorite:#A37200;
+	--color-loading-light:#cccccc;
+	--color-loading-dark:#444444;
+	--color-box-shadow-rgb:77,77,77;
+	--color-box-shadow:rgba(var(--color-box-shadow-rgb), 0.5);
+	--color-border:#ededed;
+	--color-border-dark:#dbdbdb;
+	--color-border-maxcontrast:#7d7d7d;
+	--font-face:system-ui, -apple-system, "Segoe UI", Roboto, Oxygen-Sans, Cantarell, Ubuntu, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+	--default-font-size:15px;
+	--default-line-height:24px;
+	--animation-quick:100ms;
+	--animation-slow:300ms;
+	--border-width-input:1px;
+	--border-width-input-focused:2px;
+	--border-radius:3px;
+	--border-radius-large:10px;
+	--border-radius-rounded:28px;
+	--border-radius-element:8px;
+	--border-radius-pill:100px;
+	--default-clickable-area:34px;
+	--clickable-area-large:48px;
+	--clickable-area-small:24px;
+	--default-grid-baseline:4px;
+	--header-height:50px;
+	--header-menu-item-height:44px;
+	--navigation-width:300px;
+	--sidebar-min-width:300px;
+	--sidebar-max-width:500px;
+	--body-container-radius:calc(var(--default-grid-baseline) * 3);
+	--body-container-margin:calc(var(--default-grid-baseline) * 2);
+	--body-height:calc(100% - env(safe-area-inset-bottom) - var(--header-height) - var(--body-container-margin));
+	--breakpoint-mobile:1024px;
+	--background-invert-if-dark:no;
+	--background-invert-if-bright:invert(100%);
+	--background-image-invert-if-bright:invert(100%);
+	--primary-invert-if-bright:no;
+	--primary-invert-if-dark:invert(100%);
+	--color-primary:#745bca;
+	--color-primary-text:#ffffff;
+	--color-primary-hover:#8f7bd4;
+	--color-primary-light:#f1eef9;
+	--color-primary-light-text:#2e2450;
+	--color-primary-light-hover:#e6e3ee;
+	--color-primary-element:#745bca;
+	--color-primary-element-hover:#674cc5;
+	--color-primary-element-text:#ffffff;
+	--color-primary-element-text-dark:#f5f5f5;
+	--color-primary-element-light:#f1eef9;
+	--color-primary-element-light-hover:#e6e3ee;
+	--color-primary-element-light-text:#2e2450;
+	--gradient-primary-background:linear-gradient(40deg, var(--color-primary) 0%, var(--color-primary-hover) 100%);
+	--color-background-plain:#3d85c6;
+	--color-background-plain-text:#000000;
+	--image-background:url("/scaleinfinite-nextcloud-all/apps/theming/img/background/jenna-kim-the-globe.webp");
+  }
+
+/* header color */
+/* this is the main brand color */
+#body-user #header,
+#body-settings #header,
+#body-public #header {
+
+	background-color: #02075d;
+}
+
+/* log in screen background color */
+/* gradient of the header color and a brighter shade */
+/* can also be a flat color or an image */
+#body-login {
+	background: #43489a; /* Old browsers */
+	background: -moz-linear-gradient(top, #947bea 0%, #43489a 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#947bea), color-stop(100%,#43489a)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, #947bea 0%,#43489a 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, #947bea 0%,#43489a 100%); /* Opera11.10+ */
+	background: -ms-linear-gradient(top, #947bea 0%,#43489a 100%); /* IE10+ */
+	background: linear-gradient(top, #947bea 0%,#43489a 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#947bea', endColorstr='#43489a',GradientType=0 ); /* IE6-9 */
+}
+
+/* primary action button, use sparingly */
+/* header color as border, brighter shade again, here as background */
+.primary,
+input[type="submit"].primary,
+input[type="button"].primary,
+button.primary,
+.button.primary,
+.primary:active,
+input[type="submit"].primary:active,
+input[type="button"].primary:active,
+button.primary:active,
+.button.primary:active {
+	border-color: #43489a !important;
+	background-color: #947bea !important;
+}
+.primary:hover,
+input[type="submit"].primary:hover,
+input[type="button"].primary:hover,
+button.primary:hover,
+.button.primary:hover,
+.primary:focus,
+input[type="submit"].primary:focus,
+input[type="button"].primary:focus,
+button.primary:focus,
+.button.primary:focus {
+	background-color: #8b75e4 !important;
+}
+.primary:active, input[type="submit"].primary:active, input[type="button"].primary:active, button.primary:active, .button.primary:active,
+.primary:disabled, input[type="submit"].primary:disabled, input[type="button"].primary:disabled, button.primary:disabled, .button.primary:disabled,
+.primary:disabled:hover, input[type="submit"].primary:disabled:hover, input[type="button"].primary:disabled:hover, button.primary:disabled:hover, .button.primary:disabled:hover,
+.primary:disabled:focus, input[type="submit"].primary:disabled:focus, input[type="button"].primary:disabled:focus, button.primary:disabled:focus, .button.primary:disabled:focus {
+	/* background-color: #43489a !important; */
+	background-color: #43489a !important;
+}
+
+/* use logos from theme */
+#header .logo,
+#firstrunwizard .logo {
+	background-image: url('../img/logo.png');
+	width: 256px;
+	height: 128px;
+}
+#header .logo-icon {
+	width: 100px;
+	height: auto;
+}
+/* ----------------------- */
+/* Disable the rounded corners for the main content area */
+
+#content, .content {
+	border-radius:0 !important;
+
+  }
+  
+  /* Remove margins for the main content area */
+  
+  #content, .content {
+	margin-left:0 !important;
+	margin-right:0 !important;
+	margin-bottom:0 !important;
+	width:100% !important;
+	height: calc(var(--body-height) + var(--body-container-margin)) !important;
+  }
+  
+  /* Make input element  corners a bit less rounded
+	 (may need some additional classes, as I did not check every detail in the UI) */
+  
+  input, textarea, select, .multiselect__tags, .rich-contenteditable__input {
+	border-radius:4px !important;
+  }
+  
+  /* Fix visual glitches with navigation if there is no background image */
+  
+  #app-navigation, .app-navigation {
+	backdrop-filter:none !important;
+  }
+  
+  /* Make quota display non-clickable since selecting this element does not do anything at all
+	 and remove rounded border to avoid cutting of the visual indicator */
+  
+  .app-files #quota {
+	pointer-events:none;
+  }
+  
+  .app-files #quota,
+  .app-files #quota > a {
+	border-radius:0 !important;
+  }
+  
+  /* Fix for "new" menu entries in the files app */
+  
+  #content[class*=app-] .bubble li > button,
+  #content[class*=app-] .bubble li > a,
+  #content[class*=app-] .bubble li > .menuitem,
+  #content[class*=app-] .app-navigation-entry-menu li > button,
+  #content[class*=app-] .app-navigation-entry-menu li > a,
+  #content[class*=app-] .app-navigation-entry-menu li > .menuitem,
+  #content[class*=app-] .popovermenu li > button,
+  #content[class*=app-] .popovermenu li > a,
+  #content[class*=app-] .popovermenu li > .menuitem {
+	width: 100%;
+  }
+  /* OnlyOffice with correct height */
+
+#app > iframe {
+	height:calc(100vh - 50px);
+  }
+  
+  /* Draw.io without scrolling of the app area */
+  
+  .app-drawio > #app-content {
+	overflow:hidden;
+  }
+  
+  /* Custom styling for markdown editor to have a bit bigger text */
+  
+  .text-editor__wrapper div.ProseMirror p {
+	font-size:16px;
+  }
+ #app-content-vue {
+	background-color: #fff;
+  }
+
+/* File list */
+  .files-list thead{
+	background-color: #43489a;
+	color: #000;
+  }
+  .files-list td span .files-list__row-name-{
+	color: #000;
+  }
+  .files-list td span {
+	color: #000;
+  }
+  .files-list .files-list__row-icon>span {
+    /* background: #fff; */
+    color: #43489a;
+}
+  .files-list .files-list__row:hover>*, .files-list .files-list__row:focus>*, .files-list .files-list__row:active>*, .files-list .files-list__row--active>*, .files-list .files-list__row--dragover>* {
+    /* --color-border: var(--color-border-dark); */
+	background-color: #f6f6f6;
+}
+.button-vue, .button-vue span {
+     color: #02075d;
+}
+button{
+	background-color: none;
+	border: 1px solid #6186fe;
+}
+.files-list .files-list__thead, .files-list.files-list__tfoot {
+    background-color: #fff !important;
+}
+.button-vue--reverse .button-vue__wrapper:hover {
+     background-color: #fff;
+}
+/* button:not(.button-vue,[class^=vs__]):not(:disabled,.primary):not(.app-navigation-entry-button):hover{
+	background-color: #fff;
+} */
+.files-list__thead, .files-list__tfoot {			
+			background-color: #fff !important;
+	}
+	.files-list .files-list__filters {
+	background-color: #fff;
+	}
+.files-list__filters{
+	background-color: #f6f6f6 !important;
+}
+.file-list-filter-accounts{
+	display: none;
+}
+.vue-crumb[data-v-cfe13af3] .button-vue__text{
+	font-weight: 400;
+	font-size: 0.9rem;
+}
+.button-vue *[data-v-44398b0c], .button-vue span[data-v-44398b0c] {
+       font-weight: 400;
+	   font-size: 0.8rem;
+}
+.button-vue--vue-secondary{
+	background-color: #fff !important;
+	border: 1px solid #6186fe !important;
+	border-radius: 1px !important;
+}
+.button-vue--vue-secondary:hover{
+	background-color: #f6f6f6 !important;
+}
+.files-list__system-tag{
+	border: 1px solid #FF5733!important;
+	color: #FF5733!important;
+	font-weight: 400 !important;
+	font-size: 0.9rem !important;
+}
+.dots-horizontal-icon{
+	color: #FF5733 !important;
+}
+.action-button__text{
+	font-size: 0.9rem !important;
+	font-weight: 400 !important;
+}
+.action-button span .icon-vue{
+	color: #FF5733 !important;
+}
+.checkbox-content:not(.checkbox-content--button-variant) .checkbox-content__icon > *[data-v-02d27370] {
+    color: #43489a !important;
+}
+
+/* Left side bar */
+.app-navigation__content{
+   background-color: #282828;
+}
+.app-navigation-entry .app-navigation-entry-link .app-navigation-entry__name{
+	color: #fff;
+	font-weight: 400;
+	font-size: 1rem;
+}
+.app-navigation-entry:focus-within, .app-navigation-entry:hover {
+    background-color: #7e7f7e !important;
+	border-radius: 0 !important;
+}
+
+.app-navigation-entry.active .app-navigation-entry-link {
+	background-color: #7e7f7e !important;
+	
+}
+.app-navigation-entry .app-navigation-entry-link .app-navigation-entry-icon{
+	color: #fff;
+}
+.app-navigation[data-v-68d1334c] .app-navigation-entry.active .button-vue.icon-collapse:not(:hover) {
+	background-color: var(--color-nav-background);
+	border-radius: 0 !important;
+}
+.chevron-down-icon{
+	color: #fff !important;
+}
+
+.icon-collapse button-vue .button-vue--size-normal .button-vue--icon-only .button-vue--vue-tertiary{
+	background-color: var(--color-nav-background);
+}
+.theming__preview--default{
+	display: none !important;
+}
+.theming__preview--dark{
+	display: none !important;
+}
+.theming__preview--light-highcontrast{
+	display: none !important;
+}
+.theming__preview--dark-highcontrast{
+	display: none !important;
+}
+.theming__preview--opendyslexic{
+	display: none !important;
+}
+.input-field__input{
+	background-color: #b2b4b3 !important;
+}
+
+.app-menu-icon{
+	filter: invert(1);
+}
+#header .logo{
+	filter: none !important;
+}
+.app-menu-entry--active .app-menu-entry__label {
+   color: #fff !important;
+}
+.app-menu-entry__label{
+	color: #fff !important;
+}
+
+/* Appearance and accessibility page */
+#app-navigation:not(.vue) {
+	/* background-color: #282828 !important; */
+	background-color: var(--color-main-text);
+}
+.without-app-settings{
+	color: #fff !important;
+}
+nav  ul li a{
+	color: #fff !important;
+}
+.user-menu ul li a{
+color: #000 !important;
+}
+.app-navigation-personal>ul>li.active>a{
+	background-color: #7e7f7e !important;
+	border-radius: 0;
+}
+.app-navigation-personal>ul>li>a:hover{
+	background-color: #7e7f7e !important;
+	border-radius: 0;
+}
+.app-navigation-personal>ul>li>a:first-child img{
+	filter: invert(1) !important;
+}
+.app-navigation-administration>ul>li.active>a{
+	background-color: #7e7f7e !important;
+	border-radius: 0;
+}
+.app-navigation-administration>ul>li>a:hover{
+	background-color: #7e7f7e !important;
+	border-radius: 0;
+}
+.app-navigation-administration>ul>li>a:first-child img{
+	filter: invert(1) !important;
+}
+/* user-menu */
+.user-menu ul li a:hover{
+	background-color: #e6e8e9 !important;
+}
+.user-menu ul li a.active:not(:focus-visible){
+	background-color: #e6e8e9 !important;
+}
+/* Personal info */
+.input-field__input{
+	background-color: #e6e8e9 !important;
+	border: 1px solid #7e7f7e;
+}
+/* Button */
+.button-vue .button-vue--size-normal .button-vue--text-only .button-vue--vue-primary{
+	background-color: none;
+	border: 1px solid  #FF5733 !important;
+	color: #FF5733 !important;
+}
+.button-vue:disabled{
+	background-color: none;
+	border: 1px solid  #FF5733 !important;;
+	color: #FF5733 !important;
+}
+/* Disabled components */
+.user-status-menu-item {
+	display: none !important;
+}
+.avatardiv .avatardiv__user-status {
+	display: none !important;
+}
+
+#header .header-right>div{
+	display: none !important;
+}
+.app-navigation-personal>ul>li[data-section-id="availability"],[data-section-id="workflow"] {
+	display: none !important;
+}
+.app-navigation-administration>ul>li[data-section-id="admindelegation"],
+	[data-section-id="ai"],
+	[data-section-id="overview"],
+	[data-section-id="theming"]	{
+	display: none !important;
+}
+
+/* Disabled Profile info page */
+#profile-visibility , .development-notice{
+	display: none !important;
+}
+.personal-settings-setting-box .personal-settings-setting-box-profile{
+	display: none !important;
+}
+section[data-v-3e4cb5f4],[data-v-77620687],[data-v-4454ae2c], [data-v-079d5f4c],[data-v-c96fdb60] {
+    display: none;
+}
+div[data-v-4b6abfac]{
+	display: none;
+}
+/* section[data-v-3e4cb5f4],[data-v-77620687],[data-v-4454ae2c] {
+    display: none;
+} */
