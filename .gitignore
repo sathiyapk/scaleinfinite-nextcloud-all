@@ -59,7 +59,7 @@
 
 
 # ignore themes except the example and the README
-/themes/*
+# /themes/*
 !/themes/example
 !/themes/README
 
