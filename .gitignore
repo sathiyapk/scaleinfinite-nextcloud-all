@@ -15,6 +15,7 @@
 /translationfiles
 /translationtool.phar
 
+
 # ignore all apps except core ones
 /apps*/*
 !/apps/cloud_federation_api
@@ -67,6 +68,7 @@
 /updater
 
 # just sane ignores
+*:Zone.Identifier
 .*.sw[po]
 *.bak
 *.BAK

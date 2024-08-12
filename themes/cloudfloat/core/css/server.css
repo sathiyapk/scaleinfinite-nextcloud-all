@@ -489,3 +489,8 @@ div[data-v-4b6abfac]{
 /* section[data-v-3e4cb5f4],[data-v-77620687],[data-v-4454ae2c] {
     display: none;
 } */
+
+/* Avatar icon image */
+.avatardiv[data-v-b7cf7dd2]:not(.avatardiv--unknown){
+	background-color: #02075d !important;
+}
