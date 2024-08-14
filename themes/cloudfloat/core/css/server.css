@@ -95,18 +95,19 @@
 	--color-primary-element-light-hover:#e6e3ee;
 	--color-primary-element-light-text:#2e2450;
 	--gradient-primary-background:linear-gradient(40deg, var(--color-primary) 0%, var(--color-primary-hover) 100%);
-	--color-background-plain:#3d85c6;
+	--color-background-plain:#02075d !important;
 	--color-background-plain-text:#000000;
 	/* --image-background:url("/scaleinfinite-nextcloud-all/apps/theming/img/background/jenna-kim-the-globe.webp"); */
-	--image-background:url("../img/background.webp") !important;
+	--image-background:url("/scaleinfinite-nextcloud-all/themes/cloudfloat/core/img/background.webp") !important;
   }
-
+body{
+	background-color: #02075d !important;
+}
 /* header color */
 /* this is the main brand color */
 #body-user #header,
 #body-settings #header,
 #body-public #header {
-
 	background-color: #02075d !important;
 }
 
@@ -114,9 +115,7 @@
 /* gradient of the header color and a brighter shade */
 /* can also be a flat color or an image */
 #body-login {
-	background-color: #02075d !important; 
-	background-image: url("../img/background.webp") !important;
-	
+	background: #02075d !important; 	
 
 	/* background: -moz-linear-gradient(top, #947bea 0%, #43489a 100%); 
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#947bea), color-stop(100%,#43489a)); 
@@ -126,11 +125,7 @@
 	background: linear-gradient(top, #947bea 0%,#43489a 100%); 
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#947bea', endColorstr='#43489a',GradientType=0 );  */
 }
-/* DAshboard background */
-#app-dashboard[data-v-4a93ff02]{
-	background-color: #02075d !important; 
-	background-image: url("../img/background.webp") !important;
-}
+
 /* primary action button, use sparingly */
 /* header color as border, brighter shade again, here as background */
 .primary,
@@ -534,8 +529,8 @@ div[data-v-4b6abfac]{
     backdrop-filter: var(--filter-background-blur);
 }
 /* Dashboard weather icon */
-.button-vue--vue-secondary[data-v-44398b0c] {
-	display: none !important;
+.button-vue--icon-and-text[data-v-44398b0c]{
+	display: none;
 }
 /* Good morning John  */
 #app-dashboard>h2[data-v-4a93ff02] {

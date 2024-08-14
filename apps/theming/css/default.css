@@ -97,7 +97,7 @@
   --color-primary-element-light-hover: #dbe4ea;
   --color-primary-element-light-text: #00293f;
   --gradient-primary-background: linear-gradient(40deg, var(--color-primary) 0%, var(--color-primary-hover) 100%);
-  --color-background-plain: #00679e;
+  --color-background-plain:#02075d !important;
   --color-background-plain-text: #ffffff;
   --image-background: url('/apps/theming/img/background/jenna-kim-the-globe.webp');
 }
