@@ -529,10 +529,63 @@ div[data-v-4b6abfac]{
     backdrop-filter: var(--filter-background-blur);
 }
 /* Dashboard weather icon */
-.button-vue--icon-and-text[data-v-44398b0c]{
-	display: none;
+.button-vue[data-v-4a93ff02]{
+	display: none !important;
 }
 /* Good morning John  */
 #app-dashboard>h2[data-v-4a93ff02] {
     color: #ffffff !important;
 }
+/* Disabled background images */
+.background__grid[data-v-3705ae06] {
+	display: none !important;
+}
+.settings-section__name[data-v-251fe753]{
+	display: none !important;
+}
+.settings-section__desc[data-v-251fe753]{
+	display: none !important;
+}
+/* Hide the entire order selector list */
+.order-selector {
+	display: none;
+  }
+  
+  /* Hide the move up button */
+  .button-vue[aria-label="Move up"] {
+	display: none;
+  }
+  
+  /* Hide the move down button */
+  .button-vue[aria-label="Move down"] {
+	display: none;
+  }
+  
+  /* Hide the reset default app order button */
+  .button-vue[data-test-id="btn-apporder-reset"] {
+	display: none;
+  }
+  
+h3[data-v-3705ae06]{
+	display: none !important;
+}
+.primary-color__wrapper[data-v-c7fa82d2] {
+	display: none !important;
+}
+.settings-section[data-v-251fe753]{
+	border:none !important;
+}
+#checkbox-radio-switch-bsivc + .checkbox-content .checkbox-radio-switch__icon {
+	display: none;
+  }
+  #checkbox-radio-switch-another + .checkbox-content .checkbox-radio-switch__icon {
+	display: none;
+  }
+  /* Hide the first occurrence */
+.checkbox-radio-switch__text:first-of-type {
+	display: none;
+  }
+
+
+  
+  

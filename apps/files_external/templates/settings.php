@@ -1,5 +1,68 @@
-<?php
 
+<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" crossorigin="anonymous">
+<script scr="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script> -->
+<style>
+ table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th{
+			background-color: #f1f2f3;
+			font-weight:500;
+			padding:15px;
+		}
+        td {
+            padding: 15px;
+            /* border: 1px solid #ddd; */
+        }
+@media screen and (max-width: 820px) {
+table,
+thead,
+tbody,
+th,
+td,
+tr {
+	display: block;
+}
+
+thead tr {
+	position: absolute;
+	top: -9999px;
+	left: -9999px;
+}
+
+tr {
+	margin-bottom: 20px;
+	/* border: 1px solid #ddd; */
+}
+
+td {
+	border: none;
+	position: relative;
+	/* padding-left: 50%; */
+	padding:20px !important;
+	text-align:center;
+	height:auto !important;
+	justify-content: center;
+	align-items:center;
+}
+
+td:before {
+	position: absolute;
+	left: 6px;
+	content: attr(data-label);
+	font-weight: bold;
+}
+.bubble, .app-navigation-entry-menu, .popovermenu {
+	position: absolute;  
+    left: 0;
+	width: 90vw;
+   
+}
+}
+</style>
+<?php
 /**
  * SPDX-FileCopyrightText: 2016-2024 Nextcloud GmbH and Nextcloud contributors
  * SPDX-FileCopyrightText: 2012-2016 ownCloud, Inc.
@@ -118,7 +181,40 @@ function writeParameterInput($parameter, $options, $classes = []) {
 	<?php if (isset($_['dependencies']) and ($_['dependencies'] !== '') and $canCreateMounts) {
 		print_unescaped(''.$_['dependencies'].'');
 	} ?>
-	<table id="externalStorage" class="grid" data-admin='<?php print_unescaped(json_encode($_['visibilityType'] === BackendService::VISIBILITY_ADMIN)); ?>'>
+	<!-- cloudfloat123 -->
+	<div style="overflow-x: auto; display:none">
+	<table class="table" >
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">First</th>
+      <th scope="col">Last</th>
+      <th scope="col">Handle</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">1</th>
+      <td>Mark</td>
+      <td>Otto</td>
+      <td>@mdo</td>
+    </tr>
+    <tr>
+      <th scope="row">2</th>
+      <td>Jacob</td>
+      <td>Thornton</td>
+      <td>@fat</td>
+    </tr>
+    <tr>
+      <th scope="row">3</th>
+      <td colspan="2">Larry the Bird</td>
+      <td>@twitter</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+	<table id="externalStorage"  class="grid" data-admin='<?php print_unescaped(json_encode($_['visibilityType'] === BackendService::VISIBILITY_ADMIN)); ?>'>
 		<thead>
 			<tr>
 				<th></th>
@@ -193,6 +289,7 @@ uasort($sortedBackends, function ($a, $b) {
 			</tr>
 		</tbody>
 	</table>
+
 
 	<?php if ($_['visibilityType'] === BackendService::VISIBILITY_ADMIN): ?>
 		<input type="checkbox" name="allowUserMounting" id="allowUserMounting" class="checkbox"
