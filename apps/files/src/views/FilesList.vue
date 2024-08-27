@@ -2,8 +2,13 @@
   - SPDX-FileCopyrightText: 2023 Nextcloud GmbH and Nextcloud contributors
   - SPDX-License-Identifier: AGPL-3.0-or-later
 -->
+
 <template>
 	<NcAppContent :page-heading="pageHeading" data-cy-files-content>
+		<!-- <template #search>
+	<NcAppNavigationSearch v-model="searchQuery" :label="t('files', 'Filter filenames…')" />
+</template>  -->
+		<!-- <h2>Search files </h2> -->
 		<div class="files-list__header">
 			<!-- Current folder breadcrumbs -->
 			<BreadCrumbs :path="directory" @reload="fetchContent">
@@ -128,7 +133,8 @@ import { Type } from '@nextcloud/sharing'
 import { UploadPicker, UploadStatus } from '@nextcloud/upload'
 import { loadState } from '@nextcloud/initial-state'
 import { defineComponent } from 'vue'
-
+// Search
+import NcAppNavigationSearch from '@nextcloud/vue/dist/Components/NcAppNavigationSearch.js'
 import LinkIcon from 'vue-material-design-icons/Link.vue'
 import ListViewIcon from 'vue-material-design-icons/FormatListBulletedSquare.vue'
 import NcAppContent from '@nextcloud/vue/dist/Components/NcAppContent.js'
@@ -163,6 +169,8 @@ export default defineComponent({
 	name: 'FilesList',
 
 	components: {
+		// Search
+		// NcAppNavigationSearch,
 		BreadCrumbs,
 		DragAndDropNotice,
 		FilesListVirtual,
@@ -185,6 +193,8 @@ export default defineComponent({
 	],
 
 	setup() {
+		// search
+		// const { searchQuery } = useFilenameFilter()
 		const filesStore = useFilesStore()
 		const filtersStore = useFiltersStore()
 		const pathsStore = usePathsStore()
@@ -211,6 +221,7 @@ export default defineComponent({
 			uploaderStore,
 			userConfigStore,
 			viewConfigStore,
+			// searchQuery,
 
 			// non reactive data
 			enableGridView,

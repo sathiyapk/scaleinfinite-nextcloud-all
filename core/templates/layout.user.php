@@ -47,6 +47,16 @@ p($theme->getTitle());
 		<?php emit_css_loading_tags($_); ?>
 		<?php emit_script_loading_tags($_); ?>
 		<?php print_unescaped($_['headers']); ?>
+		<!-- App Navigation over ride -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" nonce="<?php p(\OC::$server->getContentSecurityPolicyNonceManager()->getNonce()) ?>"></script>
+		<script type="text/javascript" nonce="<?php p(\OC::$server->getContentSecurityPolicyNonceManager()->getNonce()) ?>">
+			$(document).ready(function() {
+				$(".app-navigation-toggle").on('click', function(event){
+					$('.app-navigation__content').removeAttr("inert");
+				});
+			})     
+		</script>
+			<!-- End -->
 	</head>
 	<body id="<?php p($_['bodyid']);?>" <?php foreach ($_['enabledThemes'] as $themeId) {
 		p("data-theme-$themeId ");

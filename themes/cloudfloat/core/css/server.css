@@ -340,17 +340,30 @@ button{
    background-color: #282828;
 }
 .app-navigation-entry .app-navigation-entry-link .app-navigation-entry__name{
-	color: #fff;
+	color:#1b2531 !important;
 	font-weight: 400;
 	font-size: 1rem;
 }
 .app-navigation-entry:focus-within, .app-navigation-entry:hover {
-    background-color: #7e7f7e !important;
-	border-radius: 0 !important;
+    background-color: rgba(105, 108, 255, .3) !important;
+	border-radius: 10px !important;
+}
+.app-navigation-entry:focus-within, .app-navigation-entry:active {
+    background-color: #4d518d !important;
+	border-radius: 10px !important;
+	
+}
+.app-navigation-entry.active .app-navigation-entry__name {
+    color: #fff !important;
+}
+
+.app-navigation-entry.active .app-navigation-entry-icon svg path {
+    fill: #fff !important;
 }
 
 .app-navigation-entry.active .app-navigation-entry-link {
-	background-color: #7e7f7e !important;
+	background-color: #4d518d !important;
+	color: #fff !important;
 	
 }
 .app-navigation-entry .app-navigation-entry-link .app-navigation-entry-icon{
@@ -358,7 +371,8 @@ button{
 }
 .app-navigation[data-v-68d1334c] .app-navigation-entry.active .button-vue.icon-collapse:not(:hover) {
 	background-color: var(--color-nav-background);
-	border-radius: 0 !important;
+	border-radius: 10px !important;
+	color: #fff !important;
 }
 .chevron-down-icon{
 	color: #fff !important;
@@ -415,25 +429,29 @@ color: #000 !important;
 }
 .app-navigation-personal>ul>li.active>a{
 	background-color: #7e7f7e !important;
-	border-radius: 0;
+	border-radius: 10px;
 }
 .app-navigation-personal>ul>li>a:hover{
 	background-color: #7e7f7e !important;
-	border-radius: 0;
+	border-radius: 10px;
 }
 .app-navigation-personal>ul>li>a:first-child img{
 	filter: invert(1) !important;
 }
 .app-navigation-administration>ul>li.active>a{
 	background-color: #7e7f7e !important;
-	border-radius: 0;
+	border-radius: 10px;
 }
 .app-navigation-administration>ul>li>a:hover{
 	background-color: #7e7f7e !important;
-	border-radius: 0;
+	border-radius: 10;
 }
 .app-navigation-administration>ul>li>a:first-child img{
 	filter: invert(1) !important;
+}
+.app-navigation-entry:not(.app-navigation-entry--editing) .app-navigation-entry-link[data-v-018c4203]{
+	border-radius: 10px !important;
+	
 }
 /* user-menu */
 .user-menu ul li a:hover{
@@ -586,6 +604,27 @@ h3[data-v-3705ae06]{
 	display: none;
   }
 
-
+  /* App Navigation Side bar */
+  .app-navigation--close span.app-navigation-entry__name
+  {
+	display: none;
+	
+  }
+  .app-navigation--close{
+	margin-left: calc(-1 * min(0px, var(--app-navigation-max-width))) !important;
+	width: 50px !important;
+	/* margin-left: 0px !important; */
+  }
+  .app-navigation-entry__children .app-navigation-entry {
+	padding-left: 0px !important;
+  }
+  .app-navigation__content{
+	background-color: #fff !important;
+	border-right: 1px solid rgba(105, 108, 255, .3) !important;
+  }
+  .app-navigation-entry .app-navigation-entry-link .app-navigation-entry-icon{
+	color:#697a8d;
+  }
+ 
   
   

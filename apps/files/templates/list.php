@@ -36,7 +36,7 @@
 </div>
 
 <div class="nofilterresults emptycontent hidden">
-	<div class="icon-search"></div>
+	<!-- <div class="icon-search"></div> -->
 	<h2><?php p($l->t('No entries found in this folder')); ?></h2>
 	<p></p>
 </div>
