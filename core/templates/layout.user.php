@@ -53,8 +53,42 @@ p($theme->getTitle());
 			$(document).ready(function() {
 				$(".app-navigation-toggle").on('click', function(event){
 					$('.app-navigation__content').removeAttr("inert");
+
+					  if (!$('#app-navigation-vue').hasClass('app-navigation-mini')) 
+					  {
+						$('#app-content-vue').addClass('main-expanded');
+						$('#app-content-vue').attr('style','position:absolute !important');
+						
+						$('#app-navigation-vue').addClass('app-navigation-mini');
+				      }else{
+						  $('#app-content-vue').removeClass('main-expanded');
+						  $('#app-content-vue').removeAttr('style');
+
+						  $('#app-navigation-vue').removeClass('app-navigation-mini');
+					  }
+					  
+					
 				});
-			})     
+				//Remove the 'app-navigation--close' class from the hovered element
+				$('#app-navigation-vue').on({
+					mouseover: function() {
+					// Check if the element currently has the 'app-navigation--close' class
+					if ($(this).hasClass('app-navigation-mini')) {
+						// Remove the 'app-navigation--close' class if it exists
+						$('.app-navigation').removeClass('app-navigation--close');
+						
+					}
+					},
+					mouseout: function() {
+					// Check if the element does not have the 'app-navigation--close' class
+					if ($(this).hasClass('app-navigation-mini')) {
+						// Add the 'app-navigation--close' class if it does not exist
+						$('.app-navigation').addClass('app-navigation--close');
+						
+					}
+					}
+				});
+			});     
 		</script>
 			<!-- End -->
 	</head>

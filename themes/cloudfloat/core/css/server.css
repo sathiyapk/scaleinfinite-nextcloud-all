@@ -605,11 +605,10 @@ h3[data-v-3705ae06]{
   }
 
   /* App Navigation Side bar */
-  .app-navigation--close span.app-navigation-entry__name
-  {
-	display: none;
-	
+  .app-navigation{
+	transition: 0.4s ease-in !important;
   }
+
   .app-navigation--close{
 	margin-left: calc(-1 * min(0px, var(--app-navigation-max-width))) !important;
 	width: 50px !important;
@@ -626,5 +625,16 @@ h3[data-v-3705ae06]{
 	color:#697a8d;
   }
  
+.main-expanded{
+	position: absolute !important;
+	width: 100vw;
+}
+
+  /* Meterial Design Icons */
+  /* .material-design-icon__svg .app-navigation-entry-icon{
+	width: 25px !important;
+	height: 25px !important;
+  } */
+  /* End */
   
   
