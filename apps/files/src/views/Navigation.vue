@@ -7,10 +7,7 @@
 		:aria-label="t('files', 'Files')">
 		<!-- <template #search>
 			<NcAppNavigationSearch v-model="searchQuery" :label="t('files', 'Filter filenames…')" />
-		</template> -->
-		<!-- <template #list>
-		<NcAppNavigationItem  title="Testing" :name="t('testing','testing')" icon="icon-toggle-FileList" />
-	</template> -->
+		</template>		 -->
 	<template #default>
 		<NcAppNavigationList :aria-label="t('files', 'Views')">
 			<NcAppNavigationItem v-for="view in parentViews"
@@ -26,6 +23,10 @@
 				@update:open="onToggleExpand(view)">
 				<!-- Sanitized icon as svg if provided -->
 				<NcIconSvgWrapper v-if="view.icon" slot="icon" :svg="view.icon" />
+				<!-- <template #icon>
+					<i class='menu-icon tf-icons bx bx-sm bxs-dashboard {{ view.name }}'></i>											
+				</template> -->
+					
 
 				<!-- Child views if any -->
 				<NcAppNavigationItem v-for="child in childViews[view.id]"
@@ -109,7 +110,7 @@ export default defineComponent({
 
 		return {
 			currentView,
-			searchQuery,
+			// searchQuery,
 			t,
 			views,
 

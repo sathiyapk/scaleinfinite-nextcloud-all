@@ -23,6 +23,7 @@ $getUserAvatar = static function (int $size) use ($_): string {
 	<head data-user="<?php p($_['user_uid']); ?>" data-user-displayname="<?php p($_['user_displayname']); ?>" data-requesttoken="<?php p($_['requesttoken']); ?>">
 		<meta charset="utf-8">
 		<title>
+
 			<?php
 				p(!empty($_['pageTitle']) && $_['pageTitle'] !== $_['application'] ? $_['pageTitle'].' - ' : '');
 p(!empty($_['application']) ? $_['application'].' - ' : '');
@@ -48,6 +49,7 @@ p($theme->getTitle());
 		<?php emit_script_loading_tags($_); ?>
 		<?php print_unescaped($_['headers']); ?>
 		<!-- App Navigation over ride -->
+		<link rel="stylesheet" href="/scaleinfinite-nextcloud-all/apps/cloudfloat/css/design-assets/vendor/fonts/boxicons.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" nonce="<?php p(\OC::$server->getContentSecurityPolicyNonceManager()->getNonce()) ?>"></script>
 		<script type="text/javascript" nonce="<?php p(\OC::$server->getContentSecurityPolicyNonceManager()->getNonce()) ?>">
 			$(document).ready(function() {
@@ -58,11 +60,20 @@ p($theme->getTitle());
 					  {
 						$('#app-content-vue').addClass('main-expanded');
 						$('#app-content-vue').attr('style','position:absolute !important');
-						
+
+						// right top breadcrumbs position						
+						$('.files-list__header').attr('style','margin-left:100px');
+						// right files table						
+						$('.files-list__table').attr('style','margin-left:70px');
+						//right side file list filters
+						$('.files-list__filters').attr('style','margin-left:40px');
 						$('#app-navigation-vue').addClass('app-navigation-mini');
 				      }else{
 						  $('#app-content-vue').removeClass('main-expanded');
 						  $('#app-content-vue').removeAttr('style');
+						  $('.files-list__header').removeAttr('style');
+						  $('.files-list__table').removeAttr('style');
+						  $('.files-list__filters').removeAttr('style');
 
 						  $('#app-navigation-vue').removeClass('app-navigation-mini');
 					  }

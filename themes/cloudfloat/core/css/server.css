@@ -69,8 +69,8 @@
 	--default-grid-baseline:4px;
 	--header-height:50px;
 	--header-menu-item-height:44px;
-	--navigation-width:300px;
-	--sidebar-min-width:300px;
+	--navigation-width:260px;
+	--sidebar-min-width:260px;
 	--sidebar-max-width:500px;
 	--body-container-radius:calc(var(--default-grid-baseline) * 3);
 	--body-container-margin:calc(var(--default-grid-baseline) * 2);
@@ -249,7 +249,7 @@ button.primary:focus,
 	font-size:16px;
   }
  #app-content-vue {
-	background-color: #fff;
+	background-color: #f6f6f6;
   }
 
 /* File list */
@@ -290,9 +290,9 @@ button{
 .files-list__thead, .files-list__tfoot {			
 			background-color: #fff !important;
 	}
-	.files-list .files-list__filters {
+	/* .files-list .files-list__filters {
 	background-color: #fff;
-	}
+	} */
 .files-list__filters{
 	background-color: #f6f6f6 !important;
 }
@@ -607,6 +607,9 @@ h3[data-v-3705ae06]{
   /* App Navigation Side bar */
   .app-navigation{
 	transition: 0.4s ease-in !important;
+	border-radius: 12px;
+	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+	width: 260px !important;
   }
 
   .app-navigation--close{
@@ -629,7 +632,25 @@ h3[data-v-3705ae06]{
 	position: absolute !important;
 	width: 100vw;
 }
+/* Applying card for every section */
+.files-list__header{
+	border-radius: 12px;
+	padding: 10px;
+	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  	transition: 0.3s;
+	background-color: #fff;
+	margin: 10px;
+}
+.files-list[data-v-5c71e588] .files-list__table{
+	border-radius: 12px;
+	padding: 10px;
+	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+	transition: 0.3s;
+	background-color: #fff;
+	margin: 10px 10px 10px 25px;
+}
 
+/* End */
   /* Meterial Design Icons */
   /* .material-design-icon__svg .app-navigation-entry-icon{
 	width: 25px !important;

@@ -5,9 +5,12 @@
 
 <template>
 	<NcAppContent :page-heading="pageHeading" data-cy-files-content>
-		<!-- <template #search>
-	<NcAppNavigationSearch v-model="searchQuery" :label="t('files', 'Filter filenames…')" />
-</template>  -->
+		<!-- <NcAppNavigation>
+			<template #search>
+				<NcAppNavigationSearch v-model="searchQuery" :label="t('files', 'Filter filenames…')" />
+			</template> 
+		</NcAppNavigation> -->
+		
 		<!-- <h2>Search files </h2> -->
 		<div class="files-list__header">
 			<!-- Current folder breadcrumbs -->
@@ -134,6 +137,7 @@ import { UploadPicker, UploadStatus } from '@nextcloud/upload'
 import { loadState } from '@nextcloud/initial-state'
 import { defineComponent } from 'vue'
 // Search
+import NcAppNavigation from '@nextcloud/vue/dist/Components/NcAppNavigation.js'
 import NcAppNavigationSearch from '@nextcloud/vue/dist/Components/NcAppNavigationSearch.js'
 import LinkIcon from 'vue-material-design-icons/Link.vue'
 import ListViewIcon from 'vue-material-design-icons/FormatListBulletedSquare.vue'
@@ -169,8 +173,9 @@ export default defineComponent({
 	name: 'FilesList',
 
 	components: {
+		NcAppNavigation,
 		// Search
-		// NcAppNavigationSearch,
+		NcAppNavigationSearch,		
 		BreadCrumbs,
 		DragAndDropNotice,
 		FilesListVirtual,
