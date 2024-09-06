@@ -2,13 +2,19 @@
   - SPDX-FileCopyrightText: 2023 Nextcloud GmbH and Nextcloud contributors
   - SPDX-License-Identifier: AGPL-3.0-or-later
 -->
+  
 <template>	
 	<NcAppNavigation data-cy-files-navigation
 		:aria-label="t('files', 'Files')">
 		<!-- <template #search>
 			<NcAppNavigationSearch v-model="searchQuery" :label="t('files', 'Filter filenames…')" />
 		</template>		 -->
+				
 	<template #default>
+		<template>
+			<div id="app-logo"></div>
+			
+		</template>
 		<NcAppNavigationList :aria-label="t('files', 'Views')">
 			<NcAppNavigationItem v-for="view in parentViews"
 				:key="view.id"
@@ -22,10 +28,10 @@
 				:to="generateToNavigation(view)"
 				@update:open="onToggleExpand(view)">
 				<!-- Sanitized icon as svg if provided -->
-				<NcIconSvgWrapper v-if="view.icon" slot="icon" :svg="view.icon" />
-				<!-- <template #icon>
-					<i class='menu-icon tf-icons bx bx-sm bxs-dashboard {{ view.name }}'></i>											
-				</template> -->
+				<!-- <NcIconSvgWrapper v-if="view.icon" slot="icon" :svg="view.icon" /> -->
+					<template #icon>
+					<i :class="['menu-icon tf-icons bx-sm  bx  bx-cf-'+view.id]"></i>
+				   </template>
 					
 
 				<!-- Child views if any -->

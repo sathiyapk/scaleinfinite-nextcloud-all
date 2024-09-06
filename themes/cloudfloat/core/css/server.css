@@ -293,9 +293,9 @@ button{
 	/* .files-list .files-list__filters {
 	background-color: #fff;
 	} */
-.files-list__filters{
+/* .files-list__filters{
 	background-color: #f6f6f6 !important;
-}
+} */
 .file-list-filter-accounts{
 	display: none;
 }
@@ -521,7 +521,7 @@ div[data-v-4b6abfac]{
 
 /* Login  Page */
 .input-field__input[data-v-07b05442]{
-	background-color: rgba(8, 23, 84, 0.3) !important;
+	background-color:#fff!important;
 }
 .button-vue *[data-v-44398b0c], .button-vue span[data-v-44398b0c]{
 	color: #626762;
@@ -632,15 +632,29 @@ h3[data-v-3705ae06]{
 	position: absolute !important;
 	width: 100vw;
 }
-/* Applying card for every section */
+/* Search and filter button card */
+
 .files-list__header{
+	display: flex !important;
 	border-radius: 12px;
 	padding: 10px;
 	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
   	transition: 0.3s;
 	background-color: #fff;
 	margin: 10px;
+     margin-inline: calc(var(--default-clickable-area, 44px) + -1*var(--app-navigation-padding, 4px)) var(--app-navigation-padding, 4px) !important;
 }
+.files-list__header-search{
+	width: 80%;
+	justify-content: center;
+}
+.files-list__header-filterbutton{
+	width: 20%;
+	justify-content: flex-end;
+}
+.files-list__header > *{
+	flex: auto !important;
+  }
 .files-list[data-v-5c71e588] .files-list__table{
 	border-radius: 12px;
 	padding: 10px;
@@ -650,12 +664,129 @@ h3[data-v-3705ae06]{
 	margin: 10px 10px 10px 25px;
 }
 
+.files-list{
+	border-radius: 12px;
+	padding: 10px;
+	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+	transition: 0.3s;
+	background-color: #fff;
+	margin: 10px 10px 10px 25px;
+}
+.file-list-filters__active{
+	position: absolute !important;
+ 	 margin-top: 60px;
+}
+.breadcrumb .breadcrumb__crumbs{
+	margin-left: 20px !important;
+}
+/* .file-list-filter-type{
+	border: 1px solid #02037d !important;
+   margin-left: 10px !important;
+}
+ .action-item--tertiary  {
+	border: 1px solid #02037d !important;
+	margin-left: 10px !important;
+} */
+
 /* End */
-  /* Meterial Design Icons */
-  /* .material-design-icon__svg .app-navigation-entry-icon{
-	width: 25px !important;
-	height: 25px !important;
+/* Grid Icon Table View */
+.files-list__filters{
+  display: flex;
+  /* position: relative; */
+  justify-content: flex-end;
+}
+
+  /* Boxicon Design  */
+  .bx{
+	font-size: 1.25rem !important;
+	
+  }
+  .bx-food-menu, .bx-calendar-edit{
+	color:#697a8d !important;
+  }
+  .bx-grid-alt, .bx-list-ul, .bx-check-square{
+	font-size: 1.5rem !important;
+	color:#697a8d !important;
+  }
+
+	/* files */
+
+
+
+/* personal files */
+.bxs-cf-personal:before {
+	content:"\ead5" !important;
+	color: #697a8d;
+}
+
+
+/* .bxs-personal:before{content:"\eee2" !important} */
+  /* End */
+
+  /* Search Bar */
+  #nav-cf-searchbar{
+	max-height: 50px;
+	box-shadow: none !important;
+	position: relative;
+	width: 100%;
+  }
+ #nav-cf-searchbar .app-navigation-toggle-wrapper  button[aria-label="Close navigation"]  .material-design-icon.menu-open-icon svg path {
+    display: none; /* Completely hides the path element */
+}
+.files-list__header .app-navigation-toggle-wrapper{
+	display:none;
+}
+  #nav-searchbar .app-navigation-toggle-wrapper{
+	display: none;
+  }
+  .app-navigation-toggle-wrapper{
+ 	right: calc(25px - var(--app-navigation-padding)) !important;
+	z-index: 100;
+
+  }
+  .input-field__input[data-v-07b05442]{
+	border-radius: 10px !important;
+  border: 1px solid #d6d8da !important;
+  }
+  #app-logo {
+	display: inline-flex;
+	background-image: url('../img/storage.png');
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: center;
+	width: 62px;
+	position: absolute;
+	left: 12px;
+	top: 1px;
+	bottom: 1px;
+	filter: var(--image-logoheader-custom, var(--background-image-invert-if-bright));
+  }
+  /* .storage-logo{
+	background-image: url('../img/storage.png');
   } */
+  
+  /* End */
+  /* Navigation slider Button */
+  button.app-navigation-toggle[data-v-b6024aba] {
+	background-color: #f6f6f6 !important;
+	border-radius: 50% !important;
+  }
+  .app-navigation-toggle-wrapper svg  path{
+	display: none !important;
+  }
+  .app-navigation-toggle i {
+	background-color: #02075d;
+  	border: 8px solid #f6f6f6;
+	border-radius: 50%;
+	color: #fff;
+  }
+  .app-navigation-toggle-wrapper-removed-toggle{
+	display: none;
+  }
   /* End */
   
+  /* breadcrumbs */
+/* .files-list__header .vue-crumb{
+	display: none !important;
+  } */
   

@@ -16,9 +16,9 @@
 		}"
 		:scroll-to-index="scrollToIndex"
 		:caption="caption">
-		<template #filters>
+		<!-- <template #filters>
 			<FileListFilters />
-		</template>
+		</template> -->
 
 		<template v-if="!isNoneSelected" #header-overlay>
 			<span class="files-list__selected">{{ t('files', '{count} selected', { count: selectedNodes.length }) }}</span>

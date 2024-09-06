@@ -4,6 +4,7 @@
 -->
 
 <template>
+	<div>
 	<NcBreadcrumbs data-cy-files-content-breadcrumbs
 		:aria-label="t('files', 'Current directory path')"
 		class="files-list__breadcrumbs"
@@ -23,23 +24,50 @@
 			<template v-if="index === 0" #icon>
 				<NcIconSvgWrapper :size="20"
 					:svg="viewIcon" />
-			</template>
-		</NcBreadcrumb>
-
+			</template>	
+			
+		</NcBreadcrumb>		
+		
 		<!-- Forward the actions slot -->
 		<template #actions>
 			<slot name="actions" />
+			<!-- Add new -->
+			<NcButton v-if="!canUpload || isQuotaExceeded"
+				:aria-label="cantUploadLabel"
+				:title="cantUploadLabel"
+				class="files-list__header-upload-button--disabled"
+				:disabled="true"
+				type="secondary">
+				<template #icon>
+					<i class='bx bx-check-square'></i>
+					<!-- <PlusIcon :size="20" /> -->
+				</template>
+				{{ t('files', 'Create') }}
+			</NcButton>
+			<UploadPicker v-else-if="currentFolder"
+				allow-folders
+				class="files-list__header-upload-button"
+				:content="getContent"
+				:destination="currentFolder"
+				:forbidden-characters="forbiddenCharacters"
+				multiple
+				@failed="onUploadFail"
+				@uploaded="onUpload" />  
+				<!-- Add new End -->
 		</template>
-	</NcBreadcrumbs>
+			</NcBreadcrumbs>
+			</div>
+		
+				
+			
 </template>
 
 <script lang="ts">
-import type { Node } from '@nextcloud/files'
 import type { FileSource } from '../types.ts'
-
+import type { Upload } from '@nextcloud/upload'
 import { basename } from 'path'
 import { defineComponent } from 'vue'
-import { Permission } from '@nextcloud/files'
+import { Folder, Node, Permission, sortNodes } from '@nextcloud/files'
 import { translate as t } from '@nextcloud/l10n'
 import HomeSvg from '@mdi/svg/svg/home.svg?raw'
 import NcBreadcrumb from '@nextcloud/vue/dist/Components/NcBreadcrumb.js'
@@ -56,6 +84,9 @@ import { useSelectionStore } from '../store/selection.ts'
 import { useUploaderStore } from '../store/uploader.ts'
 import filesListWidthMixin from '../mixins/filesListWidth.ts'
 import logger from '../logger'
+import { UploadPicker, UploadStatus } from '@nextcloud/upload'
+import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
+import { useRouteParameters } from '../composables/useRouteParameters.ts'
 
 export default defineComponent({
 	name: 'BreadCrumbs',
@@ -64,6 +95,8 @@ export default defineComponent({
 		NcBreadcrumbs,
 		NcBreadcrumb,
 		NcIconSvgWrapper,
+		UploadPicker,
+		NcButton,
 	},
 
 	mixins: [
@@ -84,6 +117,7 @@ export default defineComponent({
 		const selectionStore = useSelectionStore()
 		const uploaderStore = useUploaderStore()
 		const { currentView } = useNavigation()
+		const { directory, fileId } = useRouteParameters()
 
 		return {
 			draggingStore,
@@ -91,8 +125,10 @@ export default defineComponent({
 			pathsStore,
 			selectionStore,
 			uploaderStore,
-
+			directory,
+			fileId,
 			currentView,
+			
 		}
 	},
 
@@ -144,6 +180,39 @@ export default defineComponent({
 		draggingFiles() {
 			return this.draggingStore.dragging as FileSource[]
 		},
+		// Add new files
+		canUpload() {
+			return this.currentFolder && (this.currentFolder.permissions & Permission.CREATE) !== 0
+		},
+		isQuotaExceeded() {
+			return this.currentFolder?.attributes?.['quota-available-bytes'] === 0
+		},
+		cantUploadLabel() {
+			if (this.isQuotaExceeded) {
+				return t('files', 'Your have used your space quota and cannot upload files anymore')
+			}
+			return t('files', 'You don’t have permission to upload or create files here')
+		},
+			/**
+		 * The current folder.
+		 */
+		 currentFolder(): Folder | undefined {
+			if (!this.currentView?.id) {
+				return
+			}
+
+			if (this.directory === '/') {
+				return this.filesStore.getRoot(this.currentView.id)
+			}
+
+			const source = this.pathsStore.getPath(this.currentView.id, this.directory)
+			if (source === undefined) {
+				return
+			}
+
+			return this.filesStore.getNode(source) as Folder
+		},
+
 	},
 
 	methods: {
@@ -268,7 +337,7 @@ export default defineComponent({
 <style lang="scss" scoped>
 .files-list__breadcrumbs {
 	// Take as much space as possible
-	flex: 1 1 100% !important;
+	flex: content;
 	width: 100%;
 	height: 100%;
 	margin-block: 0;

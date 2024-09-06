@@ -8,7 +8,9 @@
 		:filter-name="t('files', 'Type')"
 		@reset-filter="resetFilter">
 		<template #icon>
-			<NcIconSvgWrapper :path="mdiFile" />
+			<!-- <NcIconSvgWrapper :path="mdiFile" /> -->
+			<i :class="['menu-icon tf-icons bx-sm  bx bx-food-menu']"></i>
+			
 		</template>
 		<NcActionButton v-for="fileType of typePresets"
 			:key="fileType.id"

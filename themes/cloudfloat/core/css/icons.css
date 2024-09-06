@@ -1,0 +1,34 @@
+
+/**************************************
+             Menu Icons
+************************************** */
+.bx-cf-files:before{
+    content:"\eadf";
+}
+.bx-cf-personal:before{
+    content:"\eee2";
+}
+.bx-cf-recent:before{
+    content:"\e9ab";
+}
+.bx-cf-shareoverview:before{
+    content:"\eb3c";
+}
+.bx-cf-favorites:before{
+    content:"\e9e4";
+}
+.bx-cf-tags:before{
+    content:"\ebdf";
+}
+.bx-cf-extstoragemounts:before{
+    content:"\ecfd";
+}
+.bx-cf-trashbin:before{
+    content:"\ec50";
+}
+.bx-cf-:before{
+    content:""
+}
+.bx-cf-:before{
+    content:""
+}
