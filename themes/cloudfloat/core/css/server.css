@@ -789,4 +789,34 @@ h3[data-v-3705ae06]{
 /* .files-list__header .vue-crumb{
 	display: none !important;
   } */
+
+  /* Server Page */
+  .accordion-item:first-of-type .accordion-button{
+	border:none !important;
+  }
+  .accordion-button {
+	position: relative;
+	display: flex;
+	align-items: center;
+	width: 100% !important;
+	padding: .79rem 1.125rem !important;
+	font-size: .9375rem !important;
+	color: #566a7f !important;
+	text-align: left;
+	background-color: #fff !important;
+	border: 0 !important;
+	border-radius: 0;
+	overflow-anchor: none;
+	transition: all .2s ease-in-out, border-radius .15s ease;
+  }
+  .accordion-header .btn{
+	background-color: transparent !important;
+  	border: 1px solid transparent !important;
+  }
+  .bx-menu{
+	cursor: pointer;
+  }
+  .server-menu-toggler{
+	display: none;
+  }
   
