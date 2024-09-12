@@ -98,7 +98,7 @@
 	--color-background-plain:#02075d !important;
 	--color-background-plain-text:#000000;
 	/* --image-background:url("/scaleinfinite-nextcloud-all/apps/theming/img/background/jenna-kim-the-globe.webp"); */
-	--image-background:url("/scaleinfinite-nextcloud-all/themes/cloudfloat/core/img/background.webp") !important;
+	--image-background:url("/themes/cloudfloat/core/img/background.webp") !important;
   }
 body{
 	background-color: #02075d !important;
