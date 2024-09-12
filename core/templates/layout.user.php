@@ -23,6 +23,7 @@ $getUserAvatar = static function (int $size) use ($_): string {
 	<head data-user="<?php p($_['user_uid']); ?>" data-user-displayname="<?php p($_['user_displayname']); ?>" data-requesttoken="<?php p($_['requesttoken']); ?>">
 		<meta charset="utf-8">
 		<title>
+
 			<?php
 				p(!empty($_['pageTitle']) && $_['pageTitle'] !== $_['application'] ? $_['pageTitle'].' - ' : '');
 p(!empty($_['application']) ? $_['application'].' - ' : '');
@@ -47,6 +48,88 @@ p($theme->getTitle());
 		<?php emit_css_loading_tags($_); ?>
 		<?php emit_script_loading_tags($_); ?>
 		<?php print_unescaped($_['headers']); ?>
+		<!-- App Navigation over ride -->
+	
+		
+		<link href='/scaleinfinite-nextcloud-all/themes/cloudfloat/core/css/boxicons.min.css' rel='stylesheet'>
+		<link rel="stylesheet" href="/scaleinfinite-nextcloud-all/themes/cloudfloat/core/css/icons.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" nonce="<?php p(\OC::$server->getContentSecurityPolicyNonceManager()->getNonce()) ?>"></script>
+		<script type="text/javascript" nonce="<?php p(\OC::$server->getContentSecurityPolicyNonceManager()->getNonce()) ?>">
+			$(document).ready(function() {
+				// remove serach bar toggle icon
+				$("#nav-cf-searchbar").removeClass('app-navigation');
+				
+				$('.app-navigation-toggle').html('<i class="bx bx-chevron-left bx-sm align-middle"></i>');
+
+				// file filter button 
+				$(".v-popper--theme-dropdown").on('click',function (event){
+					$(".breadcrumb__crumbs").attr('style' , 'margin-top:30px');
+					$(".files-list__header-upload-button").attr('style' , 'margin-top:30px');					
+				})
+				// if ($("#trigger-menu-tjchn").hasclass('button-vue--vue-secondary')) {
+				// 	$(".breadcrumb__crumbs").attr('style' , 'margin-top:30px');
+				// } else {
+				// 	$(".breadcrumb__crumbs").attr('style' , 'margin-top:0px');
+				// }
+			
+
+				
+
+				$(".app-navigation-toggle").on('click', function(event){
+					// Toggle icon Removed
+					$(".app-navigation-toggle-wrapper").addClass('app-navigation-toggle-wrapper-removed-toggle');					
+					$('.app-navigation__content').removeAttr("inert");
+					$('#nav-cf-searchbar').removeClass('app-navigation--close');
+
+					  if (!$('#app-navigation-vue').hasClass('app-navigation-mini')) 
+					  {
+						$('#app-content-vue').addClass('main-expanded');
+						// $('#app-content-vue').attr('style','position:absolute !important');
+
+						// right top breadcrumbs position						
+						$('.files-list__header').attr('style','margin-left:100px');
+						// right files table						
+						$('.files-list__table').attr('style','margin-left:70px');
+						//right side file list filters
+						$('.files-list__filters').attr('style','margin-left:40px');
+						$('#app-navigation-vue').addClass('app-navigation-mini');
+				      }else{
+						  $('#app-content-vue').removeClass('main-expanded');
+						  $('#app-content-vue').removeAttr('style');
+						  $('.files-list__header').removeAttr('style');
+						  $('.files-list__table').removeAttr('style');
+						  $('.files-list__filters').removeAttr('style');
+						  $('#app-navigation-vue').removeClass('app-navigation-mini');
+						  $(".app-navigation-toggle-wrapper").removeClass('app-navigation-toggle-wrapper-removed-toggle');
+					  }
+					  
+					
+				});
+				//Remove the 'app-navigation--close' class from the hovered element
+				$('#app-navigation-vue').on({
+					mouseover: function() {
+					// Check if the element currently has the 'app-navigation--close' class
+					if ($(this).hasClass('app-navigation-mini')) {
+						// Remove the 'app-navigation--close' class if it exists
+						$('.app-navigation').removeClass('app-navigation--close');
+						
+						$(".app-navigation-toggle-wrapper").removeClass('app-navigation-toggle-wrapper-removed-toggle');	
+					}
+					},
+					mouseout: function() {
+					// Check if the element does not have the 'app-navigation--close' class
+					if ($(this).hasClass('app-navigation-mini')) {
+						// Add the 'app-navigation--close' class if it does not exist
+						$('.app-navigation').addClass('app-navigation--close');
+						$('#nav-cf-searchbar').removeClass('app-navigation--close');
+						$(".app-navigation-toggle-wrapper").addClass('app-navigation-toggle-wrapper-removed-toggle');	
+						
+					}
+					}
+				});
+			});     
+		</script>
+			<!-- End -->
 	</head>
 	<body id="<?php p($_['bodyid']);?>" <?php foreach ($_['enabledThemes'] as $themeId) {
 		p("data-theme-$themeId ");

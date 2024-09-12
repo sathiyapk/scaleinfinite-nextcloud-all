@@ -3,14 +3,42 @@
  - SPDX-License-Identifier: AGPL-3.0-or-later
  -->
 <template>
+	
 	<div class="files-list" data-cy-files-list>
 		<!-- Header -->
 		<div ref="before" class="files-list__before">
 			<slot name="before" />
 		</div>
-
+		
 		<div class="files-list__filters">
 			<slot name="filters" />
+					<!-- Files Grid view -->
+			<NcButton v-if="filesListWidth >= 512 && enableGridView"
+				:aria-label="gridViewButtonLabel"
+				:title="gridViewButtonLabel"
+				class="files-list__header-grid-button"
+				type="tertiary"
+				@click="toggleGridView">
+				<!-- <template #icon>
+					<ListViewIcon v-if="userConfig.grid_view" />
+					<ViewGridIcon v-else />
+				</template> -->
+				<template #icon>
+					<template v-if="userConfig.grid_view">
+						<!-- <ListViewIcon /> -->
+						<i class='bx bx-list-ul'></i>
+						
+					</template>
+					<template v-else>
+						<!-- <ViewGridIcon /> -->
+						<i class='bx bx-grid-alt'></i>
+					</template>
+				</template>
+				
+			</NcButton>
+			<!-- <div class="grid">
+			<h4>grid</h4>
+		</div> -->
 		</div>
 
 		<div v-if="!!$scopedSlots['header-overlay']" class="files-list__thead-overlay">
@@ -54,12 +82,18 @@
 <script lang="ts">
 import type { File, Folder, Node } from '@nextcloud/files'
 import type { PropType } from 'vue'
-
+import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
 import debounce from 'debounce'
 import Vue from 'vue'
-
 import filesListWidthMixin from '../mixins/filesListWidth.ts'
 import logger from '../logger.js'
+import ViewGridIcon from 'vue-material-design-icons/ViewGrid.vue'
+import { loadState } from '@nextcloud/initial-state'
+import ListViewIcon from 'vue-material-design-icons/FormatListBulletedSquare.vue'
+import { useUserConfigStore } from '../store/userconfig.ts'
+
+
+
 
 interface RecycledPoolItem {
 	key: string,
@@ -72,6 +106,12 @@ type DataSourceKey = keyof DataSource
 
 export default Vue.extend({
 	name: 'VirtualList',
+
+	components: {
+		ViewGridIcon,
+		NcButton,
+		ListViewIcon,
+	},
 
 	mixins: [filesListWidthMixin],
 
@@ -109,12 +149,21 @@ export default Vue.extend({
 		},
 	},
 
+	setup(){
+		const enableGridView = (loadState('core', 'config', [])['enable_non-accessible_features'] ?? true)
+		const userConfigStore = useUserConfigStore()
+		return{
+			enableGridView,
+			userConfigStore,
+		}
+	},
 	data() {
 		return {
 			index: this.scrollToIndex,
 			beforeHeight: 0,
 			headerHeight: 0,
 			tableHeight: 0,
+			
 			resizeObserver: null as ResizeObserver | null,
 		}
 	},
@@ -152,6 +201,14 @@ export default Vue.extend({
 				return 1
 			}
 			return Math.floor(this.filesListWidth / this.itemWidth)
+		},
+		gridViewButtonLabel() {
+			return this.userConfig.grid_view
+				? t('files', 'Switch to list view')
+				: t('files', 'Switch to grid view')
+		},
+		userConfig(): UserConfig {
+			return this.userConfigStore.userConfig
 		},
 
 		/**
@@ -289,6 +346,9 @@ export default Vue.extend({
 			const scrollTop = (Math.floor(index / this.columnCount) - 0.5) * this.itemHeight + this.beforeHeight
 			logger.debug('VirtualList: scrolling to index ' + index, { scrollTop, columnCount: this.columnCount })
 			this.$el.scrollTop = scrollTop
+		},
+		toggleGridView() {
+			this.userConfigStore.update('grid_view', !this.userConfig.grid_view)
 		},
 
 		onScroll() {

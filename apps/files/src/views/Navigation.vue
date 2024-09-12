@@ -2,54 +2,64 @@
   - SPDX-FileCopyrightText: 2023 Nextcloud GmbH and Nextcloud contributors
   - SPDX-License-Identifier: AGPL-3.0-or-later
 -->
-<template>
+  
+<template>	
 	<NcAppNavigation data-cy-files-navigation
 		:aria-label="t('files', 'Files')">
-		<template #search>
+		<!-- <template #search>
 			<NcAppNavigationSearch v-model="searchQuery" :label="t('files', 'Filter filenames…')" />
+		</template>		 -->
+				
+	<template #default>
+		<template>
+			<div id="app-logo"></div>
+			
 		</template>
-		<template #default>
-			<NcAppNavigationList :aria-label="t('files', 'Views')">
-				<NcAppNavigationItem v-for="view in parentViews"
-					:key="view.id"
-					:allow-collapse="true"
-					:data-cy-files-navigation-item="view.id"
-					:exact="useExactRouteMatching(view)"
-					:icon="view.iconClass"
-					:name="view.name"
-					:open="isExpanded(view)"
-					:pinned="view.sticky"
-					:to="generateToNavigation(view)"
-					@update:open="onToggleExpand(view)">
+		<NcAppNavigationList :aria-label="t('files', 'Views')">
+			<NcAppNavigationItem v-for="view in parentViews"
+				:key="view.id"
+				:allow-collapse="true"
+				:data-cy-files-navigation-item="view.id"
+				:exact="useExactRouteMatching(view)"
+				:icon="view.iconClass"
+				:name="view.name"
+				:open="isExpanded(view)"
+				:pinned="view.sticky"
+				:to="generateToNavigation(view)"
+				@update:open="onToggleExpand(view)">
+				<!-- Sanitized icon as svg if provided -->
+				<!-- <NcIconSvgWrapper v-if="view.icon" slot="icon" :svg="view.icon" /> -->
+					<template #icon>
+					<i :class="['menu-icon tf-icons bx-sm  bx  bx-cf-'+view.id]"></i>
+				   </template>
+					
+
+				<!-- Child views if any -->
+				<NcAppNavigationItem v-for="child in childViews[view.id]"
+					:key="child.id"
+					:data-cy-files-navigation-item="child.id"
+					:exact-path="true"
+					:icon="child.iconClass"
+					:name="child.name"
+					:to="generateToNavigation(child)">
 					<!-- Sanitized icon as svg if provided -->
-					<NcIconSvgWrapper v-if="view.icon" slot="icon" :svg="view.icon" />
-
-					<!-- Child views if any -->
-					<NcAppNavigationItem v-for="child in childViews[view.id]"
-						:key="child.id"
-						:data-cy-files-navigation-item="child.id"
-						:exact-path="true"
-						:icon="child.iconClass"
-						:name="child.name"
-						:to="generateToNavigation(child)">
-						<!-- Sanitized icon as svg if provided -->
-						<NcIconSvgWrapper v-if="child.icon" slot="icon" :svg="child.icon" />
-					</NcAppNavigationItem>
+					<NcIconSvgWrapper v-if="child.icon" slot="icon" :svg="child.icon" />
 				</NcAppNavigationItem>
-			</NcAppNavigationList>
+			</NcAppNavigationItem>
+		</NcAppNavigationList>
 
-			<!-- Settings modal-->
-			<SettingsModal :open="settingsOpened"
-				data-cy-files-navigation-settings
-				@close="onSettingsClose" />
-		</template>
+		<!-- Settings modal-->
+		<SettingsModal :open="settingsOpened"
+			data-cy-files-navigation-settings
+			@close="onSettingsClose" />
+	</template>
+		
 
 		<!-- Non-scrollable navigation bottom elements -->
 		<template #footer>
 			<ul class="app-navigation-entry__settings">
 				<!-- User storage usage statistics -->
 				<NavigationQuota />
-
 				<!-- Files settings modal toggle-->
 				<NcAppNavigationItem :name="t('files', 'Files settings')"
 					data-cy-files-navigation-settings-button
@@ -106,7 +116,7 @@ export default defineComponent({
 
 		return {
 			currentView,
-			searchQuery,
+			// searchQuery,
 			t,
 			views,
 

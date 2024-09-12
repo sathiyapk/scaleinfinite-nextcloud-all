@@ -39,6 +39,7 @@ Vue.use(PiniaVuePlugin)
 
 // Init Navigation Service
 // This only works with Vue 2 - with Vue 3 this will not modify the source but return just a observer
+// Displaying files 
 const Navigation = Vue.observable(getNavigation())
 Vue.prototype.$navigation = Navigation
 

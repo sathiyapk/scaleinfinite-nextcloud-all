@@ -7,7 +7,8 @@
 		:filter-name="t('files', 'Modified')"
 		@reset-filter="resetFilter">
 		<template #icon>
-			<NcIconSvgWrapper :path="mdiCalendarRange" />
+			<!-- <NcIconSvgWrapper :path="mdiCalendarRange" /> -->
+			<i :class="['menu-icon tf-icons bx-sm  bx bx-calendar-edit']"></i>
 		</template>
 		<NcActionButton v-for="preset of timePresets"
 			:key="preset.id"

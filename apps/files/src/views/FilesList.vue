@@ -2,53 +2,61 @@
   - SPDX-FileCopyrightText: 2023 Nextcloud GmbH and Nextcloud contributors
   - SPDX-License-Identifier: AGPL-3.0-or-later
 -->
+
 <template>
-	<NcAppContent :page-heading="pageHeading" data-cy-files-content>
-		<div class="files-list__header">
+	<NcAppContent :page-heading="pageHeading" data-cy-files-content>		
+		
+		<!-- <h2>Search files </h2> -->
+		<div class="files-list__header">				
+				<div class="files-list__header-filterbutton">
+					<div class="files-list__filters">
+					<template>
+						<FileListFilters />
+					</template>
+				</div>
+				</div>	
+				<div class="files-list__header-search">
+					<NcAppNavigation id="nav-cf-searchbar">
+						<template #search>
+							<NcAppNavigationSearch v-model="searchQuery" :label="t('files', 'Filter filenames…')" />
+						</template> 				
+					</NcAppNavigation>
+				</div>
+				
+					
 			<!-- Current folder breadcrumbs -->
-			<BreadCrumbs :path="directory" @reload="fetchContent">
-				<template #actions>
-					<!-- Sharing button -->
-					<NcButton v-if="canShare && filesListWidth >= 512"
-						:aria-label="shareButtonLabel"
-						:class="{ 'files-list__header-share-button--shared': shareButtonType }"
-						:title="shareButtonLabel"
-						class="files-list__header-share-button"
-						type="tertiary"
-						@click="openSharingSidebar">
-						<template #icon>
-							<LinkIcon v-if="shareButtonType === Type.SHARE_TYPE_LINK" />
-							<AccountPlusIcon v-else :size="20" />
-						</template>
-					</NcButton>
-
-					<!-- Disabled upload button -->
-					<NcButton v-if="!canUpload || isQuotaExceeded"
-						:aria-label="cantUploadLabel"
-						:title="cantUploadLabel"
-						class="files-list__header-upload-button--disabled"
-						:disabled="true"
-						type="secondary">
-						<template #icon>
-							<PlusIcon :size="20" />
-						</template>
-						{{ t('files', 'New') }}
-					</NcButton>
-
-					<!-- Uploader -->
-					<UploadPicker v-else-if="currentFolder"
-						allow-folders
-						class="files-list__header-upload-button"
-						:content="getContent"
-						:destination="currentFolder"
-						:forbidden-characters="forbiddenCharacters"
-						multiple
-						@failed="onUploadFail"
-						@uploaded="onUpload" />
+			<!-- <BreadCrumbs :path="directory" @reload="fetchContent">
+				<template #actions>						
 				</template>
-			</BreadCrumbs>
+			</BreadCrumbs> -->
 
-			<NcButton v-if="filesListWidth >= 512 && enableGridView"
+			<!-- Add New Files -->
+			<!-- <NcButton v-if="!canUpload || isQuotaExceeded"
+				:aria-label="cantUploadLabel"
+				:title="cantUploadLabel"
+				class="files-list__header-upload-button--disabled"
+				:disabled="true"
+				type="secondary">
+				<template #icon>
+					<PlusIcon :size="20" />
+				</template>
+				{{ t('files', 'New') }}
+			</NcButton>
+			<UploadPicker v-else-if="currentFolder"
+				allow-folders
+				class="files-list__header-upload-button"
+				:content="getContent"
+				:destination="currentFolder"
+				:forbidden-characters="forbiddenCharacters"
+				multiple
+				@failed="onUploadFail"
+				@uploaded="onUpload" /> -->
+
+				<!-- File filter -->
+				
+
+						<!-- Files Grid view -->
+			<!-- <NcButton v-if="filesListWidth >= 512 && enableGridView"
 				:aria-label="gridViewButtonLabel"
 				:title="gridViewButtonLabel"
 				class="files-list__header-grid-button"
@@ -58,15 +66,18 @@
 					<ListViewIcon v-if="userConfig.grid_view" />
 					<ViewGridIcon v-else />
 				</template>
-			</NcButton>
-
+			</NcButton> -->
+			
 			<!-- Secondary loading indicator -->
 			<NcLoadingIcon v-if="isRefreshing" class="files-list__refresh-icon" />
 		</div>
 
 		<!-- Drag and drop notice -->
 		<DragAndDropNotice v-if="!loading && canUpload" :current-folder="currentFolder" />
-
+		<BreadCrumbs :path="directory" @reload="fetchContent">
+			<template #actions>						
+			</template>
+		</BreadCrumbs>
 		<!-- Initial loading -->
 		<NcLoadingIcon v-if="loading && !isRefreshing"
 			class="files-list__loading-icon"
@@ -128,7 +139,9 @@ import { Type } from '@nextcloud/sharing'
 import { UploadPicker, UploadStatus } from '@nextcloud/upload'
 import { loadState } from '@nextcloud/initial-state'
 import { defineComponent } from 'vue'
-
+// Search
+import NcAppNavigation from '@nextcloud/vue/dist/Components/NcAppNavigation.js'
+import NcAppNavigationSearch from '@nextcloud/vue/dist/Components/NcAppNavigationSearch.js'
 import LinkIcon from 'vue-material-design-icons/Link.vue'
 import ListViewIcon from 'vue-material-design-icons/FormatListBulletedSquare.vue'
 import NcAppContent from '@nextcloud/vue/dist/Components/NcAppContent.js'
@@ -156,6 +169,7 @@ import filesListWidthMixin from '../mixins/filesListWidth.ts'
 import filesSortingMixin from '../mixins/filesSorting.ts'
 import logger from '../logger.js'
 import DragAndDropNotice from '../components/DragAndDropNotice.vue'
+import FileListFilters from '../components/FileListFilters.vue'
 
 const isSharingEnabled = (getCapabilities() as { files_sharing?: boolean })?.files_sharing !== undefined
 
@@ -163,6 +177,9 @@ export default defineComponent({
 	name: 'FilesList',
 
 	components: {
+		NcAppNavigation,
+		FileListFilters,
+		NcAppNavigationSearch,		
 		BreadCrumbs,
 		DragAndDropNotice,
 		FilesListVirtual,
@@ -185,6 +202,8 @@ export default defineComponent({
 	],
 
 	setup() {
+		// search
+		// const { searchQuery } = useFilenameFilter()
 		const filesStore = useFilesStore()
 		const filtersStore = useFiltersStore()
 		const pathsStore = usePathsStore()
@@ -211,6 +230,7 @@ export default defineComponent({
 			uploaderStore,
 			userConfigStore,
 			viewConfigStore,
+			// searchQuery,
 
 			// non reactive data
 			enableGridView,
@@ -658,7 +678,8 @@ export default defineComponent({
 		display: flex;
 		align-items: center;
 		// Do not grow or shrink (vertically)
-		flex: 0 0;
+		//flex: 0 0;
+		flex:column;
 		max-width: 100%;
 		// Align with the navigation toggle icon
 		margin-block: var(--app-navigation-padding, 4px);
