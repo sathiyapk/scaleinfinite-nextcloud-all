@@ -103,24 +103,23 @@ export default defineComponent({
 		NcAppNavigation,
 		NcAppNavigationItem,
 		NcAppNavigationList,
-		NcAppNavigationSearch,
+		// NcAppNavigationSearch,
 		NcIconSvgWrapper,
 		SettingsModal,
 	},
 
 	setup() {
-		const filtersStore = useFiltersStore()
+		// const filtersStore = useFiltersStore()
 		const viewConfigStore = useViewConfigStore()
 		const { currentView, views } = useNavigation()
-		const { searchQuery } = useFilenameFilter()
+		// const { searchQuery } = useFilenameFilter()
 
 		return {
 			currentView,
-			// searchQuery,
+			//  searchQuery,
 			t,
 			views,
-
-			filtersStore,
+			// filtersStore,
 			viewConfigStore,
 		}
 	},

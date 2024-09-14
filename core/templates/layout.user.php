@@ -51,8 +51,8 @@ p($theme->getTitle());
 		<!-- App Navigation over ride -->
 	
 		
-		<link href='/themes/cloudfloat/core/css/boxicons.min.css' rel='stylesheet'>
-		<link rel="stylesheet" href="/themes/cloudfloat/core/css/icons.css">
+		<link href='/scaleinfinite-nextcloud-all/themes/cloudfloat/core/css/boxicons.min.css' rel='stylesheet'>
+		<link rel="stylesheet" href="/scaleinfinite-nextcloud-all/themes/cloudfloat/core/css/icons.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" nonce="<?php p(\OC::$server->getContentSecurityPolicyNonceManager()->getNonce()) ?>"></script>
 		<script type="text/javascript" nonce="<?php p(\OC::$server->getContentSecurityPolicyNonceManager()->getNonce()) ?>">
 			$(document).ready(function() {
@@ -63,9 +63,14 @@ p($theme->getTitle());
 
 				// file filter button 
 				$(".v-popper--theme-dropdown").on('click',function (event){
-					$(".breadcrumb__crumbs").attr('style' , 'margin-top:30px');
+					$(".breadcrumb__crumbs").attr('style' , 'margin-top:30px'); 
+					// $(".file-list-filters__active").attr('style' , 'margin-top:30px');
 					$(".files-list__header-upload-button").attr('style' , 'margin-top:30px');					
 				})
+				// Serch fileter function
+				$('#search_files').on('input', function() {
+					$(".breadcrumb__crumbs").attr('style' , 'margin-top:30px'); 
+				});
 				// if ($("#trigger-menu-tjchn").hasclass('button-vue--vue-secondary')) {
 				// 	$(".breadcrumb__crumbs").attr('style' , 'margin-top:30px');
 				// } else {

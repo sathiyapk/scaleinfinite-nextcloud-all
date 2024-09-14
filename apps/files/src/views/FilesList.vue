@@ -17,9 +17,16 @@
 				</div>	
 				<div class="files-list__header-search">
 					<NcAppNavigation id="nav-cf-searchbar">
-						<template #search>
+						<!-- <template #search>
 							<NcAppNavigationSearch v-model="searchQuery" :label="t('files', 'Filter filenames…')" />
-						</template> 				
+						</template> 				 -->
+						<template #search>
+							<NcAppNavigationSearch 
+								v-model="searchQuery" 
+								:label="t('files', 'Filter filenames…')" 
+								id="search_files"
+							/>
+						</template>
 					</NcAppNavigation>
 				</div>
 				
@@ -140,6 +147,7 @@ import { UploadPicker, UploadStatus } from '@nextcloud/upload'
 import { loadState } from '@nextcloud/initial-state'
 import { defineComponent } from 'vue'
 // Search
+import { useFilenameFilter } from '../composables/useFilenameFilter'
 import NcAppNavigation from '@nextcloud/vue/dist/Components/NcAppNavigation.js'
 import NcAppNavigationSearch from '@nextcloud/vue/dist/Components/NcAppNavigationSearch.js'
 import LinkIcon from 'vue-material-design-icons/Link.vue'
@@ -203,7 +211,7 @@ export default defineComponent({
 
 	setup() {
 		// search
-		// const { searchQuery } = useFilenameFilter()
+		 const { searchQuery } = useFilenameFilter()
 		const filesStore = useFilesStore()
 		const filtersStore = useFiltersStore()
 		const pathsStore = usePathsStore()
@@ -222,7 +230,6 @@ export default defineComponent({
 			directory,
 			fileId,
 			t,
-
 			filesStore,
 			filtersStore,
 			pathsStore,
@@ -230,7 +237,7 @@ export default defineComponent({
 			uploaderStore,
 			userConfigStore,
 			viewConfigStore,
-			// searchQuery,
+			 searchQuery,
 
 			// non reactive data
 			enableGridView,
