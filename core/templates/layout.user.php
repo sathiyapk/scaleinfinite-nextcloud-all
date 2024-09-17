@@ -51,8 +51,8 @@ p($theme->getTitle());
 		<!-- App Navigation over ride -->
 	
 		
-		<link href='/themes/cloudfloat/core/css/boxicons.min.css' rel='stylesheet'>
-		<link rel="stylesheet" href="/themes/cloudfloat/core/css/icons.css">
+		<link href='/scaleinfinite-nextcloud-all/themes/cloudfloat/core/css/boxicons.min.css' rel='stylesheet'>
+		<link rel="stylesheet" href="/scaleinfinite-nextcloud-all/themes/cloudfloat/core/css/icons.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" nonce="<?php p(\OC::$server->getContentSecurityPolicyNonceManager()->getNonce()) ?>"></script>
 		<script type="text/javascript" nonce="<?php p(\OC::$server->getContentSecurityPolicyNonceManager()->getNonce()) ?>">
 			$(document).ready(function() {
@@ -70,12 +70,9 @@ p($theme->getTitle());
 				// Serch fileter function
 				$('#search_files').on('input', function() {
 					$(".breadcrumb__crumbs").attr('style' , 'margin-top:30px'); 
+					$(".files-list__header-upload-button").attr('style' , 'margin-top:30px');		
 				});
-				// if ($("#trigger-menu-tjchn").hasclass('button-vue--vue-secondary')) {
-				// 	$(".breadcrumb__crumbs").attr('style' , 'margin-top:30px');
-				// } else {
-				// 	$(".breadcrumb__crumbs").attr('style' , 'margin-top:0px');
-				// }
+			
 			
 
 				
@@ -96,7 +93,7 @@ p($theme->getTitle());
 						// right files table						
 						$('.files-list__table').attr('style','margin-left:70px');
 						//right side file list filters
-						$('.files-list__filters').attr('style','margin-left:40px');
+						// $('.files-list__filters').attr('style','margin-left:40px');
 						$('#app-navigation-vue').addClass('app-navigation-mini');
 				      }else{
 						  $('#app-content-vue').removeClass('main-expanded');

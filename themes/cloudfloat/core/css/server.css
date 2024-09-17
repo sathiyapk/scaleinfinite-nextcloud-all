@@ -98,7 +98,7 @@
 	--color-background-plain:#02075d !important;
 	--color-background-plain-text:#000000;
 	/* --image-background:url("/scaleinfinite-nextcloud-all/apps/theming/img/background/jenna-kim-the-globe.webp"); */
-	--image-background:url("/themes/cloudfloat/core/img/background.webp") !important;
+	--image-background:url("/scaleinfinite-nextcloud-all/themes/cloudfloat/core/img/background.webp") !important;
   }
 body{
 	background-color: #02075d !important;
@@ -638,7 +638,7 @@ h3[data-v-3705ae06]{
 	display: flex !important;
 	border-radius: 12px;
 	padding: 10px;
-	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.1);
   	transition: 0.3s;
 	background-color: #fff;
 	margin: 10px;
@@ -784,7 +784,7 @@ h3[data-v-3705ae06]{
 	display: none;
   }
   /* End */
-
+  
   /* breadcrumbs */
 /* .files-list__header .vue-crumb{
 	display: none !important;
@@ -819,5 +819,29 @@ h3[data-v-3705ae06]{
   .server-menu-toggler{
 	display: none;
   }
+  /* Server page Log Window */
+  .pf-v5-c-log-viewer__scroll-container{
+	max-height: 16rem;
+  }
+  button:not(.button-vue, [class^="vs__"]), .button, input[type="button"], input[type="submit"], input[type="reset"]{
+	font-weight: 400 !important;
+	border-radius: none !important;
+	background: none;
+	border: none;
+  }
+  input:not([type="range"], .input-field__input, [type="submit"], [type="button"], [type="reset"], .multiselect__input, .select2-input, .action-input__input, [class^="vs__"]), select, div[contenteditable="true"], textarea{
+	border:none !important;
+	background: none !important;
+  }
+  .custom-placeholder-padding::placeholder {
+    margin-left: 10px;
+}
+.files-list__breadcrumbs{
+	/* margin:10px 0px 10px 0px !important; */
+	margin-inline: 0px !important;
+}
+/* .files-list{
+	overflow: none !important;
+	height: auto;
+} */
 
-  

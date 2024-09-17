@@ -321,8 +321,8 @@ export default defineComponent({
 
 	--fixed-top-position: var(--default-clickable-area);
 
-	overflow: auto;
-	height: 100%;
+	//overflow: auto;
+	//height: 100%;
 	will-change: scroll-position;
 
 	&:has(.file-list-filters__active) {
