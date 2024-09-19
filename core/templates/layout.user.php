@@ -55,7 +55,37 @@ p($theme->getTitle());
 		<link rel="stylesheet" href="/themes/cloudfloat/core/css/icons.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" nonce="<?php p(\OC::$server->getContentSecurityPolicyNonceManager()->getNonce()) ?>"></script>
 		<script type="text/javascript" nonce="<?php p(\OC::$server->getContentSecurityPolicyNonceManager()->getNonce()) ?>">
+			function responsive_script()
+			{
+				var theWindowSize =$(window).width(); 
+				console.log(theWindowSize);
+   					if(theWindowSize<1200){
+						$('.app-navigation').hide();
+						$('.file-app-res-menu').show();
+						console.log("show menu");
+						// Show search bar
+						$('#nav-cf-searchbar').removeAttr('style');
+						$('#nav-cf-searchbar').removeAttr('class');
+								//Open Menu
+							$(".file-app-res-menu").on('click', function(event){
+								$('.app-navigation').show();
+								$('.app-navigation').removeClass('app-navigation--close');						
+								$(".app-navigation-toggle-wrapper").removeClass('app-navigation-toggle-wrapper-removed-toggle');
+							});
+							// Close Menu
+							$('.app-navigation-toggle ').on('click', function(event){								
+								$('.app-navigation').addClass('app-navigation--close');						
+								$(".app-navigation-toggle-wrapper").addClass('app-navigation-toggle-wrapper-removed-toggle');
+								 $('.app-navigation').hide();
+							});
+   					}
+					else {
+						$('.app-navigation').show();
+						$('.file-app-res-menu').hide();
+					} 
+			}
 			$(document).ready(function() {
+				responsive_script();
 				// remove serach bar toggle icon
 				$("#nav-cf-searchbar").removeClass('app-navigation');
 				
@@ -129,7 +159,41 @@ p($theme->getTitle());
 					}
 					}
 				});
-			});     
+		
+				
+			
+			// Responsive Menu
+			// $('.file-app-res-menu').hide();
+			$(window).resize(function () {   
+				responsive_script()
+ 				/* var theWindowSize = $(this).width(); 
+   					if(theWindowSize<1200){
+						$('.app-navigation').hide();
+						$('.file-app-res-menu').show();
+						// Show search bar
+						$('#nav-cf-searchbar').removeAttr('style');
+						$('#nav-cf-searchbar').removeAttr('class');
+								//Open Menu
+							$(".file-app-res-menu").on('click', function(event){
+								$('.app-navigation').show();
+								$('.app-navigation').removeClass('app-navigation--close');						
+								$(".app-navigation-toggle-wrapper").removeClass('app-navigation-toggle-wrapper-removed-toggle');
+							});
+							// Close Menu
+							$('.app-navigation-toggle ').on('click', function(event){								
+								$('.app-navigation').addClass('app-navigation--close');						
+								$(".app-navigation-toggle-wrapper").addClass('app-navigation-toggle-wrapper-removed-toggle');
+								 $('.app-navigation').hide();
+							});
+   					}
+					else {
+						$('.app-navigation').show();
+						$('.file-app-res-menu').hide();
+					} */
+			}); // Responsive menu closed
+
+		
+		}); //Document Ready function closed
 		</script>
 			<!-- End -->
 	</head>

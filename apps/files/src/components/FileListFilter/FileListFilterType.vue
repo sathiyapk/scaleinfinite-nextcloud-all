@@ -3,15 +3,18 @@
   - SPDX-License-Identifier: AGPL-3.0-or-later
 -->
 <template>
+	<div class="file-list-top-bar" >
+		<div class="file-app-res-menu">
+			<i :class="['menu-icon tf-icons bx-sm  bx bx-menu']" style="padding:0px 5px 0px 5px"></i>
+		</div>
 	<FileListFilter class="file-list-filter-type"
 		:is-active="isActive"
 		:filter-name="t('files', 'Type')"
 		@reset-filter="resetFilter">
-		<template #icon>
-			<!-- <NcIconSvgWrapper :path="mdiFile" /> -->
-			<i :class="['menu-icon tf-icons bx-sm  bx bx-food-menu']"></i>
-			
-		</template>
+		<template #icon>			
+			<!-- <NcIconSvgWrapper :path="mdiFile" /> -->			
+			<i :class="['menu-icon tf-icons bx-sm  bx bx-food-menu']"></i>							
+			</template>		
 		<NcActionButton v-for="fileType of typePresets"
 			:key="fileType.id"
 			type="checkbox"
@@ -23,6 +26,7 @@
 			{{ fileType.label }}
 		</NcActionButton>
 	</FileListFilter>
+</div>
 </template>
 
 <script lang="ts">

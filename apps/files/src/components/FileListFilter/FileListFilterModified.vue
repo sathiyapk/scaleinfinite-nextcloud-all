@@ -3,6 +3,7 @@
   - SPDX-License-Identifier: AGPL-3.0-or-later
 -->
 <template>
+	<div class="responsive-modify">
 	<FileListFilter :is-active="isActive"
 		:filter-name="t('files', 'Modified')"
 		@reset-filter="resetFilter">
@@ -20,6 +21,7 @@
 		</NcActionButton>
 		<!-- TODO: Custom time range -->
 	</FileListFilter>
+</div>
 </template>
 
 <script lang="ts">
