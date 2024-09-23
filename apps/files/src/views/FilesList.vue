@@ -2,131 +2,92 @@
   - SPDX-FileCopyrightText: 2023 Nextcloud GmbH and Nextcloud contributors
   - SPDX-License-Identifier: AGPL-3.0-or-later
 -->
-
-<template>
-	<NcAppContent :page-heading="pageHeading" data-cy-files-content>		
-		
-		<!-- <h2>Search files </h2> -->
-		<div class="files-list__header">				
-				<div class="files-list__header-filterbutton">
-					<div class="files-list__filters">
-					<template>
+			<template>
+				<NcAppContent :page-heading="pageHeading" data-cy-files-content>
+				<div class="topbar-stick">
+					<div class="files-list__header">
+					<div class="files-list__header-filterbutton">
+						<div class="files-list__filters">
 						<FileListFilters />
-					</template>
-				</div>
-				</div>	
-				<div class="files-list__header-search">
-					<NcAppNavigation id="nav-cf-searchbar">
-						<!-- <template #search>
-							<NcAppNavigationSearch v-model="searchQuery" :label="t('files', 'Filter filenames…')" />
-						</template> 				 -->
+						</div>
+					</div>
+					<div class="files-list__header-search">
+						<NcAppNavigation id="nav-cf-searchbar">
 						<template #search>
 							<NcAppNavigationSearch 
-								v-model="searchQuery" 
-								:label="t('files', 'Filter filenames…')" 
-								id="search_files"
+							v-model="searchQuery" 
+							:label="t('files', 'Filter filenames…')" 
+							id="search_files" 
 							/>
 						</template>
-					</NcAppNavigation>
+						</NcAppNavigation>
+					</div>
+					<!-- Secondary loading indicator -->
+					<NcLoadingIcon v-if="isRefreshing" class="files-list__refresh-icon" />
+					</div>
 				</div>
-				
-					
-			<!-- Current folder breadcrumbs -->
-			<!-- <BreadCrumbs :path="directory" @reload="fetchContent">
-				<template #actions>						
-				</template>
-			</BreadCrumbs> -->
-
-			<!-- Add New Files -->
-			<!-- <NcButton v-if="!canUpload || isQuotaExceeded"
-				:aria-label="cantUploadLabel"
-				:title="cantUploadLabel"
-				class="files-list__header-upload-button--disabled"
-				:disabled="true"
-				type="secondary">
-				<template #icon>
-					<PlusIcon :size="20" />
-				</template>
-				{{ t('files', 'New') }}
-			</NcButton>
-			<UploadPicker v-else-if="currentFolder"
-				allow-folders
-				class="files-list__header-upload-button"
-				:content="getContent"
-				:destination="currentFolder"
-				:forbidden-characters="forbiddenCharacters"
-				multiple
-				@failed="onUploadFail"
-				@uploaded="onUpload" /> -->
-
-				<!-- File filter -->
-				
-
-						<!-- Files Grid view -->
-			<!-- <NcButton v-if="filesListWidth >= 512 && enableGridView"
-				:aria-label="gridViewButtonLabel"
-				:title="gridViewButtonLabel"
-				class="files-list__header-grid-button"
-				type="tertiary"
-				@click="toggleGridView">
-				<template #icon>
-					<ListViewIcon v-if="userConfig.grid_view" />
-					<ViewGridIcon v-else />
-				</template>
-			</NcButton> -->
 			
-			<!-- Secondary loading indicator -->
-			<NcLoadingIcon v-if="isRefreshing" class="files-list__refresh-icon" />
-		</div>
-
-		<!-- Drag and drop notice -->
-		<DragAndDropNotice v-if="!loading && canUpload" :current-folder="currentFolder" />
-		<BreadCrumbs :path="directory" @reload="fetchContent">
-			<template #actions>						
+				<!-- Drag and drop notice -->
+				<DragAndDropNotice v-if="!loading && canUpload" :current-folder="currentFolder" />
+			
+				<BreadCrumbs :path="directory" @reload="fetchContent">
+					<template #actions></template>
+				</BreadCrumbs>
+			
+				<!-- Initial loading -->
+				<NcLoadingIcon 
+					v-if="loading && !isRefreshing" 
+					class="files-list__loading-icon" 
+					:size="38" 
+					:name="t('files', 'Loading current folder')" 
+				/>
+			
+				<!-- Empty content placeholder -->
+				<NcEmptyContent 
+					v-else-if="!loading && isEmptyDir" 
+					:name="currentView?.emptyTitle || t('files', 'No files in here')" 
+					:description="currentView?.emptyCaption || t('files', 'Upload some content or sync with your devices!')" 
+					data-cy-files-content-empty
+				>
+					<template v-if="directory !== '/'" #action>
+					<!-- Uploader -->
+					<UploadPicker 
+						v-if="currentFolder && canUpload && !isQuotaExceeded" 
+						allow-folders 
+						class="files-list__header-upload-button" 
+						:content="getContent" 
+						:destination="currentFolder" 
+						:forbidden-characters="forbiddenCharacters" 
+						multiple 
+						@failed="onUploadFail" 
+						@uploaded="onUpload" 
+					/>
+					<NcButton 
+						v-else 
+						:aria-label="t('files', 'Go to the previous folder')" 
+						:to="toPreviousDir" 
+						type="primary"
+					>
+						{{ t('files', 'Go back') }}
+					</NcButton>
+					</template>
+			
+					<template #icon>
+					<NcIconSvgWrapper :svg="currentView.icon" />
+					</template>
+				</NcEmptyContent>
+			
+				<!-- File list -->
+				<FilesListVirtual 
+					v-else 
+					ref="filesListVirtual" 
+					:current-folder="currentFolder" 
+					:current-view="currentView" 
+					:nodes="dirContentsSorted" 
+				/>
+				</NcAppContent>
 			</template>
-		</BreadCrumbs>
-		<!-- Initial loading -->
-		<NcLoadingIcon v-if="loading && !isRefreshing"
-			class="files-list__loading-icon"
-			:size="38"
-			:name="t('files', 'Loading current folder')" />
-
-		<!-- Empty content placeholder -->
-		<NcEmptyContent v-else-if="!loading && isEmptyDir"
-			:name="currentView?.emptyTitle || t('files', 'No files in here')"
-			:description="currentView?.emptyCaption || t('files', 'Upload some content or sync with your devices!')"
-			data-cy-files-content-empty>
-			<template v-if="directory !== '/'" #action>
-				<!-- Uploader -->
-				<UploadPicker v-if="currentFolder && canUpload && !isQuotaExceeded"
-					allow-folders
-					class="files-list__header-upload-button"
-					:content="getContent"
-					:destination="currentFolder"
-					:forbidden-characters="forbiddenCharacters"
-					multiple
-					@failed="onUploadFail"
-					@uploaded="onUpload" />
-				<NcButton v-else
-					:aria-label="t('files', 'Go to the previous folder')"
-					:to="toPreviousDir"
-					type="primary">
-					{{ t('files', 'Go back') }}
-				</NcButton>
-			</template>
-			<template #icon>
-				<NcIconSvgWrapper :svg="currentView.icon" />
-			</template>
-		</NcEmptyContent>
-
-		<!-- File list -->
-		<FilesListVirtual v-else
-			ref="filesListVirtual"
-			:current-folder="currentFolder"
-			:current-view="currentView"
-			:nodes="dirContentsSorted" />
-	</NcAppContent>
-</template>
+  
 
 <script lang="ts">
 import type { ContentsWithRoot, INode } from '@nextcloud/files'

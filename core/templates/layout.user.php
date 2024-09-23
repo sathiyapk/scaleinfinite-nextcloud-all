@@ -85,12 +85,15 @@ p($theme->getTitle());
 					} 
 			}
 			$(document).ready(function() {
+				// Menu Responsive function
 				responsive_script();
-				// remove serach bar toggle icon
-				$("#nav-cf-searchbar").removeClass('app-navigation');
+				// Sticky Topbar 
+		
 				
-				$('.app-navigation-toggle').html('<i class="bx bx-chevron-left bx-sm align-middle"></i>');
 
+				// remove serach bar toggle icon
+				$("#nav-cf-searchbar").removeClass('app-navigation');				
+				$('.app-navigation-toggle').html('<i class="bx bx-chevron-left bx-sm align-middle"></i>');
 				// file filter button 
 				$(".v-popper--theme-dropdown").on('click',function (event){
 					$(".breadcrumb__crumbs").attr('style' , 'margin-top:30px'); 
@@ -105,17 +108,22 @@ p($theme->getTitle());
 			
 			
 
-				
+				// ************ ON CLICK
 
 				$(".app-navigation-toggle").on('click', function(event){
+					
+
 					// Toggle icon Removed
 					$(".app-navigation-toggle-wrapper").addClass('app-navigation-toggle-wrapper-removed-toggle');					
 					$('.app-navigation__content').removeAttr("inert");
 					$('#nav-cf-searchbar').removeClass('app-navigation--close');
-
+					
+					
 					  if (!$('#app-navigation-vue').hasClass('app-navigation-mini')) 
 					  {
 						$('#app-content-vue').addClass('main-expanded');
+					
+						// **
 						// $('#app-content-vue').attr('style','position:absolute !important');
 
 						// right top breadcrumbs position						
@@ -133,28 +141,32 @@ p($theme->getTitle());
 						  $('.files-list__filters').removeAttr('style');
 						  $('#app-navigation-vue').removeClass('app-navigation-mini');
 						  $(".app-navigation-toggle-wrapper").removeClass('app-navigation-toggle-wrapper-removed-toggle');
+						
 					  }
 					  
 					
 				});
 				//Remove the 'app-navigation--close' class from the hovered element
 				$('#app-navigation-vue').on({
-					mouseover: function() {
+					mouseover: function() {			
+				
 					// Check if the element currently has the 'app-navigation--close' class
 					if ($(this).hasClass('app-navigation-mini')) {
 						// Remove the 'app-navigation--close' class if it exists
-						$('.app-navigation').removeClass('app-navigation--close');
-						
+						$('.app-navigation').removeClass('app-navigation--close');						
 						$(".app-navigation-toggle-wrapper").removeClass('app-navigation-toggle-wrapper-removed-toggle');	
+						
 					}
 					},
-					mouseout: function() {
+					mouseout: function() {	
 					// Check if the element does not have the 'app-navigation--close' class
 					if ($(this).hasClass('app-navigation-mini')) {
 						// Add the 'app-navigation--close' class if it does not exist
 						$('.app-navigation').addClass('app-navigation--close');
 						$('#nav-cf-searchbar').removeClass('app-navigation--close');
 						$(".app-navigation-toggle-wrapper").addClass('app-navigation-toggle-wrapper-removed-toggle');	
+							
+						
 						
 					}
 					}

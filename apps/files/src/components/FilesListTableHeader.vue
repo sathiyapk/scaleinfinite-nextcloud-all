@@ -39,7 +39,31 @@
 			:aria-sort="ariaSortForMode('mtime')">
 			<FilesListTableHeaderButton :name="t('files', 'Modified')" mode="mtime" />
 		</th>
-
+        <th>
+		<NcButton v-if="filesListWidth >= 512 && enableGridView"
+				:aria-label="gridViewButtonLabel"
+				:title="gridViewButtonLabel"
+				class="files-list__header-grid-button"
+				type="tertiary"
+				@click="toggleGridView">
+				<!-- <template #icon>
+					<ListViewIcon v-if="userConfig.grid_view" />
+					<ViewGridIcon v-else />
+				</template> -->
+				<template #icon>
+					<template v-if="userConfig.grid_view">
+						<!-- <ListViewIcon /> -->
+						<i class='bx bx-list-ul'></i>
+						
+					</template>
+					<template v-else>
+						<!-- <ViewGridIcon /> -->
+						<i class='bx bx-grid-alt'></i>
+					</template>
+				</template>
+				
+			</NcButton>
+		</th>
 		<!-- Custom views columns -->
 		<th v-for="column in columns"
 			:key="column.id"
@@ -60,7 +84,7 @@ import type { FileSource } from '../types.ts'
 
 import { translate as t } from '@nextcloud/l10n'
 import { defineComponent } from 'vue'
-
+import NcButton from '@nextcloud/vue/dist/Components/NcButton.js'
 import NcCheckboxRadioSwitch from '@nextcloud/vue/dist/Components/NcCheckboxRadioSwitch.js'
 import FilesListTableHeaderButton from './FilesListTableHeaderButton.vue'
 
@@ -69,6 +93,12 @@ import { useFilesStore } from '../store/files.ts'
 import { useSelectionStore } from '../store/selection.ts'
 import filesSortingMixin from '../mixins/filesSorting.ts'
 import logger from '../logger.js'
+import ViewGridIcon from 'vue-material-design-icons/ViewGrid.vue'
+import { loadState } from '@nextcloud/initial-state'
+import { useUserConfigStore } from '../store/userconfig.ts'
+import filesListWidthMixin from '../mixins/filesListWidth.ts'
+
+
 
 export default defineComponent({
 	name: 'FilesListTableHeader',
@@ -76,6 +106,7 @@ export default defineComponent({
 	components: {
 		FilesListTableHeaderButton,
 		NcCheckboxRadioSwitch,
+		NcButton,
 	},
 
 	mixins: [
@@ -105,12 +136,16 @@ export default defineComponent({
 		const filesStore = useFilesStore()
 		const selectionStore = useSelectionStore()
 		const { currentView } = useNavigation()
+		const enableGridView = (loadState('core', 'config', [])['enable_non-accessible_features'] ?? true)
+		const userConfigStore = useUserConfigStore()
 
 		return {
 			filesStore,
 			selectionStore,
 
 			currentView,
+			enableGridView,
+			userConfigStore,
 		}
 	},
 
@@ -153,6 +188,14 @@ export default defineComponent({
 		isSomeSelected() {
 			return !this.isAllSelected && !this.isNoneSelected
 		},
+		gridViewButtonLabel() {
+			return this.userConfig.grid_view
+				? t('files', 'Switch to list view')
+				: t('files', 'Switch to grid view')
+		},
+		userConfig(): UserConfig {
+			return this.userConfigStore.userConfig
+		},
 	},
 
 	methods: {
@@ -183,7 +226,9 @@ export default defineComponent({
 				this.selectionStore.reset()
 			}
 		},
-
+toggleGridView() {
+			this.userConfigStore.update('grid_view', !this.userConfig.grid_view)
+		},
 		resetSelection() {
 			this.selectionStore.reset()
 		},

@@ -10,32 +10,10 @@
 			<slot name="before" />
 		</div>
 		
-		<div class="files-list__filters">
+		<div class="files-list__filters" >
 			<slot name="filters" />
 					<!-- Files Grid view -->
-			<NcButton v-if="filesListWidth >= 512 && enableGridView"
-				:aria-label="gridViewButtonLabel"
-				:title="gridViewButtonLabel"
-				class="files-list__header-grid-button"
-				type="tertiary"
-				@click="toggleGridView">
-				<!-- <template #icon>
-					<ListViewIcon v-if="userConfig.grid_view" />
-					<ViewGridIcon v-else />
-				</template> -->
-				<template #icon>
-					<template v-if="userConfig.grid_view">
-						<!-- <ListViewIcon /> -->
-						<i class='bx bx-list-ul'></i>
-						
-					</template>
-					<template v-else>
-						<!-- <ViewGridIcon /> -->
-						<i class='bx bx-grid-alt'></i>
-					</template>
-				</template>
-				
-			</NcButton>
+			
 			<!-- <div class="grid">
 			<h4>grid</h4>
 		</div> -->

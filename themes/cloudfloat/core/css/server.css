@@ -97,6 +97,8 @@
 	--gradient-primary-background:linear-gradient(40deg, var(--color-primary) 0%, var(--color-primary-hover) 100%);
 	--color-background-plain:#02075d !important;
 	--color-background-plain-text:#000000;
+	/*  */
+
 	/* --image-background:url("/scaleinfinite-nextcloud-all/apps/theming/img/background/jenna-kim-the-globe.webp"); */
 	--image-background:url("/themes/cloudfloat/core/img/background.webp") !important;
   }
@@ -671,6 +673,7 @@ h3[data-v-3705ae06]{
 	transition: 0.3s;
 	background-color: #fff;
 	margin: 10px 10px 10px 25px;
+
 }
 .file-list-filters__active{
 	position: absolute !important;
@@ -690,11 +693,10 @@ h3[data-v-3705ae06]{
 
 /* End */
 /* Grid Icon Table View */
-.files-list__filters{
+/* .files-list__filters{
   display: flex;
-  /* position: relative; */
   justify-content: flex-end;
-}
+} */
 
   /* Boxicon Design  */
   .bx{
@@ -853,14 +855,21 @@ h3[data-v-3705ae06]{
 .action-item {
 	z-index: 99; 
 }
-@media (max-width:1200px) {
+@media only screen and (max-width: 1200px) {
 	.files-list__header{
 		margin-inline: calc(var(--default-clickable-area, 44px) + -3*var(--app-navigation-padding, 4px)) var(--app-navigation-padding, 4px) !important;
 	}
 	.files-list{
 		margin: 10px 10px 10px 12px !important;
 	}
+	.topbar-stick{
+		width: 100vw !important;
+	}
+	/* .app-navigation {
+		position: absolute !important;
+	  } */
 }
+
 @media (max-width:1024px) {
 	/* Type fillter Button */
 	.file-list-filter-type{
@@ -877,21 +886,24 @@ h3[data-v-3705ae06]{
 		z-index: 99;
 	}
 }
-/* .files-list__header-search {
-    width: calc(100% - 20px); 
-    padding: 10px;
-    box-sizing: border-box;
-} */
 
-/* @media (min-width: 600px) {
-    .files-list__header-search {
-        width: calc(80% - 30px); 
-    }
+
+/* File app Responsive menu - END */
+/* File app- Sticky Top bar */
+.topbar-stick{
+	position: sticky !important;
+	/* width: calc(var(--file-app-top-bar-default-width) + var(--file-app-top-bar-expanded-width)); */
+	/* width: calc(100vw - 260px); */
+    z-index: inherit !important;
+	width: 100%;
+ 	 top: 0px;
 }
 
-@media (min-width: 1024px) {
-    .files-list__header-search {
-        width: calc(60% - 40px); 
-    }
-} */
-/* File app Responsive menu - END */
+/* File app- Sticky Top bar  End*/
+/* File list header spance for grid */
+.files-list__filters {
+	display: none !important;
+}
+.files-list__row-mtime{
+	justify-content: right !important;
+}
