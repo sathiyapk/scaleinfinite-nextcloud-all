@@ -100,7 +100,7 @@
 	/*  */
 
 	/* --image-background:url("/scaleinfinite-nextcloud-all/apps/theming/img/background/jenna-kim-the-globe.webp"); */
-	--image-background:url("/themes/cloudfloat/core/img/background.webp") !important;
+	--image-background:url("/scaleinfinite-nextcloud-all/themes/cloudfloat/core/img/background.webp") !important;
   }
 body{
 	background-color: #02075d !important;
@@ -901,7 +901,7 @@ h3[data-v-3705ae06]{
 
 /* File app- Sticky Top bar  End*/
 /* File list header spance for grid */
-.files-list__filters {
+.files-list .files-list__filters {
 	display: none !important;
 }
 .files-list__row-mtime{
