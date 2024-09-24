@@ -8,9 +8,8 @@
 		:aria-label="t('files', 'Files')">
 	<template #default>
 		<div class="app-logo">
-			<img src="" />
-		</div>
-		<div id="app-logo">	</div>	
+			<img src = '/scaleinfinite-nextcloud-all/themes/cloudfloat/core/img/storage.png' class="img-fluid " />
+		</div>			
 		<NcAppNavigationList :aria-label="t('files', 'Views')">
 			<NcAppNavigationItem v-for="view in parentViews"
 				:key="view.id"

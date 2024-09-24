@@ -60,6 +60,12 @@ p($theme->getTitle());
 				var theWindowSize =$(window).width(); 
 				console.log(theWindowSize);
    					if(theWindowSize<1200){
+						// ***** 
+					//Navigation closed after click the menu 
+					// $(".app-navigation-entry").on('click',function (event){
+					// 	alert('navigation clicked!');
+					// });
+					//************ */
 						// slider menu hover overlay
 					$('.app-navigation').addClass('app-navigation-hover-1200');
 						$('.app-navigation').hide();
@@ -87,7 +93,8 @@ p($theme->getTitle());
 						$('.file-app-res-menu').hide();
 					} 
 			}
-			$(document).ready(function() {
+			$(document).ready(function() {				
+			
 				$(".app-navigation-entry-link").on('click', function(event){
 					console.log("page redirects");
 					window.location.reload();
@@ -104,17 +111,16 @@ p($theme->getTitle());
 				$('.app-navigation-toggle').html('<i class="bx bx-chevron-left bx-sm align-middle"></i>');
 				// file filter button 
 				$(".v-popper--theme-dropdown").on('click',function (event){
-					$(".breadcrumb__crumbs").attr('style' , 'margin-top:30px'); 
-					// $(".file-list-filters__active").attr('style' , 'margin-top:30px');
-					$(".files-list__header-upload-button").attr('style' , 'margin-top:30px');					
+					// $(".breadcrumb__crumbs").attr('style' , 'margin-top:30px'); 					
+					// $(".files-list__header-upload-button").attr('style' , 'margin-top:30px');					
 				})
 				// Serch fileter function
 				$('#search_files').on('input', function() {
-					$(".breadcrumb__crumbs").attr('style' , 'margin-top:30px'); 
-					$(".files-list__header-upload-button").attr('style' , 'margin-top:30px');		
+					// $(".breadcrumb__crumbs").attr('style' , 'margin-top:30px'); 
+					// $(".files-list__header-upload-button").attr('style' , 'margin-top:30px');		
 				});
 			
-			
+				$('.app-navigation__content').removeAttr("inert");
 
 				// ************ ON CLICK
 
@@ -136,7 +142,7 @@ p($theme->getTitle());
 						// right top breadcrumbs position						
 						$('.files-list__header').attr('style','margin-left:100px');
 						// right files table						
-						$('.files-list__table').attr('style','margin-left:70px');
+						// $('.files-list__table').attr('style','margin-left:70px');
 						//right side file list filters
 						// $('.files-list__filters').attr('style','margin-left:40px');
 						$('#app-navigation-vue').addClass('app-navigation-mini');
@@ -153,39 +159,51 @@ p($theme->getTitle());
 					  
 					
 				});
-				//Remove the 'app-navigation--close' class from the hovered element
-				$('#app-navigation-vue').on({
-					mouseover: function() {			
-						
-					// Check if the element currently has the 'app-navigation--close' class
-					if ($(this).hasClass('app-navigation-mini')) {
-						// slider menu hover overlay
-						$('.app-navigation').addClass('app-navigation-hover');
-						// Remove the 'app-navigation--close' class if it exists
-						$('.app-navigation').removeClass('app-navigation--close');						
-						$(".app-navigation-toggle-wrapper").removeClass('app-navigation-toggle-wrapper-removed-toggle');
-
-						
-					}
-					},
-					mouseout: function() {	
-						
-					// Check if the element does not have the 'app-navigation--close' class
-					if ($(this).hasClass('app-navigation-mini')) {
-							// slider menu hover overlay
-						$('.app-navigation').removeClass('app-navigation-hover');
-						// Add the 'app-navigation--close' class if it does not exist
-						$('.app-navigation').addClass('app-navigation--close');
-						$('#nav-cf-searchbar').removeClass('app-navigation--close');
-						$(".app-navigation-toggle-wrapper").addClass('app-navigation-toggle-wrapper-removed-toggle');	
-							
-						
-						
-					}
-					}
-				});
-		
 				
+				// ***************** OLD CODE ********/
+				//Remove the 'app-navigation--close' class from the hovered element
+				// $('#app-navigation-vue').on({					
+				// 	mouseover: function() {	
+				// 	// Check if the element currently has the 'app-navigation--close' class
+				// 	if ($(this).hasClass('app-navigation-mini')) {
+				// 		// slider menu hover overlay
+				// 		$('.app-navigation').addClass('app-navigation-hover');
+				// 		// Remove the 'app-navigation--close' class if it exists
+				// 		$('.app-navigation').removeClass('app-navigation--close');						
+				// 		$(".app-navigation-toggle-wrapper").toggleClass('app-navigation-toggle-wrapper-removed-toggle');
+				// 	}
+				// 	},
+				// 	mouseout: function() {	
+				// 	// Check if the element does not have the 'app-navigation--close' class
+				// 	if ($(this).hasClass('app-navigation-mini')) {
+				// 			// slider menu hover overlay
+				// 		$('.app-navigation').removeClass('app-navigation-hover');
+				// 		// Add the 'app-navigation--close' class if it does not exist
+				// 		$('.app-navigation').addClass('app-navigation--close');
+				// 		$('#nav-cf-searchbar').removeClass('app-navigation--close');
+				// 		$(".app-navigation-toggle-wrapper").toggleClass('app-navigation-toggle-wrapper-removed-toggle');
+				// 	}
+				// 	}
+				// });
+				// ***************** OLD CODE END********/
+				$('#app-navigation-vue').on({
+						mouseover: function() {
+							if ($(this).hasClass('app-navigation-mini')) {
+								$('.app-navigation').toggleClass('app-navigation-hover', true);
+								$('.app-navigation').toggleClass('app-navigation--close', false);
+								$(".app-navigation-toggle-wrapper").toggleClass('app-navigation-toggle-wrapper-removed-toggle', false);
+							}
+						},
+						mouseout: function() {
+							if ($(this).hasClass('app-navigation-mini')) {
+								$('.app-navigation').toggleClass('app-navigation-hover', false);
+								$('.app-navigation').toggleClass('app-navigation--close', true);
+								$('#nav-cf-searchbar').toggleClass('app-navigation--close', false);
+								$(".app-navigation-toggle-wrapper").toggleClass('app-navigation-toggle-wrapper-removed-toggle', true);
+							}
+						}
+					});
+
 			
 			// Responsive Menu
 			// $('.file-app-res-menu').hide();

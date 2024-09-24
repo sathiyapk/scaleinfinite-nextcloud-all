@@ -39,31 +39,7 @@
 			:aria-sort="ariaSortForMode('mtime')">
 			<FilesListTableHeaderButton :name="t('files', 'Modified')" mode="mtime" />
 		</th>
-        <th>
-		<NcButton v-if="filesListWidth >= 512 && enableGridView"
-				:aria-label="gridViewButtonLabel"
-				:title="gridViewButtonLabel"
-				class="files-list__header-grid-button"
-				type="tertiary"
-				@click="toggleGridView">
-				<!-- <template #icon>
-					<ListViewIcon v-if="userConfig.grid_view" />
-					<ViewGridIcon v-else />
-				</template> -->
-				<template #icon>
-					<template v-if="userConfig.grid_view">
-						<!-- <ListViewIcon /> -->
-						<i class='bx bx-list-ul'></i>
-						
-					</template>
-					<template v-else>
-						<!-- <ViewGridIcon /> -->
-						<i class='bx bx-grid-alt'></i>
-					</template>
-				</template>
-				
-			</NcButton>
-		</th>
+        
 		<!-- Custom views columns -->
 		<th v-for="column in columns"
 			:key="column.id"
@@ -74,6 +50,31 @@
 				{{ column.title }}
 			</span>
 		</th>
+		<th>
+			<NcButton v-if="filesListWidth >= 512 && enableGridView"
+					:aria-label="gridViewButtonLabel"
+					:title="gridViewButtonLabel"
+					class="files-list__header-grid-button"
+					type="tertiary"
+					@click="toggleGridView">
+					<!-- <template #icon>
+						<ListViewIcon v-if="userConfig.grid_view" />
+						<ViewGridIcon v-else />
+					</template> -->
+					<template #icon>
+						<template v-if="userConfig.grid_view">
+							<!-- <ListViewIcon /> -->
+							<i class='bx bx-list-ul'></i>
+							
+						</template>
+						<template v-else>
+							<!-- <ViewGridIcon /> -->
+							<i class='bx bx-grid-alt'></i>
+						</template>
+					</template>
+					
+				</NcButton>
+			</th>
 	</tr>
 </template>
 
