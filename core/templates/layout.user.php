@@ -60,6 +60,8 @@ p($theme->getTitle());
 				var theWindowSize =$(window).width(); 
 				console.log(theWindowSize);
    					if(theWindowSize<1200){
+						// slider menu hover overlay
+					$('.app-navigation').addClass('app-navigation-hover-1200');
 						$('.app-navigation').hide();
 						$('.file-app-res-menu').show();
 						console.log("show menu");
@@ -73,7 +75,8 @@ p($theme->getTitle());
 								$(".app-navigation-toggle-wrapper").removeClass('app-navigation-toggle-wrapper-removed-toggle');
 							});
 							// Close Menu
-							$('.app-navigation-toggle ').on('click', function(event){								
+							$('.app-navigation-toggle ').on('click', function(event){
+								$('.app-navigation').addClass('app-navigation-hover-1200');								
 								$('.app-navigation').addClass('app-navigation--close');						
 								$(".app-navigation-toggle-wrapper").addClass('app-navigation-toggle-wrapper-removed-toggle');
 								 $('.app-navigation').hide();
@@ -85,12 +88,17 @@ p($theme->getTitle());
 					} 
 			}
 			$(document).ready(function() {
+				$(".app-navigation-entry-link").on('click', function(event){
+					console.log("page redirects");
+					window.location.reload();
+				});
+				// $('body,html').click(function(e){
+				// 	console.log("click page redirects");
+				// 	window.location.reload();
+				// });
 				// Menu Responsive function
 				responsive_script();
 				// Sticky Topbar 
-		
-				
-
 				// remove serach bar toggle icon
 				$("#nav-cf-searchbar").removeClass('app-navigation');				
 				$('.app-navigation-toggle').html('<i class="bx bx-chevron-left bx-sm align-middle"></i>');
@@ -121,8 +129,7 @@ p($theme->getTitle());
 					
 					  if (!$('#app-navigation-vue').hasClass('app-navigation-mini')) 
 					  {
-						$('#app-content-vue').addClass('main-expanded');
-					
+						$('#app-content-vue').addClass('main-expanded');					
 						// **
 						// $('#app-content-vue').attr('style','position:absolute !important');
 
@@ -149,18 +156,24 @@ p($theme->getTitle());
 				//Remove the 'app-navigation--close' class from the hovered element
 				$('#app-navigation-vue').on({
 					mouseover: function() {			
-				
+						
 					// Check if the element currently has the 'app-navigation--close' class
 					if ($(this).hasClass('app-navigation-mini')) {
+						// slider menu hover overlay
+						$('.app-navigation').addClass('app-navigation-hover');
 						// Remove the 'app-navigation--close' class if it exists
 						$('.app-navigation').removeClass('app-navigation--close');						
-						$(".app-navigation-toggle-wrapper").removeClass('app-navigation-toggle-wrapper-removed-toggle');	
+						$(".app-navigation-toggle-wrapper").removeClass('app-navigation-toggle-wrapper-removed-toggle');
+
 						
 					}
 					},
 					mouseout: function() {	
+						
 					// Check if the element does not have the 'app-navigation--close' class
 					if ($(this).hasClass('app-navigation-mini')) {
+							// slider menu hover overlay
+						$('.app-navigation').removeClass('app-navigation-hover');
 						// Add the 'app-navigation--close' class if it does not exist
 						$('.app-navigation').addClass('app-navigation--close');
 						$('#nav-cf-searchbar').removeClass('app-navigation--close');

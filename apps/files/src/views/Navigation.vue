@@ -6,15 +6,11 @@
 <template>	
 	<NcAppNavigation data-cy-files-navigation
 		:aria-label="t('files', 'Files')">
-		<!-- <template #search>
-			<NcAppNavigationSearch v-model="searchQuery" :label="t('files', 'Filter filenames…')" />
-		</template>		 -->
-				
 	<template #default>
-		<template>
-			<div id="app-logo"></div>
-			
-		</template>
+		<div class="app-logo">
+			<img src="" />
+		</div>
+		<div id="app-logo">	</div>	
 		<NcAppNavigationList :aria-label="t('files', 'Views')">
 			<NcAppNavigationItem v-for="view in parentViews"
 				:key="view.id"
@@ -69,6 +65,7 @@
 			</ul>
 		</template>
 	</NcAppNavigation>
+
 </template>
 
 <script lang="ts">

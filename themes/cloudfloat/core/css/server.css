@@ -100,7 +100,7 @@
 	/*  */
 
 	/* --image-background:url("/scaleinfinite-nextcloud-all/apps/theming/img/background/jenna-kim-the-globe.webp"); */
-	--image-background:url("/scaleinfinite-nextcloud-all/themes/cloudfloat/core/img/background.webp") !important;
+	--image-background:url("/themes/cloudfloat/core/img/background.webp") !important;
   }
 body{
 	background-color: #02075d !important;
@@ -455,6 +455,14 @@ color: #000 !important;
 	border-radius: 10px !important;
 	
 }
+.app-navigation-hover
+{
+		margin-right: -210px !important;
+}
+.app-navigation-hover-1200
+{
+		margin-right: -260px !important;
+}
 /* user-menu */
 .user-menu ul li a:hover{
 	background-color: #e6e8e9 !important;
@@ -645,6 +653,8 @@ h3[data-v-3705ae06]{
 	background-color: #fff;
 	margin: 10px;
      margin-inline: calc(var(--default-clickable-area, 44px) + -1*var(--app-navigation-padding, 4px)) var(--app-navigation-padding, 4px) !important;
+	 top: -10px !important;
+  	position: relative;
 }
 .files-list__header-search{
 	width: 80%;
@@ -682,21 +692,7 @@ h3[data-v-3705ae06]{
 .breadcrumb .breadcrumb__crumbs{
 	margin-left: 20px !important;
 }
-/* .file-list-filter-type{
-	border: 1px solid #02037d !important;
-   margin-left: 10px !important;
-}
- .action-item--tertiary  {
-	border: 1px solid #02037d !important;
-	margin-left: 10px !important;
-} */
 
-/* End */
-/* Grid Icon Table View */
-/* .files-list__filters{
-  display: flex;
-  justify-content: flex-end;
-} */
 
   /* Boxicon Design  */
   .bx{
@@ -721,8 +717,6 @@ h3[data-v-3705ae06]{
 	color: #697a8d;
 }
 
-
-/* .bxs-personal:before{content:"\eee2" !important} */
   /* End */
 
   /* Search Bar */
@@ -751,16 +745,16 @@ h3[data-v-3705ae06]{
   border: 1px solid #d6d8da !important;
   }
   #app-logo {
-	display: inline-flex;
+	display:flex;
 	background-image: url('../img/storage.png');
 	background-repeat: no-repeat;
 	background-size: contain;
 	background-position: center;
-	width: 62px;
-	position: absolute;
+	width: 250px;
+	/* position: absolute;
 	left: 12px;
 	top: 1px;
-	bottom: 1px;
+	bottom: 1px; */
 	filter: var(--image-logoheader-custom, var(--background-image-invert-if-bright));
   }
   /* .storage-logo{
@@ -862,9 +856,10 @@ h3[data-v-3705ae06]{
 	.files-list{
 		margin: 10px 10px 10px 12px !important;
 	}
-	.topbar-stick{
+	/* .topbar-stick{
 		width: 100vw !important;
-	}
+	} */
+
 	/* .app-navigation {
 		position: absolute !important;
 	  } */
@@ -892,12 +887,17 @@ h3[data-v-3705ae06]{
 /* File app- Sticky Top bar */
 .topbar-stick{
 	position: sticky !important;
-	/* width: calc(var(--file-app-top-bar-default-width) + var(--file-app-top-bar-expanded-width)); */
-	/* width: calc(100vw - 260px); */
     z-index: inherit !important;
 	width: 100%;
- 	 top: 0px;
+	top: 0px;
+	display: flex;
+	justify-content: space-around;
+	flex-wrap: wrap;
+	align-content: stretch;
+	flex-direction: column;
+	align-items: stretch;
 }
+
 
 /* File app- Sticky Top bar  End*/
 /* File list header spance for grid */
@@ -906,4 +906,7 @@ h3[data-v-3705ae06]{
 }
 .files-list__row-mtime{
 	justify-content: right !important;
+}
+.app-navigation__body--no-list{
+	overflow: hidden !important;
 }
