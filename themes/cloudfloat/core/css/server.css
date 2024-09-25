@@ -402,9 +402,9 @@ button{
 	background-color: #b2b4b3 !important;
 }
 
-.app-menu-icon{
+/* .app-menu-icon{
 	filter: invert(1);
-}
+} */
 #header .logo{
 	filter: none !important;
 }
@@ -502,8 +502,9 @@ color: #000 !important;
 }
 .app-navigation-administration>ul>li[data-section-id="admindelegation"],
 	[data-section-id="ai"],
-	[data-section-id="overview"],
-	[data-section-id="theming"]	{
+	[data-section-id="overview"]
+	/* [data-section-id="theming"]	 */
+	{
 	display: none !important;
 }
 
@@ -908,4 +909,18 @@ h3[data-v-3705ae06]{
 }
 .app-navigation__body--no-list{
 	overflow: hidden !important;
+}
+
+tbody.files-list__tbody.files-list__tbody--grid .files-list__row-mtime{
+	display: block;
+}
+/* Footer */
+footer.guest-box{
+	display: none;
+}
+.app-navigation-toggle-wrapper-new
+{
+	position: absolute;
+	margin-left:225px;
+
 }

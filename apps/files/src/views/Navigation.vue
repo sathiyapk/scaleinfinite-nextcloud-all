@@ -8,7 +8,12 @@
 		:aria-label="t('files', 'Files')">
 	<template #default>
 		<div class="app-logo">
-			<img src = '/themes/cloudfloat/core/img/storage.png' class="img-fluid " />
+			<img src = '/scaleinfinite-nextcloud-all/themes/cloudfloat/core/img/storage.png' class="img-fluid " />
+			<div  class="app-navigation-toggle-wrapper-new">
+				<button aria-label="Close navigation" type="button"  class="app-navigation-toggle">
+				<i class="bx bx-chevron-left bx-sm align-middle"></i>
+			   </button>
+			</div>
 		</div>			
 		<NcAppNavigationList :aria-label="t('files', 'Views')">
 			<NcAppNavigationItem v-for="view in parentViews"
