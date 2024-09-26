@@ -51,8 +51,8 @@ p($theme->getTitle());
 		<!-- App Navigation over ride -->
 	
 		
-		<link href='/themes/cloudfloat/core/css/boxicons.min.css' rel='stylesheet'>
-		<link rel="stylesheet" href="/themes/cloudfloat/core/css/icons.css">
+		<link href='/scaleinfinite-nextcloud-all/themes/cloudfloat/core/css/boxicons.min.css' rel='stylesheet'>
+		<link rel="stylesheet" href="/scaleinfinite-nextcloud-all/themes/cloudfloat/core/css/icons.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" nonce="<?php p(\OC::$server->getContentSecurityPolicyNonceManager()->getNonce()) ?>"></script>
 		<script type="text/javascript" nonce="<?php p(\OC::$server->getContentSecurityPolicyNonceManager()->getNonce()) ?>">
 			function responsive_script()
@@ -129,8 +129,7 @@ p($theme->getTitle());
 					
 
 					// Toggle icon Removed
-					//$(".app-navigation-toggle-wrapper").addClass('app-navigation-toggle-wrapper-removed-toggle');					
-					$(".app-navigation-toggle-wrapper-new").addClass('app-navigation-toggle-wrapper-removed-toggle');
+					$(".app-navigation-toggle-wrapper").addClass('app-navigation-toggle-wrapper-removed-toggle');					
 					$('.app-navigation__content').removeAttr("inert");
 					$('#nav-cf-searchbar').removeClass('app-navigation--close');
 					
@@ -148,8 +147,6 @@ p($theme->getTitle());
 						//right side file list filters
 						// $('.files-list__filters').attr('style','margin-left:40px');
 						$('#app-navigation-vue').addClass('app-navigation-mini');
-						$('.app-navigation').addClass('app-navigation--close');
-						$('.app-navigation').addClass('app-navigation-hover');
 				      }else{
 						  $('#app-content-vue').removeClass('main-expanded');
 						  $('#app-content-vue').removeAttr('style');
@@ -157,11 +154,7 @@ p($theme->getTitle());
 						  $('.files-list__table').removeAttr('style');
 						  $('.files-list__filters').removeAttr('style');
 						  $('#app-navigation-vue').removeClass('app-navigation-mini');
-						  $('.app-navigation').removeClass('app-navigation--close');
-						  $('.app-navigation').removeClass('app-navigation-hover');
-						//  $(".app-navigation-toggle-wrapper").removeClass('app-navigation-toggle-wrapper-removed-toggle');
-						$(".app-navigation-toggle-wrapper-new").removeClass('app-navigation-toggle-wrapper-removed-toggle');
-
+						  $(".app-navigation-toggle-wrapper").removeClass('app-navigation-toggle-wrapper-removed-toggle');
 						
 					  }
 					  
@@ -199,9 +192,7 @@ p($theme->getTitle());
 							if ($(this).hasClass('app-navigation-mini')) {
 								$('.app-navigation').toggleClass('app-navigation-hover', true);
 								$('.app-navigation').toggleClass('app-navigation--close', false);
-								//$(".app-navigation-toggle-wrapper").toggleClass('app-navigation-toggle-wrapper-removed-toggle', false);
-								$(".app-navigation-toggle-wrapper-new").toggleClass('app-navigation-toggle-wrapper-removed-toggle', false);
-								
+								$(".app-navigation-toggle-wrapper").toggleClass('app-navigation-toggle-wrapper-removed-toggle', false);
 							}
 						},
 						mouseout: function() {
@@ -209,11 +200,7 @@ p($theme->getTitle());
 								$('.app-navigation').toggleClass('app-navigation-hover', false);
 								$('.app-navigation').toggleClass('app-navigation--close', true);
 								$('#nav-cf-searchbar').toggleClass('app-navigation--close', false);
-								//$(".app-navigation-toggle-wrapper").toggleClass('app-navigation-toggle-wrapper-removed-toggle', true);
-								//$(".app-navigation-toggle-wrapper-new").toggleClass('app-navigation-toggle-wrapper-removed-toggle', true);
-								$(".app-navigation-toggle-wrapper-new").toggleClass('app-navigation-toggle-wrapper-removed-toggle', true);
-								
-								
+								$(".app-navigation-toggle-wrapper").toggleClass('app-navigation-toggle-wrapper-removed-toggle', true);
 							}
 						}
 					});
