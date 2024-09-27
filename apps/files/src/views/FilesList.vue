@@ -11,17 +11,24 @@
 						<FileListFilters />
 						</div>
 					</div>
+				
 					<div class="files-list__header-search">
 						<NcAppNavigation id="nav-cf-searchbar">
-						<template #search>
-							<NcAppNavigationSearch 
-							v-model="searchQuery" 
-							:label="t('files', 'Filter filenames…')" 
-							id="search_files" 
-							/>
-						</template>
+							<template #search>
+								<div class="search-card-container">
+									<div class="icon">
+										<i class="search-icon bx bx-search"></i>
+									</div>
+									<NcAppNavigationSearch 
+										v-model="searchQuery" 
+										:label="t('files', 'Filter filenames…')" 
+										id="search_files" 
+									/>
+								</div>
+							</template>
 						</NcAppNavigation>
 					</div>
+					
 					<!-- Secondary loading indicator -->
 					<NcLoadingIcon v-if="isRefreshing" class="files-list__refresh-icon" />
 					</div>

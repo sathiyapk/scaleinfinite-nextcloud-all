@@ -60,6 +60,9 @@ p($theme->getTitle());
 				var theWindowSize =$(window).width(); 
 				console.log(theWindowSize);
    					if(theWindowSize<1200){
+						$('.app-navigation__content').removeAttr("inert");
+						$('.app-navigation__search').attr('style', 'padding-left: 25px;');
+						$('#search_files').attr('style','width:90%');
 						// ***** 
 					//Navigation closed after click the menu 
 					// $(".app-navigation-entry").on('click',function (event){
@@ -98,7 +101,9 @@ p($theme->getTitle());
 			$(document).ready(function() {				
 			
 				$(".app-navigation-entry-link").on('click', function(event){
-					window.location.reload();
+					// window.location.reload();
+					$('.app-navigation').hide();		
+					$('.app-navigation').addClass('app-navigation-hover');
 				});
 				$(document).on('click','.nc-chip', function(){
 					var $target = $('.file-list-filters');
@@ -238,9 +243,23 @@ p($theme->getTitle());
 			$(window).resize(function () {   
 				responsive_script() 				
 			}); // Responsive menu closed
-
 		
+		// Search
+			$(".input-field__main-wrapper").addClass("search-textbox-position");
+			$(".search-icon").on("click", function() {
+				$(".search-card-container").toggleClass("active");
+				$(".search-textbox-position").toggleClass("search-textbox-position-active");
+			});
+			$('#search_files').on('input', function() {
+				$(".search-card-container").addClass("active");
+				$(".search-textbox-position").addClass("search-textbox-position-active");
+			});
+		// let search = document.querySelector(".search");
+        //  search.onclick = function(){
+        //     document.querySelector(".search-card-container").classList.toggle('active');
+         
 		}); //Document Ready function closed
+		
 		</script>
 			<!-- End -->
 	</head>
