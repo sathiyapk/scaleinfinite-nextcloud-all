@@ -935,14 +935,21 @@ footer.guest-box{
 }
 /* Stylish Search bar */
 .search-card-container{
-    width: 225px;
+    width: 100%;
 	height: 40px;
 	border-radius: 25px;
 	background: #f3f2ed;	
     position: relative;
     transition: 0.5s;
 	display: flex;
+
 }
+.search-card-container.active{
+    width: 100%;
+	border-radius: 25px;
+	background: #f3f2ed;
+}
+
 .search-card-container .icon{
     position: absolute;
     left: 20px;
@@ -957,28 +964,30 @@ footer.guest-box{
 .search-card-container  #search_files{
     position: absolute;
 	margin-left: 25px;
-  	border-radius: 25px;
+  	border-radius: 25px;	
 	width: 96%;
- 
 }
-.search-card-container.active{
-    width: 100%;
-	border-radius: 25px;
-	background: #f3f2ed;
 
-}
+
 .search-textbox-position{
   bottom: 5px !important;
   height: 30px !important;
- width: 175px; 
- transition: 0.5s;
+  width: 100%;
+  transition: 0.5s; 
 }
-.search-textbox-position-active{
-	width: 100%;
-	
+.search-textbox-position-addmargin {
+	margin: 0px 25px;
 }
-/* .app-navigation__search{
-	padding-left: 25px;
-} */
-
-/* Stylish Search bar  END*/
+/* For screens larger than 1024px (typically tablets and above) */
+@media only screen and (min-width: 1024px) {
+    .search-card-container {
+        width: 225px; /* Default for larger screens */
+    }	
+	.search-card-container.active {
+        width: 40%;
+    }
+	.search-textbox-position{
+		width: 100% !important;
+			
+	}
+}

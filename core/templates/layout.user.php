@@ -59,10 +59,17 @@ p($theme->getTitle());
 			{
 				var theWindowSize =$(window).width(); 
 				console.log(theWindowSize);
+			// Below mobile - Max tab
+				if (theWindowSize >= 768 && theWindowSize < 1024) {
+					$('.search-textbox-position').addClass('search-textbox-position-addmargin');
+				}else{
+					$('.search-textbox-position').removeClass('search-textbox-position-addmargin');
+				}
    					if(theWindowSize<1200){
 						$('.app-navigation__content').removeAttr("inert");
 						$('.app-navigation__search').attr('style', 'padding-left: 25px;');
 						$('#search_files').attr('style','width:90%');
+						
 						// ***** 
 					//Navigation closed after click the menu 
 					// $(".app-navigation-entry").on('click',function (event){
@@ -96,10 +103,12 @@ p($theme->getTitle());
 					else {
 						$('.app-navigation').show();
 						$('.file-app-res-menu').hide();
+						
 					} 
 			}
-			$(document).ready(function() {				
-			
+			$(document).ready(function() {			
+				$('.search-textbox-position').removeClass('search-textbox-position-addmargin');
+				$('#search_files').attr('style','width:90%');
 				$(".app-navigation-entry-link").on('click', function(event){
 					// window.location.reload();
 					$('.app-navigation').hide();		
