@@ -59,7 +59,7 @@ p($theme->getTitle());
 			{
 				var theWindowSize =$(window).width(); 
 				console.log(theWindowSize);
-			// Below mobile - Max tab
+			// Below mobile -Max tab
 				if (theWindowSize >= 768 && theWindowSize < 1024) {
 					$('.search-textbox-position').addClass('search-textbox-position-addmargin');
 				}else{
@@ -229,19 +229,22 @@ p($theme->getTitle());
 				// });
 				// ***************** OLD CODE END********/
 				 $('#app-navigation-vue').on({
-				 		mouseover: function() {
+				 		mouseenter: function() {
 				 			if ($(this).hasClass('app-navigation-mini')) {
 				 				$('.app-navigation').toggleClass('app-navigation-hover', true);
 				 				$('.app-navigation').toggleClass('app-navigation--close', false);
-				 				$(".app-navigation-toggle-wrapper-new").toggleClass('app-navigation-toggle-wrapper-removed-toggle', false);
+				 				// $(".app-navigation-toggle-wrapper-new").toggleClass('app-navigation-toggle-wrapper-removed-toggle', false);
+								 setTimeout(function() {
+									$(".app-navigation-toggle-wrapper-new").removeClass('app-navigation-toggle-wrapper-removed-toggle');
+								}, 500);
 				 			}
 				 		},
-				 		mouseout: function() {
+				 		mouseleave: function() {
 				 			if ($(this).hasClass('app-navigation-mini')) {
 				 				$('.app-navigation').toggleClass('app-navigation-hover', false);
 				 				$('.app-navigation').toggleClass('app-navigation--close', true);
 				 				$('#nav-cf-searchbar').toggleClass('app-navigation--close', false);
-				 				$(".app-navigation-toggle-wrapper-new").toggleClass('app-navigation-toggle-wrapper-removed-toggle', true);
+				 				$(".app-navigation-toggle-wrapper-new").addClass('app-navigation-toggle-wrapper-removed-toggle');
 				 			}
 				 		}
 				 	});

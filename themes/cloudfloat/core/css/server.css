@@ -933,6 +933,10 @@ footer.guest-box{
 	margin-left:225px;
 
 }
+.app-navigation-toggle-wrapper-removed-toggle {
+    
+    opacity: 0.5;
+}
 /* Stylish Search bar */
 .search-card-container{
     width: 100%;
