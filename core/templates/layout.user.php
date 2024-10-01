@@ -111,10 +111,16 @@ p($theme->getTitle());
 				$('#search_files').attr('style','width:90%');
 				$(".app-navigation-entry-link").on('click', function(event){
 					// window.location.reload();
-					$('.app-navigation').hide();		
-					$('.app-navigation').addClass('app-navigation-hover');
+					var theWindowSize =$(window).width(); 
+					if(theWindowSize<1200){
+						$('.app-navigation').hide();	
+						 $('.app-navigation').addClass('app-navigation--close');	
+						//  $('.app-navigation').addClass('app-navigation-hover');
+					}
+					
 				});
-				$(document).on('click','.nc-chip', function(){
+				$(document).on('click', '.nc-chip, .files-list-filter_clear-button, .input-field_trailing-button, .button-vue__wrapper', function(){
+					console.log("remove margin");
 					var $target = $('.file-list-filters');
 					if($target.find("ul").length==1)
 					{
@@ -123,14 +129,23 @@ p($theme->getTitle());
 					}
 					
 				});
-				$(document).on('click','.files-list-filter__clear-button', function(){
-					var $target = $('.file-list-filters');
-					if($target.find("ul").length==1)
-					{
-						$(".breadcrumb__crumbs").attr('style' , 'margin-top:0px'); 					
-					 $(".files-list__header-upload-button").attr('style' , 'margin-top:0px');	
-					}
-				});
+				// $(document).on('click','.nc-chip', function(){
+				// 	var $target = $('.file-list-filters');
+				// 	if($target.find("ul").length==1)
+				// 	{
+				// 		$(".breadcrumb__crumbs").attr('style' , 'margin-top:0px'); 					
+				// 	 $(".files-list__header-upload-button").attr('style' , 'margin-top:0px');	
+				// 	}
+					
+				// });
+				// $(document).on('click','.files-list-filter__clear-button', function(){
+				// 	var $target = $('.file-list-filters');
+				// 	if($target.find("ul").length==1)
+				// 	{
+				// 		$(".breadcrumb__crumbs").attr('style' , 'margin-top:0px'); 					
+				// 	 $(".files-list__header-upload-button").attr('style' , 'margin-top:0px');	
+				// 	}
+				// });
 
 				// $('body,html').click(function(e){
 				// 	console.log("click page redirects");
