@@ -94,7 +94,7 @@ p($theme->getTitle());
 							// Close Menu
 							$('.app-navigation-toggle').on('click', function(event){
 								$('.app-navigation').addClass('app-navigation-hover-1200');								
-								$('.app-navigation').addClass('app-navigation--close');						
+								// $('.app-navigation').addClass('app-navigation--close');						
 								//$(".app-navigation-toggle-wrapper").addClass('app-navigation-toggle-wrapper-removed-toggle');
 								$(".app-navigation-toggle-wrapper-new").addClass('app-navigation-toggle-wrapper-removed-toggle');
 								 $('.app-navigation').hide();
@@ -103,6 +103,9 @@ p($theme->getTitle());
 					else {
 						$('.app-navigation').show();
 						$('.file-app-res-menu').hide();
+						$('.app-navigation').removeClass('app-navigation-hover-1200');
+						$('.app-navigation').removeClass('app-navigation--close');
+						$(".app-navigation-toggle-wrapper-new").removeClass('app-navigation-toggle-wrapper-removed-toggle');	
 						
 					} 
 			}
@@ -122,12 +125,14 @@ p($theme->getTitle());
 				$(document).on('click', '.nc-chip, .files-list-filter_clear-button, .input-field_trailing-button, .button-vue__wrapper', function(){
 					console.log("remove margin");
 					var $target = $('.file-list-filters');
-					if($target.find("ul").length==1)
+					console.log($target.find("ul").length);
+					if($target.find("ul").length==1 || $target.find("ul").length==0)
 					{
 						$(".breadcrumb__crumbs").attr('style' , 'margin-top:0px'); 					
 					 $(".files-list__header-upload-button").attr('style' , 'margin-top:0px');	
 					}
-					
+					$(".search-card-container").removeClass("active");
+					$(".search-textbox-position").removeClass("search-textbox-position-active");
 				});
 				// $(document).on('click','.nc-chip', function(){
 				// 	var $target = $('.file-list-filters');
@@ -174,7 +179,7 @@ p($theme->getTitle());
 				// ************ ON CLICK
 
 				$(".app-navigation-toggle").on('click', function(event){
-					
+									
 
 					// Toggle icon Removed
 					//$(".app-navigation-toggle-wrapper").addClass('app-navigation-toggle-wrapper-removed-toggle');	
@@ -212,7 +217,25 @@ p($theme->getTitle());
 						
 					  }
 					  
-					
+					// var theWindowSize =$(window).width(); 
+					// console.log(theWindowSize)
+					// if(theWindowSize<1200){
+					// 	console.log("remove close class");
+					// 	$('.app-navigation').removeClass('app-navigation--close');
+					// 	$('.app-navigation').removeClass('app-navigation-hover');
+					// }
+					var theWindowSize =$(window).width(); 
+					console.log(theWindowSize)
+					$('.app-navigation').removeClass('app-navigation-hover');
+					if(theWindowSize<1200){
+						console.log("remove close class");
+						$('.app-navigation').removeClass('app-navigation--close');						
+					}else{					
+						// $('.app-navigation').addClass('app-navigation--close');
+						// $('.app-navigation').removeClass('app-navigation-hover-1200');
+						// $('.app-navigation').show();
+						// $('#app-navigation-vue').addClass('app-navigation-mini');	
+					}
 				});
 				
 				// ***************** OLD CODE ********/
@@ -246,6 +269,7 @@ p($theme->getTitle());
 				 $('#app-navigation-vue').on({
 				 		mouseenter: function() {
 				 			if ($(this).hasClass('app-navigation-mini')) {
+								console.log("working");
 				 				$('.app-navigation').toggleClass('app-navigation-hover', true);
 				 				$('.app-navigation').toggleClass('app-navigation--close', false);
 				 				// $(".app-navigation-toggle-wrapper-new").toggleClass('app-navigation-toggle-wrapper-removed-toggle', false);
@@ -268,14 +292,16 @@ p($theme->getTitle());
 			// Responsive Menu
 			// $('.file-app-res-menu').hide();
 			$(window).resize(function () {   
+				$(".search-card-container").removeClass("active");
+				$(".search-textbox-position").removeClass("search-textbox-position-active");
 				responsive_script() 				
 			}); // Responsive menu closed
 		
 		// Search
 			$(".input-field__main-wrapper").addClass("search-textbox-position");
 			$(".search-icon").on("click", function() {
-				$(".search-card-container").toggleClass("active");
-				$(".search-textbox-position").toggleClass("search-textbox-position-active");
+				$(".search-card-container").addClass("active");
+				$(".search-textbox-position").addClass("search-textbox-position-active");
 			});
 			$('#search_files').on('input', function() {
 				$(".search-card-container").addClass("active");

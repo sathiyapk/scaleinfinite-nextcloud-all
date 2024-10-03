@@ -988,7 +988,9 @@ footer.guest-box{
         width: 225px; /* Default for larger screens */
     }	
 	.search-card-container.active {
-        width: 40%;
+        /* width: 100%; */
+		/* width: clamp(225px, calc(30% / 2rem + 10px), 300px); */
+		width: clamp(225px, 40%, 400px);
     }
 	.search-textbox-position{
 		width: 100% !important;
