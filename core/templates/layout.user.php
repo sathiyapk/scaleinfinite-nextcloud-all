@@ -93,11 +93,14 @@ p($theme->getTitle());
 							});
 							// Close Menu
 							$('.app-navigation-toggle').on('click', function(event){
+								var theWindowSize1 =$(window).width();
+								if(theWindowSize1<1200){
 								$('.app-navigation').addClass('app-navigation-hover-1200');								
 								// $('.app-navigation').addClass('app-navigation--close');						
 								//$(".app-navigation-toggle-wrapper").addClass('app-navigation-toggle-wrapper-removed-toggle');
 								$(".app-navigation-toggle-wrapper-new").addClass('app-navigation-toggle-wrapper-removed-toggle');
 								 $('.app-navigation').hide();
+								}
 							});
    					}
 					else {
@@ -121,6 +124,14 @@ p($theme->getTitle());
 						//  $('.app-navigation').addClass('app-navigation-hover');
 					}
 					
+				});
+				$("body").mouseup(function(){ 
+        			var theWindowSize_new =$(window).width(); 
+					if(theWindowSize_new<1200){
+						if ($('.app-navigation').css('display') != 'none') {
+ 						   $('.app-navigation').hide();
+						}
+					}
 				});
 				$(document).on('click', '.nc-chip, .files-list-filter_clear-button, .input-field_trailing-button, .button-vue__wrapper', function(){
 					console.log("remove margin");
