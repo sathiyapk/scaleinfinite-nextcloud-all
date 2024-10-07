@@ -12,4 +12,4 @@ if (window.OCA && !window.OCA.Comments) {
 
 // Init Comments App view
 Object.assign(window.OCA.Comments, { View: CommentsInstance })
-console.debug('OCA.Comments.View initialized')
+//console.debug('OCA.Comments.View initialized')

@@ -13,7 +13,7 @@ export default class ExternalShareActions {
 
 		// init default values
 		this._state.actions = []
-		console.debug('OCA.Sharing.ExternalShareActions initialized')
+	//	console.debug('OCA.Sharing.ExternalShareActions initialized')
 	}
 
 	/**

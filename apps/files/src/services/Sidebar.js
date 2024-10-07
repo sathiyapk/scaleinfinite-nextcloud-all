@@ -16,7 +16,7 @@ export default class Sidebar {
 		this._state.views = []
 		this._state.file = ''
 		this._state.activeTab = ''
-		console.debug('OCA.Files.Sidebar initialized')
+		//console.debug('OCA.Files.Sidebar initialized')
 	}
 
 	/**

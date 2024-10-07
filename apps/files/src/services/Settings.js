@@ -9,7 +9,7 @@ export default class Settings {
 
 	constructor() {
 		this._settings = []
-		console.debug('OCA.Files.Settings initialized')
+	//	console.debug('OCA.Files.Settings initialized')
 	}
 
 	/**

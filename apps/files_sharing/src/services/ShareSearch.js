@@ -13,7 +13,7 @@ export default class ShareSearch {
 
 		// init default values
 		this._state.results = []
-		console.debug('OCA.Sharing.ShareSearch initialized')
+	//	console.debug('OCA.Sharing.ShareSearch initialized')
 	}
 
 	/**
