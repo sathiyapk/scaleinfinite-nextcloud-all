@@ -26,6 +26,7 @@
 			@close="openedSubmenu = null">
 			<!-- Default actions list-->
 			<NcActionButton v-for="action in enabledMenuActions"
+			:aria-label="action.title?.([source], currentView)"
 				:key="action.id"
 				:ref="`action-${action.id}`"
 				:class="{
