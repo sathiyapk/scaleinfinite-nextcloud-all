@@ -277,7 +277,7 @@ button.primary:focus,
      color: #02075d;
 }
 button{
-	background-color: none;
+/*	background-color: none; */
 	border: 1px solid #6186fe;
 }
 .files-list .files-list__thead, .files-list.files-list__tfoot {
@@ -446,7 +446,7 @@ color: #000 !important;
 }
 .app-navigation-administration>ul>li>a:hover{
 	background-color: #7e7f7e !important;
-	border-radius: 10;
+	border-radius: 10px;
 }
 .app-navigation-administration>ul>li>a:first-child img{
 	filter: invert(1) !important;
@@ -477,12 +477,12 @@ color: #000 !important;
 }
 /* Button */
 .button-vue .button-vue--size-normal .button-vue--text-only .button-vue--vue-primary{
-	background-color: none;
+	/*background-color: none;*/
 	border: 1px solid  #FF5733 !important;
 	color: #FF5733 !important;
 }
 .button-vue:disabled{
-	background-color: none;
+	/*background-color: none;*/
 	border: 1px solid  #FF5733 !important;;
 	color: #FF5733 !important;
 }
@@ -826,7 +826,7 @@ h3[data-v-3705ae06]{
   }
   button:not(.button-vue, [class^="vs__"]), .button, input[type="button"], input[type="submit"], input[type="reset"]{
 	font-weight: 400 !important;
-	border-radius: none !important;
+	border-radius: 0px !important;
 	background: none;
 	border: none;
   }

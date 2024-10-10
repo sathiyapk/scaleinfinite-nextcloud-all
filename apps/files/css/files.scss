@@ -180,7 +180,7 @@ span.conflict-path, span.extension, span.uploading, td.date {
 }
 span.conflict-path, span.extension {
 	-webkit-transition: opacity 300ms;
-	-moz-transition: opacity 300ms;
+	/*-moz-transition: opacity 300ms;*/
 	-o-transition: opacity 300ms;
 	transition: opacity 300ms;
 	vertical-align: top;
@@ -414,7 +414,7 @@ table {
 
 .files-fileList tr.animate-opacity {
 	-webkit-transition:opacity 250ms;
-	-moz-transition:opacity 250ms;
+	/*-moz-transition:opacity 250ms;*/
 	-o-transition:opacity 250ms;
 	transition:opacity 250ms;
 }
@@ -499,7 +499,9 @@ table td.selection {
 	width: 100%;
 	padding-left: 0;
 	padding-right:0;
-	-webkit-transition:background-image 500ms; -moz-transition:background-image 500ms; -o-transition:background-image 500ms; transition:background-image 500ms;
+	-webkit-transition:background-image 500ms; 
+	/*-moz-transition:background-image 500ms; */
+	-o-transition:background-image 500ms; transition:background-image 500ms;
 }
 
 .files-fileList tr td.filename a.name label,
@@ -785,7 +787,7 @@ table.dragshadow td.size {
 	background-position: 50%;
 	opacity: 0.7;
 	transition: opacity 100ms;
-	-moz-transition: opacity 100ms;
+	/*-moz-transition: opacity 100ms;*/
 	-o-transition: opacity 100ms;
 	-ms-transition: opacity 100ms;
 	-webkit-transition: opacity 100ms;
