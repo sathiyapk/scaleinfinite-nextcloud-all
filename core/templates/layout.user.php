@@ -113,6 +113,7 @@ p($theme->getTitle());
 					} 
 			}
 			$(document).ready(function() {			
+			console.clear();
 				$('.search-textbox-position').removeClass('search-textbox-position-addmargin');
 				$('#search_files').attr('style','width:90%');
 				$(".app-navigation-entry-link").on('click', function(event){
