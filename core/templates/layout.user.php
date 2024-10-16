@@ -51,8 +51,8 @@ p($theme->getTitle());
 		<!-- App Navigation over ride -->
 	
 		
-		<link href='/themes/cloudfloat/core/css/boxicons.min.css' rel='stylesheet'>
-		<link rel="stylesheet" href="/themes/cloudfloat/core/css/icons.css">
+		<link href='/scaleinfinite-nextcloud-all/themes/cloudfloat/core/css/boxicons.min.css' rel='stylesheet'>
+		<link rel="stylesheet" href="/scaleinfinite-nextcloud-all/themes/cloudfloat/core/css/icons.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" nonce="<?php p(\OC::$server->getContentSecurityPolicyNonceManager()->getNonce()) ?>"></script>
 		<script type="text/javascript" nonce="<?php p(\OC::$server->getContentSecurityPolicyNonceManager()->getNonce()) ?>">
 			function responsive_script()
@@ -133,12 +133,19 @@ p($theme->getTitle());
  						   $('.app-navigation').hide();
 						}
 					}
+					var $target = $('.file-list-filters');
+					console.log($target.find("ul").length);
+					if( $target.find("ul").length==0)
+					{
+						$(".breadcrumb__crumbs").attr('style' , 'margin-top:0px'); 					
+					 $(".files-list__header-upload-button").attr('style' , 'margin-top:0px');	
+					}
 				});
 				$(document).on('click', '.nc-chip, .files-list-filter_clear-button, .input-field_trailing-button, .button-vue__wrapper', function(){
 					console.log("remove margin");
 					var $target = $('.file-list-filters');
 					console.log($target.find("ul").length);
-					if($target.find("ul").length==1 || $target.find("ul").length==0)
+					if( $target.find("ul").length==0)
 					{
 						$(".breadcrumb__crumbs").attr('style' , 'margin-top:0px'); 					
 					 $(".files-list__header-upload-button").attr('style' , 'margin-top:0px');	
@@ -176,7 +183,9 @@ p($theme->getTitle());
 				// $('.app-navigation-toggle').html('<i class="bx bx-chevron-left bx-sm align-middle"></i>');
 				$('.app-navigation-toggle-wrapper').hide();
 				// file filter button 
-				$(".v-popper--theme-dropdown").on('click',function (event){
+		//		$(".v-popper--theme-dropdown").on('click',function (event){
+					$(document).on('click', '.v-popper--theme-dropdown', function(){
+				console.log("margin 30px placed");
 					 $(".breadcrumb__crumbs").attr('style' , 'margin-top:30px'); 					
 					 $(".files-list__header-upload-button").attr('style' , 'margin-top:30px');					
 				})
