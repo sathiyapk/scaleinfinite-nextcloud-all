@@ -100,7 +100,7 @@
 	/*  */
 
 	/* --image-background:url("/scaleinfinite-nextcloud-all/apps/theming/img/background/jenna-kim-the-globe.webp"); */
-	--image-background:url("/themes/cloudfloat/core/img/background.webp") !important;
+	--image-background:url("/scaleinfinite-nextcloud-all/themes/cloudfloat/core/img/background.webp") !important;
   }
 body{
 	background-color: #02075d !important;
@@ -827,13 +827,13 @@ h3[data-v-3705ae06]{
   button:not(.button-vue, [class^="vs__"]), .button, input[type="button"], input[type="submit"], input[type="reset"]{
 	font-weight: 400 !important;
 	border-radius: 0px !important;
-	background: none;
+	/* background: none; */
 	border: none;
   }
-  input:not([type="range"], .input-field__input, [type="submit"], [type="button"], [type="reset"], .multiselect__input, .select2-input, .action-input__input, [class^="vs__"]), select, div[contenteditable="true"], textarea{
+  /* input:not([type="range"], .input-field__input, [type="submit"], [type="button"], [type="reset"], .multiselect__input, .select2-input, .action-input__input, [class^="vs__"]), select, div[contenteditable="true"], textarea{
 	border:none !important;
 	background: none !important;
-  }
+  } */
   .custom-placeholder-padding::placeholder {
     margin-left: 10px;
 }
