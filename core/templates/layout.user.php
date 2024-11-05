@@ -114,6 +114,378 @@ p($theme->getTitle());
 			}
 			$(document).ready(function() {			
 			console.clear();
+				// *******DASHBOARD CHART ***********
+			// Cloud Float Dashboard Apex chat START
+			var l = document.querySelector("#ioUsage"),
+						d = {
+							chart: {
+								height: 200,
+								toolbar: {
+									show: false
+								},
+								zoom: {
+									enabled: false
+								},
+								type: "line",
+								dropShadow: {
+									enabled: true,
+									enabledOnSeries: [1],
+									top: 13,
+									left: 4,
+									blur: 3,
+									color: "#face1b",
+									opacity: 0.09
+								}
+							},
+							series: [{
+								name: "ioUsage",
+								data: [20, 54, 20, 38, 22, 28, 16, 19, 26, 78, 82, 13]
+							}, {
+								name: "Last Hour",
+								data: [20, 32, 22, 65, 40, 46, 34, 70, 24, 80, 38, 92]
+							}],
+							stroke: {
+								curve: "smooth",
+								dashArray: [12, 0],
+								width: [3, 4]
+							},
+							legend: {
+								show: false
+							},
+							colors: ["#face1b", "#03c3ec"], // Make sure to replace 'a' with actual color values
+							grid: {
+								show: false,
+								borderColor: "#e0e0e0", // Replace 'r' with actual color value
+								padding: {
+									top: -20,
+									bottom: -10,
+									left: 0
+								}
+							},
+							markers: {
+								size: 6,
+								colors: "transparent",
+								strokeColors: "transparent",
+								strokeWidth: 5,
+								hover: {
+									size: 6
+								},
+								discrete: [{
+									fillColor: "#fff",
+									seriesIndex: 1,
+									dataPointIndex: 7,
+									strokeColor: "#face1b",
+									size: 6
+								}, {
+									fillColor: "#fff",
+									seriesIndex: 1,
+									dataPointIndex: 3,
+									strokeColor: "#000",
+									size: 6
+								}]
+							},
+							xaxis: {
+								labels: {
+									style: {
+										colors: "#6c757d", // Replace 'r' with actual color value
+										fontSize: "13px"
+									}
+								},
+								axisTicks: {
+									show: true
+								},
+								categories: ["", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"],
+								axisBorder: {
+									show: false
+								}
+							},
+							yaxis: {
+								show: false
+							}
+						};
+
+					if (l !== null) {
+						const y = new ApexCharts(l, d);
+						y.render();
+					}
+			var l = document.querySelector("#networkUsage"),
+						d = {
+							chart: {
+								height: 200,
+								toolbar: {
+									show: false
+								},
+								zoom: {
+									enabled: false
+								},
+								type: "line",
+								dropShadow: {
+									enabled: true,
+									enabledOnSeries: [1],
+									top: 13,
+									left: 4,
+									blur: 3,
+									color: "#face1b",
+									opacity: 0.09
+								}
+							},
+							series: [{
+								name: "Network Usage",
+								data: [20, 54, 20, 38, 22, 28, 16, 19, 26, 78, 82, 13]
+							}, {
+								name: "Last Hour",
+								data: [20, 32, 22, 65, 40, 46, 34, 70, 24, 80, 38, 92]
+							}],
+							stroke: {
+								curve: "smooth",
+								dashArray: [12, 0],
+								width: [3, 4]
+							},
+							legend: {
+								show: false
+							},
+							colors: ["#face1b", "#71dd37"], // Make sure to replace 'a' with actual color values
+							grid: {
+								show: false,
+								borderColor: "#e0e0e0", // Replace 'r' with actual color value
+								padding: {
+									top: -20,
+									bottom: -10,
+									left: 0
+								}
+							},
+							markers: {
+								size: 6,
+								colors: "transparent",
+								strokeColors: "transparent",
+								strokeWidth: 5,
+								hover: {
+									size: 6
+								},
+								discrete: [{
+									fillColor: "#fff",
+									seriesIndex: 1,
+									dataPointIndex: 7,
+									strokeColor: "#face1b",
+									size: 6
+								}, {
+									fillColor: "#fff",
+									seriesIndex: 1,
+									dataPointIndex: 3,
+									strokeColor: "#000",
+									size: 6
+								}]
+							},
+							xaxis: {
+								labels: {
+									style: {
+										colors: "#6c757d", // Replace 'r' with actual color value
+										fontSize: "13px"
+									}
+								},
+								axisTicks: {
+									show: true
+								},
+								categories: ["", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"],
+								axisBorder: {
+									show: false
+								}
+							},
+							yaxis: {
+								show: false
+							}
+						};
+
+					if (l !== null) {
+						const y = new ApexCharts(l, d);
+						y.render();
+					}
+					var l = document.querySelector("#cpuUsage"),
+						d = {
+							chart: {
+								height: 200,
+								toolbar: {
+									show: false
+								},
+								zoom: {
+									enabled: false
+								},
+								type: "line",
+								dropShadow: {
+									enabled: true,
+									enabledOnSeries: [1],
+									top: 13,
+									left: 4,
+									blur: 3,
+									color: "#face1b",
+									opacity: 0.09
+								}
+							},
+							series: [{
+								name: "CPU Usage",
+								data: [20, 54, 20, 38, 22, 28, 16, 19, 26, 78, 82, 13]
+							}, {
+								name: "Last Hour",
+								data: [20, 32, 22, 65, 40, 46, 34, 70, 24, 80, 38, 92]
+							}],
+							stroke: {
+								curve: "smooth",
+								dashArray: [12, 0],
+								width: [3, 4]
+							},
+							legend: {
+								show: false
+							},
+							colors: ["#face1b", "#9600ff"], // Make sure to replace 'a' with actual color values
+							grid: {
+								show: false,
+								borderColor: "#e0e0e0", // Replace 'r' with actual color value
+								padding: {
+									top: -20,
+									bottom: -10,
+									left: 0
+								}
+							},
+							markers: {
+								size: 6,
+								colors: "transparent",
+								strokeColors: "transparent",
+								strokeWidth: 5,
+								hover: {
+									size: 6
+								},
+								discrete: [{
+									fillColor: "#fff",
+									seriesIndex: 1,
+									dataPointIndex: 7,
+									strokeColor: "#face1b",
+									size: 6
+								}, {
+									fillColor: "#fff",
+									seriesIndex: 1,
+									dataPointIndex: 3,
+									strokeColor: "#000",
+									size: 6
+								}]
+							},
+							xaxis: {
+								labels: {
+									style: {
+										colors: "#6c757d", // Replace 'r' with actual color value
+										fontSize: "13px"
+									}
+								},
+								axisTicks: {
+									show: true
+								},
+								categories: ["", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"],
+								axisBorder: {
+									show: false
+								}
+							},
+							yaxis: {
+								show: false
+							}
+						};
+
+					if (l !== null) {
+						const y = new ApexCharts(l, d);
+						y.render();
+					}
+
+					var l = document.querySelector("#memoryUsage"),
+						d = {
+							chart: {
+								height: 200,
+								toolbar: {
+									show: false
+								},
+								zoom: {
+									enabled: false
+								},
+								type: "line",
+								dropShadow: {
+									enabled: true,
+									enabledOnSeries: [1],
+									top: 13,
+									left: 4,
+									blur: 3,
+									color: "#face1b",
+									opacity: 0.09
+								}
+							},
+							series: [{
+								name: "CPU Usage",
+								data: [20, 54, 20, 38, 22, 28, 16, 19, 26, 78, 82, 13]
+							}, {
+								name: "Last Hour",
+								data: [20, 32, 22, 65, 40, 46, 34, 70, 24, 80, 38, 92]
+							}],
+							stroke: {
+								curve: "smooth",
+								dashArray: [12, 0],
+								width: [3, 4]
+							},
+							legend: {
+								show: false
+							},
+							colors: ["#face1b", "#696cff"], // Make sure to replace 'a' with actual color values
+							grid: {
+								show: false,
+								borderColor: "#e0e0e0", // Replace 'r' with actual color value
+								padding: {
+									top: -20,
+									bottom: -10,
+									left: 0
+								}
+							},
+							markers: {
+								size: 6,
+								colors: "transparent",
+								strokeColors: "transparent",
+								strokeWidth: 5,
+								hover: {
+									size: 6
+								},
+								discrete: [{
+									fillColor: "#fff",
+									seriesIndex: 1,
+									dataPointIndex: 7,
+									strokeColor: "#face1b",
+									size: 6
+								}, {
+									fillColor: "#fff",
+									seriesIndex: 1,
+									dataPointIndex: 3,
+									strokeColor: "#000",
+									size: 6
+								}]
+							},
+							xaxis: {
+								labels: {
+									style: {
+										colors: "#6c757d", // Replace 'r' with actual color value
+										fontSize: "13px"
+									}
+								},
+								axisTicks: {
+									show: true
+								},
+								categories: ["", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"],
+								axisBorder: {
+									show: false
+								}
+							},
+							yaxis: {
+								show: false
+							}
+						};
+
+					if (l !== null) {
+						const y = new ApexCharts(l, d);
+						y.render();
+					}
+			// Apex chat END
 				$('.search-textbox-position').removeClass('search-textbox-position-addmargin');
 				$('#search_files').attr('style','width:90%');
 				$(".app-navigation-entry-link").on('click', function(event){
