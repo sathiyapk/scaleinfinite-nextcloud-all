@@ -18,7 +18,109 @@ $getUserAvatar = static function (int $size) use ($_): string {
 	]);
 }
 
-?><!DOCTYPE html>
+?>
+<?php
+include("config/grafana.config.php");
+function getMetrics($url)
+    {
+    
+        $login = USERNAME;
+        $password = PASSWORD;    
+    $curl = curl_init($url);
+    curl_setopt($curl, CURLOPT_URL, $url);
+    curl_setopt($curl, CURLOPT_POST, true);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    $headers = array(
+        "Content-Type: application/json",
+    );
+    curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+    curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+    curl_setopt($curl, CURLOPT_USERPWD, "$login:$password");
+  //  curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+    $resp = curl_exec($curl);
+    curl_close($curl);
+	//print_r(curl_error($curl));
+    $resp =  json_decode($resp);
+    return $resp;
+    }
+
+   $cpu_url="https://prometheus-prod-13-prod-us-east-0.grafana.net/prometheus/api/v1/query_range?query=container_cpu_usage_seconds_total{namespace='default'}&start=2024-11-04T20:10:51.781Z&end=2024-11-05T20:10:51.781Z&step=2h";
+  // $cpu_url="https://prometheus-prod-13-prod-us-east-0.grafana.net/prometheus/api/v1/query_range?query=sum(rate(container_cpu_usage_seconds_total{namespace='admin'}[1h])) by (namespace)&start=2024-11-04T20:10:51.781Z&end=2024-11-05T20:10:51.781Z&step=2h"; 
+   //$cpu_url="https://prometheus-prod-13-prod-us-east-0.grafana.net/prometheus/api/v1/query_range?query=sum(rate(container_cpu_usage_seconds_total{container!~'POD|',namespace='admin'}[1h])) by (namespace)&start=2024-11-04T20:10:51.781Z&end=2024-11-05T20:10:51.781Z&step=2h";
+ //echo $cpu_url = urlencode($cpu_url);
+ 
+ $result=getMetrics($cpu_url);
+ 
+//print_r($pods_array);
+  //print_r($result);
+  //exit;
+  $charts=$result->data->result[0]->values;
+  $cpu_date_arr=array();
+  $cpu_value_arr=array();
+  $cpu_categoy_arr=array();
+  $i=0;
+    foreach($charts as $chart)
+    {
+        $cpu_date_arr[]= date('Y-m-d H:i:s',(int)$chart[0]);
+        $cpu_value_arr[]=round($chart[1]);
+        $cpu_categoy_arr[]="0".$i;
+       $i=$i+1;
+    }
+   // print_r($cpu_date_arr);
+$memory_url="https://prometheus-prod-13-prod-us-east-0.grafana.net/prometheus/api/v1/query_range?query=container_memory_working_set_bytes{namespace='default'}&start=2024-11-04T20:10:51.781Z&end=2024-11-05T20:10:51.781Z&step=2h";
+ 
+$result=getMetrics($memory_url);
+  $charts=$result->data->result[0]->values;
+  $memory_date_arr=array();
+  $memory_value_arr=array();
+  $memory_categoy_arr=array();
+  $i=0;
+    foreach($charts as $chart)
+    {
+        $memory_date_arr[]= date('Y-m-d H:i:s',(int)$chart[0]);
+        $memory_value_arr[]=round($chart[1]);
+        $memory_categoy_arr[]="0".$i;
+       $i=$i+1;
+    }
+
+$network_url="https://prometheus-prod-13-prod-us-east-0.grafana.net/prometheus/api/v1/query_range?query=container_network_receive_bytes_total{namespace='default'}&start=2024-11-04T20:10:51.781Z&end=2024-11-05T20:10:51.781Z&step=2h";  
+$result=getMetrics($network_url);
+  $charts=$result->data->result[0]->values;
+  $network_date_arr=array();
+  $network_value_arr=array();
+  $network_categoy_arr=array();
+  $i=0;
+    foreach($charts as $chart)
+    {
+        $network_date_arr[]= date('Y-m-d H:i:s',(int)$chart[0]);
+        $network_value_arr[]=$chart[1];
+        $network_categoy_arr[]="0".$i;
+       $i=$i+1;
+    }
+
+$inputio_url="https://prometheus-prod-13-prod-us-east-0.grafana.net/prometheus/api/v1/query_range?query=container_network_transmit_bytes_total{namespace='default'}&start=2024-11-04T20:10:51.781Z&end=2024-11-05T20:10:51.781Z&step=2h";  
+
+$result=getMetrics($inputio_url);
+  $charts=$result->data->result[0]->values;
+  $inputio_date_arr=array();
+  $inputio_value_arr=array();
+  $inputio_categoy_arr=array();
+  $i=0;
+    foreach($charts as $chart)
+    {
+        $inputio_date_arr[]= date('Y-m-d H:i:s',(int)$chart[0]);
+        $inputio_value_arr[]=$chart[1];
+        $inputio_categoy_arr[]="0".$i;
+       $i=$i+1;
+    }
+
+ 
+?>
+
+
+<!DOCTYPE html>
 <html class="ng-csp" data-placeholder-focus="false" lang="<?php p($_['language']); ?>" data-locale="<?php p($_['locale']); ?>" translate="no" >
 	<head data-user="<?php p($_['user_uid']); ?>" data-user-displayname="<?php p($_['user_displayname']); ?>" data-requesttoken="<?php p($_['requesttoken']); ?>">
 		<meta charset="utf-8">
@@ -51,8 +153,8 @@ p($theme->getTitle());
 		<!-- App Navigation over ride -->
 	
 		
-		<link href='/themes/cloudfloat/core/css/boxicons.min.css' rel='stylesheet'>
-		<link rel="stylesheet" href="/themes/cloudfloat/core/css/icons.css">
+		<link href='/scaleinfinite-nextcloud-all/themes/cloudfloat/core/css/boxicons.min.css' rel='stylesheet'>
+		<link rel="stylesheet" href="/scaleinfinite-nextcloud-all/themes/cloudfloat/core/css/icons.css">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" nonce="<?php p(\OC::$server->getContentSecurityPolicyNonceManager()->getNonce()) ?>"></script>
 		<script type="text/javascript" nonce="<?php p(\OC::$server->getContentSecurityPolicyNonceManager()->getNonce()) ?>">
 			function responsive_script()
@@ -116,376 +218,434 @@ p($theme->getTitle());
 			console.clear();
 				// *******DASHBOARD CHART ***********
 			// Cloud Float Dashboard Apex chat START
-			var l = document.querySelector("#ioUsage"),
-						d = {
-							chart: {
-								height: 200,
-								toolbar: {
-									show: false
-								},
-								zoom: {
-									enabled: false
-								},
-								type: "line",
-								dropShadow: {
-									enabled: true,
-									enabledOnSeries: [1],
-									top: 13,
-									left: 4,
-									blur: 3,
-									color: "#face1b",
-									opacity: 0.09
-								}
-							},
-							series: [{
-								name: "ioUsage",
-								data: [20, 54, 20, 38, 22, 28, 16, 19, 26, 78, 82, 13]
-							}, {
-								name: "Last Hour",
-								data: [20, 32, 22, 65, 40, 46, 34, 70, 24, 80, 38, 92]
-							}],
-							stroke: {
-								curve: "smooth",
-								dashArray: [12, 0],
-								width: [3, 4]
-							},
-							legend: {
-								show: false
-							},
-							colors: ["#face1b", "#03c3ec"], // Make sure to replace 'a' with actual color values
-							grid: {
-								show: false,
-								borderColor: "#e0e0e0", // Replace 'r' with actual color value
-								padding: {
-									top: -20,
-									bottom: -10,
-									left: 0
-								}
-							},
-							markers: {
-								size: 6,
-								colors: "transparent",
-								strokeColors: "transparent",
-								strokeWidth: 5,
-								hover: {
-									size: 6
-								},
-								discrete: [{
-									fillColor: "#fff",
-									seriesIndex: 1,
-									dataPointIndex: 7,
-									strokeColor: "#face1b",
-									size: 6
-								}, {
-									fillColor: "#fff",
-									seriesIndex: 1,
-									dataPointIndex: 3,
-									strokeColor: "#000",
-									size: 6
-								}]
-							},
-							xaxis: {
-								labels: {
-									style: {
-										colors: "#6c757d", // Replace 'r' with actual color value
-										fontSize: "13px"
-									}
-								},
-								axisTicks: {
-									show: true
-								},
-								categories: ["", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"],
-								axisBorder: {
-									show: false
-								}
-							},
-							yaxis: {
-								show: false
-							}
-						};
+			
+			
+    let o, e, r, t, a, s, i, n;
+    /*l = isDarkStyle ? 
+        (o = config.colors_dark.cardColor, e = config.colors_dark.headingColor, r = config.colors_dark.textMuted, a = config.colors_dark.borderColor, t = "dark", s = "#4f51c0", i = "#595cd9", n = "#8789ff", "#c3c4ff") 
+        : 
+        (o = config.colors.cardColor, e = config.colors.headingColor, r = config.colors.textMuted, a = config.colors.borderColor, t = "", s = "#e1e2ff", i = "#c3c4ff", n = "#a5a7ff", "#696cff");
+*/
+    // Select the chart elements
+    var d1 = document.querySelector("#totalCPUusage");  
+    // Check and render the chart for the first ID
+    
+        var options = {
+            chart: {
+                height: 250,
+                type: "area",
+                toolbar: false,
+                dropShadow: {
+                    enabled: true,
+                    top: 14,
+                    left: 2,
+                    blur: 3,
+                    color: config.colors.primary,
+                    opacity: 0.15
+                }
+            },
+            series: [{                
+                name: "CPU Usage",    
+                data: <?php echo json_encode($cpu_value_arr);?>,
+            }],
+            dataLabels: {
+                enabled: false
+            },
+            stroke: {
+                width: 3,
+                curve: "straight"
+            },
+            colors: [config.colors.primary],
+            fill: {
+                type: "gradient",
+                gradient: {
+                    shade: t,
+                    shadeIntensity: 0.8,
+                    opacityFrom: 0.7,
+                    opacityTo: 0.25,
+                    stops: [0, 95, 100]
+                }
+            },
+            grid: {
+                show: true,
+                strokeDashArray: 10,
+                borderColor: a,
+                padding: {
+                    top: -15,
+                    bottom: -10,
+                    left: 0,
+                    right: 0
+                }
+            },
+            xaxis: {
+                categories: <?php echo json_encode($cpu_date_arr);?>,
+                labels: {
+                    offsetX: 0,
+                    style: {
+                        colors: r,
+                        fontFamily: "Public Sans",
+                        fontSize: "13px"
+                    }
+                },
+                axisBorder: {
+                    show: false
+                },
+                axisTicks: {
+                    show: false
+                },
+                lines: {
+                    show: false
+                }
+            },
+            yaxis: {
+                labels: {
+                    offsetX: -15,
+                    formatter: function (o) {
+                        return parseInt(o);
+                    },
+                    style: {
+                        fontSize: "13px",
+                        fontFamily: "Public Sans",
+                        colors: r
+                    }
+                },
+               
+            }
+        };
+     
+		
+	var chart =  new ApexCharts(d1, options);
+	chart.render();
+  
+	var d2 = document.querySelector("#totalMemoryUsage");  
+    // Check and render the chart for the first ID
+    
+        var options = {
+            chart: {
+                height: 250,
+                type: "area",
+                toolbar: false,
+                dropShadow: {
+                    enabled: true,
+                    top: 14,
+                    left: 2,
+                    blur: 3,
+                    color: config.colors.warning,
+                    opacity: 0.15
+                }
+            },
+            series: [{                
+                name: "Memory Usage",    
+                data: <?php echo json_encode($memory_value_arr);?>,
+            }],
+            dataLabels: {
+                enabled: false
+            },
+            stroke: {
+                width: 3,
+                curve: "straight"
+            },
+            colors: [config.colors.warning],
+            fill: {
+                type: "gradient",
+                gradient: {
+                    shade: t,
+                    shadeIntensity: 0.8,
+                    opacityFrom: 0.7,
+                    opacityTo: 0.25,
+                    stops: [0, 95, 100]
+                }
+            },
+            grid: {
+                show: true,
+                strokeDashArray: 10,
+                borderColor: a,
+                padding: {
+                    top: -15,
+                    bottom: -10,
+                    left: 0,
+                    right: 0
+                }
+            },
+            xaxis: {
+                categories: <?php echo json_encode($memory_date_arr);?>,
+                labels: {
+                    offsetX: 0,
+                    style: {
+                        colors: r,
+                        fontFamily: "Public Sans",
+                        fontSize: "13px"
+                    }
+                },
+                axisBorder: {
+                    show: false
+                },
+                axisTicks: {
+                    show: false
+                },
+                lines: {
+                    show: false
+                }
+            },
+            yaxis: {
+                labels: {
+                    offsetX: -15,
+                    formatter: function (o) {
+                        return parseInt(o);
+                    },
+                    style: {
+                        fontSize: "13px",
+                        fontFamily: "Public Sans",
+                        colors: r
+                    }
+                },
+               
+            }
+        };
+     
+		
+	var chart1 =  new ApexCharts(d2, options);
+	chart1.render();
+ 
+	var d3 = document.querySelector("#totalNetworkUsage");  
+    // Check and render the chart for the first ID
+    
+        var options = {
+            chart: {
+                height: 250,
+                type: "area",
+                toolbar: false,
+                dropShadow: {
+                    enabled: true,
+                    top: 14,
+                    left: 2,
+                    blur: 3,
+                    color: config.colors.warning,
+                    opacity: 0.15
+                }
+            },
+            series: [{                
+                name: "Network Usage",    
+                data: <?php echo json_encode($network_value_arr);?>,
+            }],
+            dataLabels: {
+                enabled: false
+            },
+            stroke: {
+                width: 3,
+                curve: "straight"
+            },
+            colors: [config.colors.warning],
+            fill: {
+                type: "gradient",
+                gradient: {
+                    shade: t,
+                    shadeIntensity: 0.8,
+                    opacityFrom: 0.7,
+                    opacityTo: 0.25,
+                    stops: [0, 95, 100]
+                }
+            },
+            grid: {
+                show: true,
+                strokeDashArray: 10,
+                borderColor: a,
+                padding: {
+                    top: -15,
+                    bottom: -10,
+                    left: 0,
+                    right: 0
+                }
+            },
+            xaxis: {
+                categories: <?php echo json_encode($network_date_arr);?>,
+                labels: {
+                    offsetX: 0,
+                    style: {
+                        colors: r,
+                        fontFamily: "Public Sans",
+                        fontSize: "13px"
+                    }
+                },
+                axisBorder: {
+                    show: false
+                },
+                axisTicks: {
+                    show: false
+                },
+                lines: {
+                    show: false
+                }
+            },
+            yaxis: {
+                labels: {
+                    offsetX: -15,
+                    formatter: function (o) {
+                        return parseInt(o);
+                    },
+                    style: {
+                        fontSize: "13px",
+                        fontFamily: "Public Sans",
+                        colors: r
+                    }
+                },
+               
+            }
+        };
+     
+		
+	var chart2 =  new ApexCharts(d3, options);
+	chart2.render();
+	var d4 = document.querySelector("#totalInputIOUsage");  
+    // Check and render the chart for the first ID
+    
+        var options = {
+            chart: {
+                height: 250,
+                type: "area",
+                toolbar: false,
+                dropShadow: {
+                    enabled: true,
+                    top: 14,
+                    left: 2,
+                    blur: 3,
+                    color: config.colors.warning,
+                    opacity: 0.15
+                }
+            },
+            series: [{                
+                name: "I/O  Usage",    
+                data: <?php echo json_encode($inputio_value_arr);?>,
+            }],
+            dataLabels: {
+                enabled: false
+            },
+            stroke: {
+                width: 3,
+                curve: "straight"
+            },
+            colors: [config.colors.warning],
+            fill: {
+                type: "gradient",
+                gradient: {
+                    shade: t,
+                    shadeIntensity: 0.8,
+                    opacityFrom: 0.7,
+                    opacityTo: 0.25,
+                    stops: [0, 95, 100]
+                }
+            },
+            grid: {
+                show: true,
+                strokeDashArray: 10,
+                borderColor: a,
+                padding: {
+                    top: -15,
+                    bottom: -10,
+                    left: 0,
+                    right: 0
+                }
+            },
+            xaxis: {
+                categories: <?php echo json_encode($inputio_date_arr);?>,
+                labels: {
+                    offsetX: 0,
+                    style: {
+                        colors: r,
+                        fontFamily: "Public Sans",
+                        fontSize: "13px"
+                    }
+                },
+                axisBorder: {
+                    show: false
+                },
+                axisTicks: {
+                    show: false
+                },
+                lines: {
+                    show: false
+                }
+            },
+            yaxis: {
+                labels: {
+                    offsetX: -15,
+                    formatter: function (o) {
+                        return parseInt(o);
+                    },
+                    style: {
+                        fontSize: "13px",
+                        fontFamily: "Public Sans",
+                        colors: r
+                    }
+                },
+               
+            }
+        };
+     
+		
+	var chart3 =  new ApexCharts(d4, options);
+	chart3.render();
+   
 
-					if (l !== null) {
-						const y = new ApexCharts(l, d);
-						y.render();
-					}
-			var l = document.querySelector("#networkUsage"),
-						d = {
-							chart: {
-								height: 200,
-								toolbar: {
-									show: false
-								},
-								zoom: {
-									enabled: false
-								},
-								type: "line",
-								dropShadow: {
-									enabled: true,
-									enabledOnSeries: [1],
-									top: 13,
-									left: 4,
-									blur: 3,
-									color: "#face1b",
-									opacity: 0.09
-								}
-							},
-							series: [{
-								name: "Network Usage",
-								data: [20, 54, 20, 38, 22, 28, 16, 19, 26, 78, 82, 13]
-							}, {
-								name: "Last Hour",
-								data: [20, 32, 22, 65, 40, 46, 34, 70, 24, 80, 38, 92]
-							}],
-							stroke: {
-								curve: "smooth",
-								dashArray: [12, 0],
-								width: [3, 4]
-							},
-							legend: {
-								show: false
-							},
-							colors: ["#face1b", "#71dd37"], // Make sure to replace 'a' with actual color values
-							grid: {
-								show: false,
-								borderColor: "#e0e0e0", // Replace 'r' with actual color value
-								padding: {
-									top: -20,
-									bottom: -10,
-									left: 0
-								}
-							},
-							markers: {
-								size: 6,
-								colors: "transparent",
-								strokeColors: "transparent",
-								strokeWidth: 5,
-								hover: {
-									size: 6
-								},
-								discrete: [{
-									fillColor: "#fff",
-									seriesIndex: 1,
-									dataPointIndex: 7,
-									strokeColor: "#face1b",
-									size: 6
-								}, {
-									fillColor: "#fff",
-									seriesIndex: 1,
-									dataPointIndex: 3,
-									strokeColor: "#000",
-									size: 6
-								}]
-							},
-							xaxis: {
-								labels: {
-									style: {
-										colors: "#6c757d", // Replace 'r' with actual color value
-										fontSize: "13px"
-									}
-								},
-								axisTicks: {
-									show: true
-								},
-								categories: ["", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"],
-								axisBorder: {
-									show: false
-								}
-							},
-							yaxis: {
-								show: false
-							}
-						};
+	var updatechart = function(chart_type,pod,periods){
+		$.ajax({
+                                    url: baseUrl+"/getdata.php",
+                                    method: 'POST',
+                                    data: {
+                                    'chart_type':chart_type,
+									'pod':pod,
+									'periods':periods
+                                    },
+                                    dataType: 'json',
+                                    success: function(response) {
 
-					if (l !== null) {
-						const y = new ApexCharts(l, d);
-						y.render();
-					}
-					var l = document.querySelector("#cpuUsage"),
-						d = {
-							chart: {
-								height: 200,
-								toolbar: {
-									show: false
-								},
-								zoom: {
-									enabled: false
-								},
-								type: "line",
-								dropShadow: {
-									enabled: true,
-									enabledOnSeries: [1],
-									top: 13,
-									left: 4,
-									blur: 3,
-									color: "#face1b",
-									opacity: 0.09
-								}
-							},
-							series: [{
-								name: "CPU Usage",
-								data: [20, 54, 20, 38, 22, 28, 16, 19, 26, 78, 82, 13]
-							}, {
-								name: "Last Hour",
-								data: [20, 32, 22, 65, 40, 46, 34, 70, 24, 80, 38, 92]
-							}],
-							stroke: {
-								curve: "smooth",
-								dashArray: [12, 0],
-								width: [3, 4]
-							},
-							legend: {
-								show: false
-							},
-							colors: ["#face1b", "#9600ff"], // Make sure to replace 'a' with actual color values
-							grid: {
-								show: false,
-								borderColor: "#e0e0e0", // Replace 'r' with actual color value
-								padding: {
-									top: -20,
-									bottom: -10,
-									left: 0
-								}
-							},
-							markers: {
-								size: 6,
-								colors: "transparent",
-								strokeColors: "transparent",
-								strokeWidth: 5,
-								hover: {
-									size: 6
-								},
-								discrete: [{
-									fillColor: "#fff",
-									seriesIndex: 1,
-									dataPointIndex: 7,
-									strokeColor: "#face1b",
-									size: 6
-								}, {
-									fillColor: "#fff",
-									seriesIndex: 1,
-									dataPointIndex: 3,
-									strokeColor: "#000",
-									size: 6
-								}]
-							},
-							xaxis: {
-								labels: {
-									style: {
-										colors: "#6c757d", // Replace 'r' with actual color value
-										fontSize: "13px"
-									}
-								},
-								axisTicks: {
-									show: true
-								},
-								categories: ["", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"],
-								axisBorder: {
-									show: false
-								}
-							},
-							yaxis: {
-								show: false
-							}
-						};
+											if(chart_type=="cpu")
+											{
+											chart.updateSeries([{
+													data: response
+												}]);
+											}else if(chart_type=="memory")
+											{
+												chart1.updateSeries([{
+													data: response
+												}]);	
+											}else if(chart_type=="network")
+											{
+												chart2.updateSeries([{
+													data: response
+												}]);	
+											}else if(chart_type=="input")
+											{
+												chart3.updateSeries([{
+													data: response
+												}]);	
+											}
+									},
+                                    error: function(error) {
+                            
+                                    }
+                            });
+	}	
 
-					if (l !== null) {
-						const y = new ApexCharts(l, d);
-						y.render();
-					}
+	$(".cpu_period").on("click", function(){
+		updatechart('cpu',$('#cpu_pod').val(),$(this).data("value"));
+	});
 
-					var l = document.querySelector("#memoryUsage"),
-						d = {
-							chart: {
-								height: 200,
-								toolbar: {
-									show: false
-								},
-								zoom: {
-									enabled: false
-								},
-								type: "line",
-								dropShadow: {
-									enabled: true,
-									enabledOnSeries: [1],
-									top: 13,
-									left: 4,
-									blur: 3,
-									color: "#face1b",
-									opacity: 0.09
-								}
-							},
-							series: [{
-								name: "CPU Usage",
-								data: [20, 54, 20, 38, 22, 28, 16, 19, 26, 78, 82, 13]
-							}, {
-								name: "Last Hour",
-								data: [20, 32, 22, 65, 40, 46, 34, 70, 24, 80, 38, 92]
-							}],
-							stroke: {
-								curve: "smooth",
-								dashArray: [12, 0],
-								width: [3, 4]
-							},
-							legend: {
-								show: false
-							},
-							colors: ["#face1b", "#696cff"], // Make sure to replace 'a' with actual color values
-							grid: {
-								show: false,
-								borderColor: "#e0e0e0", // Replace 'r' with actual color value
-								padding: {
-									top: -20,
-									bottom: -10,
-									left: 0
-								}
-							},
-							markers: {
-								size: 6,
-								colors: "transparent",
-								strokeColors: "transparent",
-								strokeWidth: 5,
-								hover: {
-									size: 6
-								},
-								discrete: [{
-									fillColor: "#fff",
-									seriesIndex: 1,
-									dataPointIndex: 7,
-									strokeColor: "#face1b",
-									size: 6
-								}, {
-									fillColor: "#fff",
-									seriesIndex: 1,
-									dataPointIndex: 3,
-									strokeColor: "#000",
-									size: 6
-								}]
-							},
-							xaxis: {
-								labels: {
-									style: {
-										colors: "#6c757d", // Replace 'r' with actual color value
-										fontSize: "13px"
-									}
-								},
-								axisTicks: {
-									show: true
-								},
-								categories: ["", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"],
-								axisBorder: {
-									show: false
-								}
-							},
-							yaxis: {
-								show: false
-							}
-						};
+	$(".memory_period").on("click", function(){
+		updatechart('memory',$('#memory_pod').val(),$(this).data("value"));
+	});
 
-					if (l !== null) {
-						const y = new ApexCharts(l, d);
-						y.render();
-					}
+	$(".network_period").on("click", function(){
+		updatechart('network',$('#network_pod').val(),$(this).data("value"));
+	});
+
+	$(".input_period").on("click", function(){
+		updatechart('input',$('#input_pod').val(),$(this).data("value"));
+	});
+
+		
 			// Apex chat END
+
 				$('.search-textbox-position').removeClass('search-textbox-position-addmargin');
 				$('#search_files').attr('style','width:90%');
 				$(".app-navigation-entry-link").on('click', function(event){
