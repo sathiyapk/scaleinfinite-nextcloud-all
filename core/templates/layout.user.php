@@ -24,8 +24,8 @@ include("config/grafana.config.php");
 function getMetrics($url)
     {
     
-        $login = USERNAME;
-        $password = PASSWORD;    
+    $login = USERNAME;
+    $password = PASSWORD;    
     $curl = curl_init($url);
     curl_setopt($curl, CURLOPT_URL, $url);
     curl_setopt($curl, CURLOPT_POST, true);
@@ -63,7 +63,7 @@ function getMetrics($url)
   $i=0;
     foreach($charts as $chart)
     {
-        $cpu_date_arr[]= date('Y-m-d H:i:s',(int)$chart[0]);
+        $cpu_date_arr[]= date('H:i:s',(int)$chart[0]);
         $cpu_value_arr[]=round($chart[1]);
         $cpu_categoy_arr[]="0".$i;
        $i=$i+1;
@@ -79,7 +79,7 @@ $result=getMetrics($memory_url);
   $i=0;
     foreach($charts as $chart)
     {
-        $memory_date_arr[]= date('Y-m-d H:i:s',(int)$chart[0]);
+        $memory_date_arr[]= date('H:i:s',(int)$chart[0]);
         $memory_value_arr[]=round($chart[1]);
         $memory_categoy_arr[]="0".$i;
        $i=$i+1;
@@ -94,7 +94,7 @@ $result=getMetrics($network_url);
   $i=0;
     foreach($charts as $chart)
     {
-        $network_date_arr[]= date('Y-m-d H:i:s',(int)$chart[0]);
+        $network_date_arr[]= date('H:i:s',(int)$chart[0]);
         $network_value_arr[]=$chart[1];
         $network_categoy_arr[]="0".$i;
        $i=$i+1;
@@ -110,11 +110,34 @@ $result=getMetrics($inputio_url);
   $i=0;
     foreach($charts as $chart)
     {
-        $inputio_date_arr[]= date('Y-m-d H:i:s',(int)$chart[0]);
+        $inputio_date_arr[]= date('H:i:s',(int)$chart[0]);
         $inputio_value_arr[]=$chart[1];
         $inputio_categoy_arr[]="0".$i;
        $i=$i+1;
     }
+
+$cpu_percentage_url="https://prometheus-prod-13-prod-us-east-0.grafana.net/prometheus/api/v1/query_range?query=sum(rate(container_cpu_usage_seconds_total{namespace='default'}[6h]))*100&start=2024-11-04T20:10:51.781Z&end=2024-11-05T20:10:51.781Z&step=48h";  
+$result=getMetrics($cpu_percentage_url);
+$charts=$result->data->result[0]->values;
+$cpu_percentage=ceil($charts[0][1]);
+
+$memory_percentage_url="https://prometheus-prod-13-prod-us-east-0.grafana.net/prometheus/api/v1/query_range?query=sum(rate(container_cpu_usage_seconds_total{namespace='default'}[6h]))*100&start=2024-11-04T20:10:51.781Z&end=2024-11-05T20:10:51.781Z&step=48h";  
+$result=getMetrics($memory_percentage_url);
+$charts=$result->data->result[0]->values;
+$memory_percentage=ceil($charts[0][1]);
+
+
+$network_percentage_url="https://prometheus-prod-13-prod-us-east-0.grafana.net/prometheus/api/v1/query_range?query=sum(rate(container_cpu_usage_seconds_total{namespace='default'}[6h]))*100&start=2024-11-04T20:10:51.781Z&end=2024-11-05T20:10:51.781Z&step=48h";  
+$result=getMetrics($network_percentage_url);
+$charts=$result->data->result[0]->values;
+$network_percentage=ceil($charts[0][1]);
+
+
+$input_percentage_url="https://prometheus-prod-13-prod-us-east-0.grafana.net/prometheus/api/v1/query_range?query=sum(rate(container_cpu_usage_seconds_total{namespace='default'}[6h]))*100&start=2024-11-04T20:10:51.781Z&end=2024-11-05T20:10:51.781Z&step=48h";  
+$result=getMetrics($input_percentage_url);
+$charts=$result->data->result[0]->values;
+$input_percentage=ceil($charts[0][1]);
+
 
  
 ?>
@@ -218,6 +241,265 @@ p($theme->getTitle());
 			console.clear();
 				// *******DASHBOARD CHART ***********
 			// Cloud Float Dashboard Apex chat START
+
+
+// ********************************* Total Usages ***************************
+!function () {
+					let o, e, r, t, a, s, i, n, l;
+
+					// Set colors based on style (dark/light)
+					l = isDarkStyle ? 
+						(o = config.colors_dark.cardColor, 
+						e = config.colors_dark.headingColor, 
+						r = config.colors_dark.textMuted, 
+						a = config.colors_dark.borderColor, 
+						t = "dark", 
+						s = "#4f51c0", 
+						i = "#595cd9", 
+						n = "#8789ff", 
+						"#c3c4ff") 
+						: 
+						(o = config.colors.cardColor, 
+						e = config.colors.headingColor, 
+						r = config.colors.textMuted, 
+						a = config.colors.borderColor, 
+						t = "", 
+						s = "#e1e2ff", 
+						i = "#c3c4ff", 
+						n = "#a5a7ff", 
+						"#696cff");
+
+					// CPU Usage Chart
+					let cpuChartElement = document.querySelector("#CPUusage");
+					let cpuChartConfig = {
+						chart: {
+							height: 130,
+							sparkline: {
+								enabled: true
+							},
+							parentHeightOffset: 0,
+							type: "radialBar"
+						},
+						colors: [config.colors.primary],
+						series: [<?php echo $cpu_percentage;?>], // Data series
+						plotOptions: {
+							radialBar: {
+								startAngle: -90,
+								endAngle: 90,
+								hollow: {
+								size: "55%"
+								},
+								track: {
+								background: config.colors_label.secondary
+								},
+								dataLabels: {
+								name: {
+									show: false
+								},
+								value: {
+									fontSize: "18px",
+									fontFamily: "Public Sans",
+									color: e,
+									fontWeight: 500,
+									offsetY: -5
+								}
+								}
+							}
+						},
+						grid: {
+							show: false,
+							padding: {
+								left: -10,
+								right: -10,
+								bottom: 5
+							}
+						},
+						stroke: {
+							lineCap: "round"
+						},
+						labels: ["Progress"]
+					};
+
+					// Render the CPU usage chart if the element exists
+					if (cpuChartElement !== null) {
+						new ApexCharts(cpuChartElement, cpuChartConfig).render();
+					}
+
+					// Memory Usage Chart
+					let memoryChartElement = document.querySelector("#MemoryUsage");
+					let memoryChartConfig = {
+						chart: {
+							height: 130,
+							sparkline: {
+								enabled: true
+							},
+							parentHeightOffset: 0,
+							type: "radialBar"
+						},
+						// colors: [config.colors.primary],
+						colors: ["#face1b", "#face1b"],
+						series: [<?php echo $memory_percentage;?>], // Data series
+						plotOptions: {
+							radialBar: {
+								startAngle: -90,
+								endAngle: 90,
+								hollow: {
+								size: "55%"
+								},
+								track: {
+								background: config.colors_label.secondary
+								},
+								dataLabels: {
+								name: {
+									show: false
+								},
+								value: {
+									fontSize: "18px",
+									fontFamily: "Public Sans",
+									color: e,
+									fontWeight: 500,
+									offsetY: -5
+								}
+								}
+							}
+						},
+						grid: {
+							show: false,
+							padding: {
+								left: -10,
+								right: -10,
+								bottom: 5
+							}
+						},
+						stroke: {
+							lineCap: "round"
+						},
+						labels: ["Progress"]
+					};
+
+					// Render the memory usage chart if the element exists
+					if (memoryChartElement !== null) {
+						new ApexCharts(memoryChartElement, memoryChartConfig).render();
+					}
+
+					// inputoutput Usage Chart
+					let inputoutputChartElement = document.querySelector("#inputoutputUsage");
+					let inputoutputChartConfig = {
+						chart: {
+							height: 130,
+							sparkline: {
+								enabled: true
+							},
+							parentHeightOffset: 0,
+							type: "radialBar"
+						},
+						// colors: [config.colors.primary],
+						colors: ["#71dd38", "#71dd38"],
+						series: [<?php echo $network_percentage;?>], // Data series
+						plotOptions: {
+							radialBar: {
+								startAngle: -90,
+								endAngle: 90,
+								hollow: {
+								size: "55%"
+								},
+								track: {
+								background: config.colors_label.secondary
+								},
+								dataLabels: {
+								name: {
+									show: false
+								},
+								value: {
+									fontSize: "18px",
+									fontFamily: "Public Sans",
+									color: e,
+									fontWeight: 500,
+									offsetY: -5
+								}
+								}
+							}
+						},
+						grid: {
+							show: false,
+							padding: {
+								left: -10,
+								right: -10,
+								bottom: 5
+							}
+						},
+						stroke: {
+							lineCap: "round"
+						},
+						labels: ["Progress"]
+					};
+
+					// Render the inputoutput usage chart if the element exists
+					if (inputoutputChartElement !== null) {
+						new ApexCharts(inputoutputChartElement, inputoutputChartConfig).render();
+					}
+					// network Usage Chart
+					let networkChartElement = document.querySelector("#network-Usage");
+					let networkChartConfig = {
+						chart: {
+							height: 130,
+							sparkline: {
+								enabled: true
+							},
+							parentHeightOffset: 0,
+							type: "radialBar"
+						},
+						// colors: [config.colors.primary],
+						colors: ["#28ccee", "#28ccee"],
+						series: [<?php echo $input_percentage;?>], // Data series
+						plotOptions: {
+							radialBar: {
+								startAngle: -90,
+								endAngle: 90,
+								hollow: {
+								size: "55%"
+								},
+								track: {
+								background: config.colors_label.secondary
+								},
+								dataLabels: {
+								name: {
+									show: false
+								},
+								value: {
+									fontSize: "18px",
+									fontFamily: "Public Sans",
+									color: e,
+									fontWeight: 500,
+									offsetY: -5
+								}
+								}
+							}
+						},
+						grid: {
+							show: false,
+							padding: {
+								left: -10,
+								right: -10,
+								bottom: 5
+							}
+						},
+						stroke: {
+							lineCap: "round"
+						},
+						labels: ["Progress"]
+					};
+
+					// Render the network usage chart if the element exists
+					if (networkChartElement !== null) {
+						new ApexCharts(networkChartElement, networkChartConfig).render();
+					}
+					}();
+
+
+
+			// ******************************** End Total Usages **************************
+
 			
 			
     let o, e, r, t, a, s, i, n;
