@@ -827,7 +827,7 @@ h3[data-v-3705ae06]{
   button:not(.button-vue, [class^="vs__"]), .button, input[type="button"], input[type="submit"], input[type="reset"]{
 	font-weight: 400 !important;
 	border-radius: 0px !important;
-	/* background: none; */
+	background: none;
 	border: none;
   }
   /* input:not([type="range"], .input-field__input, [type="submit"], [type="button"], [type="reset"], .multiselect__input, .select2-input, .action-input__input, [class^="vs__"]), select, div[contenteditable="true"], textarea{
@@ -996,4 +996,12 @@ footer.guest-box{
 		width: 100% !important;
 			
 	}
+}
+/* top 3 icons */
+.app-menu-icon__icon{
+	filter: initial !important;
+}
+/* Apex chat tool bar */
+.apexcharts-toolbar{
+	top:-80px !important;
 }
