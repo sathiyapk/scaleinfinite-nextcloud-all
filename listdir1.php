@@ -35,7 +35,16 @@ function dir_to_jstree_array($dir, $order = "a", $ext = array()) {
                 {
                     $extension = pathinfo($dir."/".$sub, PATHINFO_EXTENSION);
                     if(in_array($extension, $ext)) {
-                        $files []= $sub;
+                        $temp=array();
+                        $temp['text']=$sub;
+                        $temp['type']='css';
+                        $temp['a_attr']['href']='https://cloud.fltt.fr/index.php/apps/files/files';
+                        $temp['a_attr']['target']='_blank';
+                        $temp['a_attr']['class']='link';
+                       // $temp['type']='css';
+                        $files []=$temp;
+
+                        //$files []= $sub.'test';
                     }
                 }elseif(is_dir($dir."/".$sub))
                 {

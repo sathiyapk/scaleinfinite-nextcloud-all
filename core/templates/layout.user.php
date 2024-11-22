@@ -20,7 +20,7 @@ $getUserAvatar = static function (int $size) use ($_): string {
 
 ?>
 <?php
-include("config/grafana.config.php");
+/*include("config/grafana.config.php");
 function getMetrics($url)
     {
     
@@ -138,7 +138,7 @@ $result=getMetrics($input_percentage_url);
 $charts=$result->data->result[0]->values;
 $input_percentage=ceil($charts[0][1]);
 
-
+*/
  
 ?>
 
