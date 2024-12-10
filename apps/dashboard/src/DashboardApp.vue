@@ -12,7 +12,10 @@
 				<div :ref="'status-' + status" />
 			</li>
 		</ul>
-
+		<div class="container-xxl flex-grow-1 container-p-y">
+<FileAppWidget />
+<CloudfloatWidget />
+</div>
 		<Draggable v-model="layout"
 			class="panels"
 			v-bind="{swapThreshold: 0.30, delay: 500, delayOnTouchOnly: true, touchStartThreshold: 3}"
@@ -144,6 +147,8 @@ import Vue from 'vue'
 
 import isMobile from './mixins/isMobile.js'
 import ApiDashboardWidget from './components/ApiDashboardWidget.vue'
+import CloudfloatWidget from './components/CloudfloatWidget.vue'
+import FileAppWidget from './components/FileAppWidget.vue'
 
 const panels = loadState('dashboard', 'panels')
 const firstRun = loadState('dashboard', 'firstRun')
@@ -162,6 +167,8 @@ export default {
 	name: 'DashboardApp',
 	components: {
 		ApiDashboardWidget,
+		CloudfloatWidget,
+		FileAppWidget,
 		NcButton,
 		Draggable,
 		NcModal,

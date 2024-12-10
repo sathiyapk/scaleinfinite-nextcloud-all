@@ -49,6 +49,20 @@ class DashboardController extends Controller {
 	public function index(): TemplateResponse {
 		\OCP\Util::addStyle('dashboard', 'dashboard');
 		\OCP\Util::addScript('dashboard', 'main', 'theming');
+		\OCP\Util::addStyle('dashboard', 'core');
+		\OCP\Util::addStyle('dashboard', 'theme-default');
+		\OCP\Util::addStyle('dashboard', 'fontawesome');
+		\OCP\Util::addStyle('dashboard', 'boxicons');
+		\OCP\Util::addStyle('dashboard', 'apex-charts');
+		\OCP\Util::addStyle('dashboard', 'perfect-scrollbar');
+		\OCP\Util::addStyle('dashboard', 'demo');
+		\OCP\Util::addScript('dashboard', 'config');
+		\OCP\Util::addScript('dashboard', 'bootstrap');
+		\OCP\Util::addScript('dashboard', 'extended-ui-perfect-scrollbar');
+		\OCP\Util::addScript('dashboard', 'perfect-scrollbar');
+		\OCP\Util::addScript('dashboard', 'apexcharts');
+		\OCP\Util::addScript('dashboard', 'main');
+		\OCP\Util::addScript('dashboard', 'chat');
 
 		$widgets = array_map(function (IWidget $widget) {
 			return [
