@@ -124,7 +124,7 @@
                               <div class="col-md-4">
                                  <div class="card-header d-flex justify-content-left" style="padding-left: 3px;">
                                     <div class="avatar card-title mb-0">
-                                       <img src="https://cloud.scaleinfinite.fr/apps/dashboard/img/activity.png"  class="rounded p-2">                                    
+                                       <img src="https://cloud.fltt.fr/apps/dashboard/img/activity.png"  class="rounded p-2">                                    
                                     </div>
                                     <h5 class="mt-2">Compute Usages</h5>
                                  </div>
@@ -142,7 +142,7 @@
                                  <!-- Active Applications -->
                                  <div class=" d-flex justify-content-left">
                                     <div class="avatar card-title mb-0">
-                                       <img src="https://cloud.scaleinfinite.fr/apps/dashboard/img/activity.png"  class="rounded p-2">                                    
+                                       <img src="https://cloud.fltt.fr/apps/dashboard/img/activity.png"  class="rounded p-2">                                    
                                     </div>
                                     <h5 class="mt-2">Active Applications</h5>
                                  </div>
@@ -151,7 +151,7 @@
                                        <ul class="p-0 m-0">
                                           <li class="d-flex align-items-center mb-2">
                                             <div class="avatar avatar-xs flex-shrink-0 me-3">
-                                              <img src="https://cloud.scaleinfinite.fr/apps/dashboard/img/ubuntu.png" alt="User" class="rounded">
+                                              <img src="https://cloud.fltt.fr/apps/dashboard/img/ubuntu.png" alt="User" class="rounded">
                                             </div>
                                             <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
                                              <div class="me-2">
@@ -167,7 +167,7 @@
                                           </li>
                                           <li class="d-flex align-items-center mb-2">
                                              <div class="avatar avatar-xs flex-shrink-0 me-3">
-                                               <img src="https://cloud.scaleinfinite.fr/apps/dashboard/img/wordpress.png" alt="User" class="rounded">
+                                               <img src="https://cloud.fltt.fr/apps/dashboard/img/wordpress.png" alt="User" class="rounded">
                                              </div>
                                              <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
                                               <div class="me-2">
@@ -183,7 +183,7 @@
                                            </li>
                                            <li class="d-flex align-items-center mb-2">
                                              <div class="avatar avatar-xs flex-shrink-0 me-3">
-                                               <img src="https://cloud.scaleinfinite.fr/apps/dashboard/img/python.png" alt="User" class="rounded">
+                                               <img src="https://cloud.fltt.fr/apps/dashboard/img/python.png" alt="User" class="rounded">
                                              </div>
                                              <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
                                               <div class="me-2">
@@ -199,7 +199,7 @@
                                            </li>
                                            <li class="d-flex align-items-center mb-2">
                                              <div class="avatar avatar-xs flex-shrink-0 me-3">
-                                               <img src="https://cloud.scaleinfinite.fr/apps/dashboard/img/nginx.png" alt="User" class="rounded">
+                                               <img src="https://cloud.fltt.fr/apps/dashboard/img/nginx.png" alt="User" class="rounded">
                                              </div>
                                              <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
                                               <div class="me-2">
@@ -215,7 +215,7 @@
                                            </li>
                                            <li class="d-flex align-items-center mb-2">
                                              <div class="avatar avatar-xs flex-shrink-0 me-3">
-                                               <img src="https://cloud.scaleinfinite.fr/apps/dashboard/img/mysql.png" alt="User" class="rounded">
+                                               <img src="https://cloud.fltt.fr/apps/dashboard/img/mysql.png" alt="User" class="rounded">
                                              </div>
                                              <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
                                               <div class="me-2">
@@ -246,7 +246,7 @@
                               <div class="card overflow-hidden " style="height: 520px;">
                                  <div class="card-header d-flex justify-content-left">
                                     <div class="avatar card-title mb-0">
-                                       <img src="https://cloud.scaleinfinite.fr/apps/dashboard/img/activity.png"  class="rounded p-2">                                    
+                                       <img src="https://cloud.fltt.fr/apps/dashboard/img/activity.png"  class="rounded p-2">                                    
                                     </div>
                                     <h5 class="mt-2">Compute Activity</h5>
                                  </div>

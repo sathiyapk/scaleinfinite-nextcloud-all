@@ -89,7 +89,7 @@
    // renderRadialBarChart("#network-Usage", [79], ["#28ccee", "#28ccee"], colors.headingColor);
 
 	$.ajax({
-		url: "https://cloud.scaleinfinite.fr/index.php/apps/cloudfloat/gettotalmetrics",
+		url: "https://cloud.fltt.fr/index.php/apps/cloudfloat/gettotalmetrics",
 		method: 'POST',
 		data: {},
 		dataType: 'json',
@@ -644,7 +644,7 @@
 		var chart =  new ApexCharts(d1, options);
 		chart.render();
 	  $.ajax({
-			  url: "https://cloud.scaleinfinite.fr/index.php/apps/cloudfloat/getallmetrics",
+			  url: "https://cloud.fltt.fr/index.php/apps/cloudfloat/getallmetrics",
 			  method: 'POST',
 			  data: {
 			  'chart_type':'cpu',
@@ -746,7 +746,7 @@
 	  var chart1 =  new ApexCharts(d2, options2);
 	  chart1.render();
 			$.ajax({
-					url: "https://cloud.scaleinfinite.fr/index.php/apps/cloudfloat/getallmetrics",
+					url: "https://cloud.fltt.fr/index.php/apps/cloudfloat/getallmetrics",
 					method: 'POST',
 					data: {
 					'chart_type':'memory',
@@ -853,7 +853,7 @@
 				var chart2 =  new ApexCharts(d3, options3);
 				chart2.render();
 					  $.ajax({
-							  url: "https://cloud.scaleinfinite.fr/index.php/apps/cloudfloat/getallmetrics",
+							  url: "https://cloud.fltt.fr/index.php/apps/cloudfloat/getallmetrics",
 							  method: 'POST',
 							  data: {
 							  'chart_type':'network',
@@ -961,7 +961,7 @@
 						  var chart3 =  new ApexCharts(d4, options4);
 						  chart3.render();
 						$.ajax({
-								url: "https://cloud.scaleinfinite.fr/index.php/apps/cloudfloat/getallmetrics",
+								url: "https://cloud.fltt.fr/index.php/apps/cloudfloat/getallmetrics",
 								method: 'POST',
 								data: {
 								'chart_type':'input',
@@ -1123,7 +1123,7 @@ let d5 = document.querySelector("#fileactivityChart");
 
 
 	$.ajax({
-		url: "https://cloud.scaleinfinite.fr/index.php/apps/cloudfloat/getactivity",
+		url: "https://cloud.fltt.fr/index.php/apps/cloudfloat/getactivity",
 		method: 'POST',
 		data: {
 		'chart_type':'input',
@@ -1149,7 +1149,7 @@ var pods;
 	var input_options =  '<select id="io_pod" class="form-select form-select-md"><option value="0">All Pods</option>'; 
 	var activity_options =  '<select id="activity_pod" class="form-select form-select-md"><option value="0">All Pods</option>'; 
     $.ajax({
-        url: "https://cloud.scaleinfinite.fr/index.php/apps/cloudfloat/getallmetrics",
+        url: "https://cloud.fltt.fr/index.php/apps/cloudfloat/getallmetrics",
         method: 'POST',
         data: {
         'chart_type':'pod',
@@ -1173,7 +1173,7 @@ var pods;
 
 var updatechart = function(chart_type,pod,periods){
 	$.ajax({
-								url: "https://cloud.scaleinfinite.fr/index.php/apps/cloudfloat/getallmetrics",
+								url: "https://cloud.fltt.fr/index.php/apps/cloudfloat/getallmetrics",
 								method: 'POST',
 								data: {
 								'chart_type':chart_type,
@@ -1213,7 +1213,7 @@ var updatechart = function(chart_type,pod,periods){
 var loadevent = function(pod,periods){
 var j=1;
 $.ajax({
-	url: "https://cloud.scaleinfinite.fr/index.php/apps/cloudfloat/getevents",
+	url: "https://cloud.fltt.fr/index.php/apps/cloudfloat/getevents",
 	method: 'POST',
 	data: {
 	'pod':pod,
@@ -1276,7 +1276,7 @@ function timeConverter(UNIX_timestamp){
 	return time;
   }
 $.ajax({
-	url: "https://cloud.scaleinfinite.fr/index.php/apps/cloudfloat/activity",
+	url: "https://cloud.fltt.fr/index.php/apps/cloudfloat/activity",
 	method: 'POST',
 	data: {
 	'user':1,
@@ -1315,7 +1315,7 @@ $.ajax({
 	}
 });
 $.ajax({
-	url: "https://cloud.scaleinfinite.fr/index.php/apps/files/api/v1/stats",
+	url: "https://cloud.fltt.fr/index.php/apps/files/api/v1/stats",
 	method: 'GET',
 	data: {
 	'user':1,
