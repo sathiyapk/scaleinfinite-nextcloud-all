@@ -148,87 +148,8 @@
                                  </div>
                                  <div class="card" style="height: 250px;">
                                     <div class="p-2 mb-5" id="active-application-scroll">
-                                       <ul class="p-0 m-0">
-                                          <li class="d-flex align-items-center mb-2">
-                                            <div class="avatar avatar-xs flex-shrink-0 me-3">
-                                              <img src="https://cloud.fltt.fr/apps/dashboard/img/ubuntu.png" alt="User" class="rounded">
-                                            </div>
-                                            <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                                             <div class="me-2">
-                                               <div class="d-flex align-items-center">
-                                                 <h6 class="mb-0 me-2">Ubuntu</h6>
-                                                 <small class="text-success fw-medium d-flex align-items-center gap-1">
-                                                   Resource -85%
-                                                 </small>
-                                               </div>
-                                               <small class=" fw-medium badge bg-label-danger" style="font-size: 10px;">https://153.12.14.12/alpine</small>
-                                             </div>                                         
-                                           </div>
-                                          </li>
-                                          <li class="d-flex align-items-center mb-2">
-                                             <div class="avatar avatar-xs flex-shrink-0 me-3">
-                                               <img src="https://cloud.fltt.fr/apps/dashboard/img/wordpress.png" alt="User" class="rounded">
-                                             </div>
-                                             <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                                              <div class="me-2">
-                                                <div class="d-flex align-items-center">
-                                                  <h6 class="mb-0 me-2">Wordpress</h6>
-                                                  <small class="text-success fw-medium d-flex align-items-center gap-1">
-                                                    Resource -36%
-                                                  </small>
-                                                </div>
-                                                <small class=" fw-medium badge bg-label-danger" style="font-size: 10px;">https://183.16.42.69/wordpress</small>
-                                              </div>                                         
-                                            </div>
-                                           </li>
-                                           <li class="d-flex align-items-center mb-2">
-                                             <div class="avatar avatar-xs flex-shrink-0 me-3">
-                                               <img src="https://cloud.fltt.fr/apps/dashboard/img/python.png" alt="User" class="rounded">
-                                             </div>
-                                             <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                                              <div class="me-2">
-                                                <div class="d-flex align-items-center">
-                                                  <h6 class="mb-0 me-2">Python</h6>
-                                                  <small class="text-success fw-medium d-flex align-items-center gap-1">
-                                                    Resource -45%
-                                                  </small>
-                                                </div>
-                                                <small class=" fw-medium badge bg-label-danger" style="font-size: 10px;">https://196.17.32.19/python</small>
-                                              </div>                                         
-                                            </div>
-                                           </li>
-                                           <li class="d-flex align-items-center mb-2">
-                                             <div class="avatar avatar-xs flex-shrink-0 me-3">
-                                               <img src="https://cloud.fltt.fr/apps/dashboard/img/nginx.png" alt="User" class="rounded">
-                                             </div>
-                                             <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                                              <div class="me-2">
-                                                <div class="d-flex align-items-center">
-                                                  <h6 class="mb-0 me-2">Nginx</h6>
-                                                  <small class="text-success fw-medium d-flex align-items-center gap-1">
-                                                    Resource -22%
-                                                  </small>
-                                                </div>
-                                                <small class=" fw-medium badge bg-label-danger" style="font-size: 10px;">https://215.21.65.48/nginx</small>
-                                              </div>                                         
-                                            </div>
-                                           </li>
-                                           <li class="d-flex align-items-center mb-2">
-                                             <div class="avatar avatar-xs flex-shrink-0 me-3">
-                                               <img src="https://cloud.fltt.fr/apps/dashboard/img/mysql.png" alt="User" class="rounded">
-                                             </div>
-                                             <div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2">
-                                              <div class="me-2">
-                                                <div class="d-flex align-items-center">
-                                                  <h6 class="mb-0 me-2">Mysql</h6>
-                                                  <small class="text-success fw-medium d-flex align-items-center gap-1">
-                                                    Resource -84%
-                                                  </small>
-                                                </div>
-                                                <small class=" fw-medium badge bg-label-danger" style="font-size: 10px;">https://451.28.15.35/mysql</small>
-                                              </div>                                         
-                                            </div>
-                                           </li>
+                                       <ul class="p-0 m-0" id="active_application">
+                                         
                                        </ul>
                                     </div>
                                  </div>

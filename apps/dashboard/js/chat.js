@@ -1333,3 +1333,40 @@ $.ajax({
 
 	}
 });
+var j=0;
+$.ajax({
+	url: "https://cloud.fltt.fr/index.php/apps/cloudfloat/getapps",
+	method: 'POST',
+	data: {
+	'user':1,
+	},
+	dataType: 'json',
+	success: function(response) 
+	{
+		//var per=(response.data.used/response.data.total)*100;
+		console.log(response);
+		//console.log(Math.round(per));
+		var textData=response.cpu_percentage;
+		//var aLines = textData.split("\\n");
+  
+		var time = 500;
+		 $.each(response, function(n, sLine) 
+		 {
+		   setTimeout( function(){
+
+			$('#active_application').append(' <li class="d-flex align-items-center mb-2"><div class="avatar avatar-xs flex-shrink-0 me-3"><img src="'+sLine.logo+'" alt="User" class="rounded"></div><div class="d-flex w-100 flex-wrap align-items-center justify-content-between gap-2"><div class="me-2"><div class="d-flex align-items-center"><h6 class="mb-0 me-2">'+sLine.name+'</h6><small class="text-success fw-medium d-flex align-items-center gap-1">'+sLine.image+'</small></div><small class=" fw-medium badge bg-label-danger" style="font-size: 10px;">'+sLine.host[0]+'</small></div></div></li>');
+
+			 //$('#activity_txt').append('<li class="d-flex pb-2 align-items-center">'+sLine+'</li>');  
+			 j=parseInt(j)+1;
+		   }, time);
+		   time += 800;
+		  
+		 });
+		
+		
+	
+	},
+	error: function(error) {
+
+	}
+});

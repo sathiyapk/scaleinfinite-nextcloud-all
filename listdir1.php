@@ -37,6 +37,11 @@ function dir_to_jstree_array($dir, $order = "a", $ext = array()) {
                     if(in_array($extension, $ext)) {
                         $temp=array();
                         $temp['text']=$sub;
+                        if($extension=='txt')
+                        $temp['type']='file';
+                       else if($extension=='jpg' || $extension=='png')
+                        $temp['type']='img';
+                       else
                         $temp['type']='css';
                         $temp['a_attr']['href']='https://cloud.fltt.fr/index.php/apps/files/files';
                         $temp['a_attr']['target']='_blank';
