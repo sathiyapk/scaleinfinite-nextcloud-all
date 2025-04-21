@@ -59,9 +59,9 @@
 
 
 # ignore themes except the example and the README
-/themes/*
-!/themes/example
-!/themes/README
+#/themes/*
+#!/themes/example
+#!/themes/README
 
 # Love to people that develop the updater
 /updater
