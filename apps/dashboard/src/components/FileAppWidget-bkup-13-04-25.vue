@@ -5,7 +5,7 @@
 <template>
 	<div class="row">
                      <div  class="col-12 col-lg-9 order-2 order-md-3 order-lg-2 mb-4">
-                        <div class="card">
+                        <div class="card" style="height: 480px;">
                            <div class="row row-bordered g-0">
                               <div class="col-md-7">                             
                                  <div class="card-header flex-grow-0">
@@ -42,8 +42,8 @@
                                     </div>
                                     <h5 class="card-title mt-2">Storage Activities</h5>
                                     </div> 
-                                    <div class="card overflow-hidden" > 
-                                    <div class="card-body mb-5 "  id="storage-activity-scroll" style="height:300px;">
+                                    <div class="card overflow-hidden"  style="height: 480px;"> 
+                                    <div class="card-body mb-5 "  id="storage-activity-scroll">
                                        <ul class="list-unstyled mb-0" id="file_activity_txt">
                                           
                                        </ul>
@@ -60,7 +60,7 @@
                      <div class="col-12 col-md-8 col-lg-3 order-3 order-md-2">
                         <div class="row">                           
                            <div class="col-12 mb-4">
-                              <div class="card overflow-hidden "  style="height:415px;">
+                              <div class="card overflow-hidden " style="height: 480px;">
                                  <div class="card-header d-flex justify-content-left">
                                     <div class="avatar card-title mb-0">
                                        <img src="https://cloud.fltt.fr/apps/dashboard/img/activity.png"  class="rounded p-2">                                    
@@ -94,3 +94,5 @@ export default {
 }
 </script>
 
+<style lang="scss" scoped>
+</style>

@@ -5,9 +5,9 @@
 <template>
 	<div class="row">
                      <div  class="col-12 col-lg-8 order-2 order-md-3 order-lg-2 mb-4">
-                        <div class="card" >
+                        <div class="card" style="height: 520px;">
                            <div class="row row-bordered g-0">
-                              <div class="col-md-7">
+                              <div class="col-md-8">
                                  <div class="">
                                     <div class="card-header">
                                        <ul class="nav nav-pills card-header-pills" role="tablist">
@@ -28,7 +28,7 @@
                                     <div class="card-body">
                                        <div class="tab-content p-0">
                                           <div class="tab-pane fade show active" id="tab_totalcpuUsage" role="tabpanel">
-                                             <div class="justify-content-left d-flex">
+                                             <div class ="justify-content-left d-flex">
                                                 <div class="align-item-right">
                                                    <div id="cpu_pod_container">        
                                                     <select id="cpu_pod" class="form-select form-select-md">
@@ -50,7 +50,7 @@
                                              <div id="totalCPUusage" class="px-2"></div>
                                           </div>
                                           <div class="tab-pane fade" id="tab_totalMemoryUsage" role="tabpanel">
-                                             <div class="justify-content-left d-flex">
+                                             <div class ="justify-content-left d-flex">
                                                 <div class="align-item-right">
                                                     <div id="memory_pod_container">        
                                                       <select id="memory_pod" class="form-select form-select-md">
@@ -72,7 +72,7 @@
                                              <div id="totalMemoryUsage" class="px-2"></div>
                                           </div>
                                           <div class="tab-pane fade" id="tab_networkUsage" role="tabpanel">
-                                             <div class="justify-content-left d-flex">
+                                             <div class ="justify-content-left d-flex">
                                                 <div class="align-item-right">
                                                    <div id="network_pod_container">        
                                                       <select id="network_pod" class="form-select form-select-md">
@@ -94,7 +94,7 @@
                                              <div id="networkUsage" class="px-2"></div>
                                           </div>
                                           <div class="tab-pane fade" id="tab_ioUsage" role="tabpanel">
-                                             <div class="justify-content-left d-flex">
+                                             <div class ="justify-content-left d-flex">
                                                 <div class="align-item-right">
                                                    <div id="io_pod_container">        
                                                       <select id="io_pod" class="form-select form-select-md">
@@ -121,7 +121,7 @@
                               </div>
                               <!-- /Compute line chart end -->
                               <!-- Compute Usage -->
-                              <div class="col-md-5">
+                              <div class="col-md-4">
                                  <div class="card-header d-flex justify-content-left" style="padding-left: 3px;">
                                     <div class="avatar card-title mb-0">
                                        <img src="https://cloud.fltt.fr/apps/dashboard/img/activity.png"  class="rounded p-2">                                    
@@ -161,7 +161,7 @@
                      </div>
                      <!-- /closed chart -->
                       <!-- Compute activity start -->
-                     <div class="col-12 col-md-8 col-lg-4 order-3 order-md-2 " style="margin-bottom:3rem;">
+                     <div class="col-12 col-md-8 col-lg-4 order-3 order-md-2">
                         <div class="row">                           
                            <div class="col-12 mb-4">
                               <div class="card overflow-hidden " style="height: 520px;">

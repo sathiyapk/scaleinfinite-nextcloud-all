@@ -5,13 +5,13 @@
 <template>
 	<div id="app-dashboard">
 		<h2>{{ greeting.text }}</h2>
-		<!-- <ul class="statuses">
+		<ul class="statuses">
 			<li v-for="status in sortedRegisteredStatus"
 				:id="'status-' + status"
 				:key="status">
 				<div :ref="'status-' + status" />
 			</li>
-		</ul> -->
+		</ul>
 		<div class="container-xxl flex-grow-1 container-p-y">
 <FileAppWidget />
 <CloudfloatWidget />

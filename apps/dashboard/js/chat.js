@@ -548,12 +548,12 @@
 				
 			//Total CPU Usage
 			
-    let o, e, r, t, a, s, i, n;
+    let o, e, r, t1, a, s, i, n;
     let isDarkStyle=1;
     l = isDarkStyle ? 
-        (o = config.colors_dark.cardColor, e = config.colors_dark.headingColor, r = config.colors_dark.textMuted, a = config.colors_dark.borderColor, t = "dark", s = "#4f51c0", i = "#595cd9", n = "#8789ff", "#c3c4ff") 
+        (o = config.colors_dark.cardColor, e = config.colors_dark.headingColor, r = config.colors_dark.textMuted, a = config.colors_dark.borderColor, t1 = "dark", s = "#4f51c0", i = "#595cd9", n = "#8789ff", "#c3c4ff") 
         : 
-        (o = config.colors.cardColor, e = config.colors.headingColor, r = config.colors.textMuted, a = config.colors.borderColor, t = "", s = "#e1e2ff", i = "#c3c4ff", n = "#a5a7ff", "#696cff");
+        (o = config.colors.cardColor, e = config.colors.headingColor, r = config.colors.textMuted, a = config.colors.borderColor, t1 = "", s = "#e1e2ff", i = "#c3c4ff", n = "#a5a7ff", "#696cff");
 
 	
    
@@ -589,7 +589,7 @@
 			fill: {
 				type: "gradient",
 				gradient: {
-					shade: t,
+					shade: t1,
 					shadeIntensity: 0.8,
 					opacityFrom: 0.7,
 					opacityTo: 0.25,
@@ -690,7 +690,7 @@
 			  fill: {
 				  type: "gradient",
 				  gradient: {
-					  shade: t,
+					  shade: t1,
 					  shadeIntensity: 0.8,
 					  opacityFrom: 0.7,
 					  opacityTo: 0.25,
@@ -1222,21 +1222,45 @@ $.ajax({
 	dataType: 'json',
 	success: function(response) {
 		var textData=response.cpu_percentage;
-		var aLines = textData.split("\\n");
+
+		$.each(textData, function(index, value) {
+		//	console.log(value['name']);
+var name=value['name'];
+var msg=value['msg'];
+var namespace=value['namespace'];
+var date=value['date'];
+var type=value['type'];
+
+
+			$('#activity_txt').append('<ul class="list-unstyled m-0 timeline"><div class="timeline-item border-left-dashed ps-4" style="border-bottom:1px dashed #d9dee3 "><span class="timeline-indicator-advanced timeline-indicator-success border-0 shadow-none"><i class="icon-base bx bx-check-circle"></i></span>');
+			$('#activity_txt').append('<li class="email-list-item email-marked-read d-flex align-items-center " data-starred="true" data-bs-toggle="sidebar" data-target="#app-email-view"><div class="d-flex align-items-center w-100"><div class="email-list-item-content ms-2 ms-sm-0 me-2"><span class="email-list-item-username me-2 text-heading"><a href="">'+name+'</a></span></div><div class="email-list-item-meta ms-auto d-flex align-items-center"></div></div></li>');
+			$('#activity_txt').append('<div class="d-flex"><small class="email-list-item-subject d-xl-inline-block d-block">'+msg+'</small></div>');
+			$('#activity_txt').append('<div class="d-flex pt-1 pb-1"><span class="badge bg-label-danger">NS</span><small class="email-list-item-subject d-xl-inline-block d-block ps-1"> <a href="#">'+namespace+'</a></small></div>');
+			$('#activity_txt').append('<div class="d-flex justify-content-between pt-1 pb-2"><span class="badge bg-label-success">'+date+'</span><span class="email-list-item-username me-2 ">'+type+'</span></div></div></ul>');
+		
+		  });
+
+
+		/*var aLines = textData.split("\\n");
   
 		var time = 500;
 		 $.each(aLines, function(n, sLine) 
 		 {
 		   setTimeout( function(){
 
-			$('#activity_txt').append('<li class="d-flex  pb-2 align-items-center"><div class="avatar flex-shrink-0 me-3"><span class="avatar-initial rounded-circle bg-label-primary "><i class="bx bx-video"></i></span></div><div class="row w-100 align-items-center"><div class="col-sm-12 col-lg-12 col-xxl-12 mb-1 mb-sm-0 mb-lg-1 mb-xxl-0">'+sLine+'</div></div></li>');
-
+			
+			//$('#activity_txt').append('<li class="d-flex  pb-2 align-items-center"><div class="avatar flex-shrink-0 me-3"><span class="avatar-initial rounded-circle bg-label-primary "><i class="bx bx-video"></i></span></div><div class="row w-100 align-items-center"><div class="col-sm-12 col-lg-12 col-xxl-12 mb-1 mb-sm-0 mb-lg-1 mb-xxl-0">'+sLine+'</div></div></li>');
+			$('#activity_txt').append('<ul class="list-unstyled m-0 timeline"><div class="timeline-item border-left-dashed ps-4" style="border-bottom:1px dashed #d9dee3 "><span class="timeline-indicator-advanced timeline-indicator-success border-0 shadow-none"><i class="icon-base bx bx-check-circle"></i></span>');
+			$('#activity_txt').append('<li class="email-list-item email-marked-read d-flex align-items-center " data-starred="true" data-bs-toggle="sidebar" data-target="#app-email-view"><div class="d-flex align-items-center w-100"><div class="email-list-item-content ms-2 ms-sm-0 me-2"><span class="email-list-item-username me-2 text-heading"><a href="">Collect Profile</a></span></div><div class="email-list-item-meta ms-auto d-flex align-items-center"></div></div></li>');
+			$('#activity_txt').append('<div class="d-flex"><small class="email-list-item-subject d-xl-inline-block d-block">Generated from Job control</small></div>');
+			$('#activity_txt').append('<div class="d-flex pt-1 pb-1"><span class="badge bg-label-danger">NS</span><small class="email-list-item-subject d-xl-inline-block d-block ps-1"> <a href="#">cloadfloat-operator-lifecycle-manager</a></small></div>');
+			$('#activity_txt').append('<div class="d-flex justify-content-between pt-1 pb-2"><span class="badge bg-label-success">10 Dec 2024 16:17:00</span><span class="email-list-item-username me-2 ">Deleted Job</span></div></div></ul>');
 			 //$('#activity_txt').append('<li class="d-flex pb-2 align-items-center">'+sLine+'</li>');  
 			 j=parseInt(j)+1;
 		   }, time);
 		   time += 800;
 		  
-		 });
+		 });*/
 		
 	},
 	error: function(error) {
@@ -1263,8 +1287,54 @@ $(".input_period").on("click", function(){
 $(".activity_period").on("click", function(){
 	loadevent($('#activity_pod').val(),$(this).data("value"));
 });
+function timeAgo(fromDate, toDate = new Date()) {
+	const seconds = Math.floor((toDate - new Date(fromDate)) / 1000);
+  
+	const intervals = [
+	  { label: 'year', seconds: 31536000 },
+	  { label: 'month', seconds: 2592000 },
+	  { label: 'week', seconds: 604800 },
+	  { label: 'day', seconds: 86400 },
+	  { label: 'hour', seconds: 3600 },
+	  { label: 'minute', seconds: 60 },
+	  { label: 'second', seconds: 1 },
+	];
+  
+	for (const interval of intervals) {
+	  const count = Math.floor(seconds / interval.seconds);
+	  if (count >= 1) {
+		return `${count} ${interval.label}${count > 1 ? 's' : ''} ago`;
+	  }
+	}
+  
+	return 'just now';
+  }
+  
+function time_ago(input) {
+	const date = (input instanceof Date) ? input : new Date(input);
+	const formatter = new Intl.RelativeTimeFormat('en');
+	const ranges = {
+	  years: 3600 * 24 * 365,
+	  months: 3600 * 24 * 30,
+	  weeks: 3600 * 24 * 7,
+	  days: 3600 * 24,
+	  hours: 3600,
+	  minutes: 60,
+	  seconds: 1
+	};
+	const secondsElapsed = (date.getTime() - Date.now()) / 1000;
+	for (let key in ranges) {
+	  if (ranges[key] < Math.abs(secondsElapsed)) {
+		const delta = secondsElapsed / ranges[key];
+		return formatter.format(Math.round(delta), key);
+	  }
+	}
+  }
 function timeConverter(UNIX_timestamp){
-	var a = new Date(UNIX_timestamp * 1000);
+
+	//Math.floor(new Date('2012.08.10').getTime() / 1000)
+
+	var a = new Date(UNIX_timestamp);
 	var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 	var year = a.getFullYear();
 	var month = months[a.getMonth()];
@@ -1275,9 +1345,11 @@ function timeConverter(UNIX_timestamp){
 	var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
 	return time;
   }
+  //https://cloud.fltt.fr/ocs/v2.php/apps/activity/api/v2/activity/all?format=json&previews=true&since=0
+//https://cloud.fltt.fr/index.php/apps/cloudfloat/activity
 $.ajax({
-	url: "https://cloud.fltt.fr/index.php/apps/cloudfloat/activity",
-	method: 'POST',
+	url: "https://cloud.fltt.fr/ocs/v2.php/apps/activity/api/v2/activity/all?format=json&previews=true&since=0",
+	method: 'GET',
 	data: {
 	'user':1,
 	},
@@ -1285,13 +1357,30 @@ $.ajax({
 	success: function(response) 
 	{
 	//	console.log(response);
-	var textData=response.user_data;
+	var textData=response.ocs.data;
+	console.log(textData);
 
-	jQuery.each(textData, function(index, item) {
+	
+	$.each(textData, function(index, value) {
+		//	console.log(value['name']);
+var subject=value['subject'];
+var datetime=value['datetime'];
+var link=value['link'];
+
+/*var msg=value['msg'];
+var namespace=value['namespace'];
+var type=value['type'];*/
+
+
+$('#file_activity_txt').append(' <ul class="list-unstyled m-0 timeline"><div class="timeline-item border-left-dashed ps-4" style="border-bottom:1px dashed #d9dee3 "><span class="timeline-indicator-advanced timeline-indicator-warning border-0 shadow-none"><i class="icon-base bx bx-right-arrow-circle"></i></span><li class="email-list-item email-marked-read d-flex align-items-center " data-starred="true" data-bs-toggle="sidebar" data-target="#app-email-view"><div class="d-flex align-items-center w-100"><div class="email-list-item-content ms-2 ms-sm-0 me-2  align-items-center"><span class="email-list-item-username me-2 text-heading"><a href="'+link+'">'+timeConverter(datetime)+'<i class="icon-base bx bx-folder"></i></a></span></div></div></li><div class="d-flex"><small class="email-list-item-subject d-xl-inline-block d-block">'+subject+'</small></div><div class="d-flex justify-content-between pt-1 pb-2"><span class="badge bg-label-success">'+time_ago(datetime)+'</span></div></div></ul>');
+		  });
+
+	/*jQuery.each(textData, function(index, item) {
 		// do something with `item` (or `this` is also `item` if you like)
 		console.log(item);
-		$('#file_activity_txt').append('<li class="d-flex  pb-2 align-items-center"><div class="avatar flex-shrink-0 me-3"><span class="avatar-initial rounded-circle bg-label-primary "><i class="bx bx-video"></i></span></div><div class="row w-100 align-items-center"><div class="col-sm-8 col-lg-12 col-xxl-12 mb-1 mb-sm-0 mb-lg-1 mb-xxl-0"><p class="mb-0 lh-sm" style="font-size: 13px;">'+item.type+'-'+item.file+' </p> <span class="badge bg-label-warning">'+timeConverter(item.timestamp)+'</span></div></div></li>');
-	});
+		//$('#file_activity_txt').append('<li class="d-flex  pb-2 align-items-center"><div class="avatar flex-shrink-0 me-3"><span class="avatar-initial rounded-circle bg-label-primary "><i class="bx bx-video"></i></span></div><div class="row w-100 align-items-center"><div class="col-sm-8 col-lg-12 col-xxl-12 mb-1 mb-sm-0 mb-lg-1 mb-xxl-0"><p class="mb-0 lh-sm" style="font-size: 13px;">'+item.type+'-'+item.file+' </p> <span class="badge bg-label-warning">'+timeConverter(item.timestamp)+'</span></div></div></li>');
+		$('#file_activity_txt').append(' <ul class="list-unstyled m-0 timeline"><div class="timeline-item border-left-dashed ps-4" style="border-bottom:1px dashed #d9dee3 "><span class="timeline-indicator-advanced timeline-indicator-warning border-0 shadow-none"><i class="icon-base bx bx-right-arrow-circle"></i></span><li class="email-list-item email-marked-read d-flex align-items-center " data-starred="true" data-bs-toggle="sidebar" data-target="#app-email-view"><div class="d-flex align-items-center w-100"><div class="email-list-item-content ms-2 ms-sm-0 me-2  align-items-center"><span class="email-list-item-username me-2 text-heading"><a href="">April 1, 2025 <i class="icon-base bx bx-folder"></i></a></span></div></div></li><div class="d-flex"><small class="email-list-item-subject d-xl-inline-block d-block">You deleted app password "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:136.0) Gecko/20100101 Firefox/136.0"</small></div><div class="d-flex justify-content-between pt-1 pb-2"><span class="badge bg-label-success">2 weeks ago</span></div></div></ul>');
+	});*/
 
 		//var aLines = textData.split("\\n");
   
