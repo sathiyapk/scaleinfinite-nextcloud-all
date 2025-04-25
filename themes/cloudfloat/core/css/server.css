@@ -166,12 +166,12 @@ button.primary:focus,
 /* use logos from theme */
 #header .logo,
 #firstrunwizard .logo {
-	background-image: url('https://cdn.scaleinfinite.fr/cloudfloat-theme/login-logo.webp');
+	background-image: url('../img/login-logo.webp');
 	width: 280px;
 	height: 128px;
 }
 #header .logo-icon {
-	background-image: url('https://cloud.fltt.fr/themes/cloudfloat/core/img/login-logo.webp');
+	background-image: url('../img/login-logo.webp');
 /*	background-image: url('https://cdn.scaleinfinite.fr/cloudfloat-theme/login-logo.webp');*/
 	width: 280px;
 	height: auto;
