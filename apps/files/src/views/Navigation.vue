@@ -209,7 +209,7 @@ export default defineComponent({
 			return this.childViews[view.id]?.length > 0
 		},
 		redirectToStorageSettings() {
-			window.location.href = 'https://cloud.fltt.fr/index.php/settings/user/externalstorages'; // Adjust the URL if needed
+			window.location.href = 'https://'+window.location.hostname+'/index.php/settings/user/externalstorages'; // Adjust the URL if needed
 		},
 
 		/**
