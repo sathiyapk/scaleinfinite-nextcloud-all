@@ -8,7 +8,7 @@
 		:aria-label="t('files', 'Files')">
 	<template #default>
 		<div class="app-logo">
-			<img src = '/themes/cloudfloat/core/img/storage.png' class="img-fluid " />
+			<img src='/themes/cloudfloat/core/img/storage.png' class="img-fluid " />
 			<div  class="app-navigation-toggle-wrapper-new">
 				<button aria-label="Close navigation" type="button"  class="app-navigation-toggle">
 				<i class="bx bx-chevron-left bx-sm align-middle"></i>
@@ -46,6 +46,15 @@
 					<NcIconSvgWrapper v-if="child.icon" slot="icon" :svg="child.icon" />
 				</NcAppNavigationItem>
 			</NcAppNavigationItem>
+			<!-- Custom External Storage Config link -->
+				<!-- <NcAppNavigationItem
+				:name="t('files', ' External Storage Configuration')"
+				:icon="'icon-settings'"
+				:to="{ path: '/settings/user/externalstorages' }">
+				<template #icon>
+					<i class="bx bx-hdd bx-sm"></i>
+				</template>
+				</NcAppNavigationItem> -->
 		</NcAppNavigationList>
 
 		<!-- Settings modal-->
@@ -58,8 +67,13 @@
 		<!-- Non-scrollable navigation bottom elements -->
 		<template #footer>
 			<ul class="app-navigation-entry__settings">
+				<!-- External Storage Config -->
+				<NcAppNavigationItem :name="t('files', 'External Storage Settings')"
+				@click.prevent.stop="redirectToStorageSettings">
+				<IconCog slot="icon" :size="20" />
+				</NcAppNavigationItem>
 				<!-- User storage usage statistics -->
-				<NavigationQuota />
+				<NavigationQuota /> 
 				<!-- Files settings modal toggle-->
 				<NcAppNavigationItem :name="t('files', 'Files settings')"
 					data-cy-files-navigation-settings-button
@@ -193,6 +207,9 @@ export default defineComponent({
 		 */
 		useExactRouteMatching(view: View): boolean {
 			return this.childViews[view.id]?.length > 0
+		},
+		redirectToStorageSettings() {
+			window.location.href = 'https://cloud.fltt.fr/index.php/settings/user/externalstorages'; // Adjust the URL if needed
 		},
 
 		/**

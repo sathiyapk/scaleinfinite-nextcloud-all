@@ -102,6 +102,28 @@ function writeParameterInput($parameter, $options, $classes = []) {
 	}
 }
 ?>
+<style>
+	.back-button{
+		padding: 1rem;
+		display: flex;		
+	}
+	.back-button span {
+		display:flex;
+		align-items: center;
+		font-size: 18px;
+		
+	}
+</style>
+<!-- <div class="back-button" >
+	<a href= "https://cloud.fltt.fr/index.php/apps/files/files">
+	<i class="bx bx-chevron-left bx-md align-middle"></i> Back
+</a>
+</div> -->
+<div class="back-button" style="display: flex; align-items: center; cursor: pointer;" onclick="window.history.go(-1); return false;"  >
+    <i class="bx bx-chevron-left bx-md align-middle"></i>
+    <span style="margin-left: 5px;">Back</span>
+</div>
+
 
 <div class="emptyfilelist emptycontent hidden">
 	<div class="icon-external"></div>
@@ -244,3 +266,17 @@ uasort($sortedBackends, function ($a, $b) {
 		<input type="submit" value="<?php p($l->t('Save')) ?>"/>
 	</form>
 </div>
+<script nonce="UjVMd2RoWFRpVTViWlBkQzVJaGdWbHFxVldveHBNcTY4VDYyU3NJSlVwST06SThXUkZYMjE3Q0FSSmFGeHRyOFJaeG5TSlR4ZTc3TFFxMWZkR3JCSEkrWT0=">
+		document.addEventListener('DOMContentLoaded', function () {
+		const btn = document.getElementById('go-back-btn');
+		btn?.addEventListener('click', function () {
+			// Fallback to files app if no history exists
+			const fallback = OC.generateUrl('/apps/files');
+			if (document.referrer && document.referrer !== window.location.href) {
+				window.history.back();
+			} else {
+				window.location.href = fallback;
+			}
+		});
+	});
+</script>
