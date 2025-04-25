@@ -124,7 +124,7 @@
                               <div class="col-md-5">
                                  <div class="card-header d-flex justify-content-left" style="padding-left: 3px;">
                                     <div class="avatar card-title mb-0">
-                                       <img src="https://gc.fltt.fr/apps/dashboard/img/activity.png"  class="rounded p-2">                                    
+                                       <img src="../../../apps/dashboard/img/activity.png"  class="rounded p-2">                                    
                                     </div>
                                     <h5 class="mt-2">Compute Usages</h5>
                                  </div>
@@ -142,7 +142,7 @@
                                  <!-- Active Applications -->
                                  <div class=" d-flex justify-content-left">
                                     <div class="avatar card-title mb-0">
-                                       <img src="https://gc.fltt.fr/apps/dashboard/img/activity.png"  class="rounded p-2">                                    
+                                       <img src="../../../apps/dashboard/img/activity.png"  class="rounded p-2">                                    
                                     </div>
                                     <h5 class="mt-2">Active Applications</h5>
                                  </div>
@@ -167,7 +167,7 @@
                               <div class="card overflow-hidden " style="height: 520px;">
                                  <div class="card-header d-flex justify-content-left">
                                     <div class="avatar card-title mb-0">
-                                       <img src="https://gc.fltt.fr/apps/dashboard/img/activity.png"  class="rounded p-2">                                    
+                                       <img src="../../../apps/dashboard/img/activity.png"  class="rounded p-2">                                    
                                     </div>
                                     <h5 class="mt-2">Compute Activity</h5>
                                  </div>

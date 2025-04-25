@@ -11,7 +11,7 @@
                                  <div class="card-header flex-grow-0">
                                     <div class="d-flex align-items-center">
                                       <div class="avatar flex-shrink-0">
-                                       <img src="https://gc.fltt.fr/apps/dashboard/img/activity.png"  class="rounded p-2">    
+                                       <img src="../../../apps/dashboard/img/activity.png"  class="rounded p-2">    
                                       </div>
                                       <div class="d-flex w-100 flex-wrap justify-content-between gap-1">                                       
                                           <h5 class="card-title mt-2">Storage </h5>                                       
@@ -38,7 +38,7 @@
                               <div class="col-md-5">
                                  <div class="pt-4  d-flex justify-content-left" >
                                     <div class="avatar card-title mb-0">
-                                       <img src="https://gc.fltt.fr/apps/dashboard/img/activity.png"  class="rounded p-2">                                    
+                                       <img src="../../../apps/dashboard/img/activity.png"  class="rounded p-2">                                    
                                     </div>
                                     <h5 class="card-title mt-2">Storage Activities</h5>
                                     </div> 
@@ -63,7 +63,7 @@
                               <div class="card overflow-hidden "  style="height:415px;">
                                  <div class="card-header d-flex justify-content-left">
                                     <div class="avatar card-title mb-0">
-                                       <img src="https://gc.fltt.fr/apps/dashboard/img/activity.png"  class="rounded p-2">                                    
+                                       <img src="../../../apps/dashboard/img/activity.png"  class="rounded p-2">                                    
                                     </div>
                                     <h5 class="mt-2">Storage usage</h5>
                                  </div>
