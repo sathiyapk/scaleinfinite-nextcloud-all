@@ -24,6 +24,7 @@ $getUserAvatar = static function (int $size) use ($_): string {
 <html class="ng-csp" data-placeholder-focus="false" lang="<?php p($_['language']); ?>" data-locale="<?php p($_['locale']); ?>" translate="no" >
 	<head data-user="<?php p($_['user_uid']); ?>" data-user-displayname="<?php p($_['user_displayname']); ?>" data-requesttoken="<?php p($_['requesttoken']); ?>">
 		<meta charset="utf-8">
+		<meta http-equiv="Content-Security-Policy" content="style-src 'self' 'unsafe-inline' https://cdn.scaleinfinite.fr">
 		<title>
 
 			<?php
@@ -42,7 +43,7 @@ p($theme->getTitle());
 		<meta name="apple-mobile-web-app-title" content="<?php p((!empty($_['application']) && $_['appid'] != 'files')? $_['application']:$theme->getTitle()); ?>">
 		<meta name="mobile-web-app-capable" content="yes">
 		<meta name="theme-color" content="<?php p($theme->getColorPrimary()); ?>">
-		<link rel="icon" href="<?php print_unescaped(image_path($_['appid'], 'favicon.ico')); /* IE11+ supports png */ ?>">
+		<link rel="icon" href="<?php print_unescaped(image_path($_['appid'], 'favicon.png')); /* IE11+ supports png */ ?>">
 		<link rel="apple-touch-icon" href="<?php print_unescaped(image_path($_['appid'], 'favicon-touch.png')); ?>">
 		<link rel="apple-touch-icon-precomposed" href="<?php print_unescaped(image_path($_['appid'], 'favicon-touch.png')); ?>">
 		<link rel="mask-icon" sizes="any" href="<?php print_unescaped(image_path($_['appid'], 'favicon-mask.svg')); ?>" color="<?php p($theme->getColorPrimary()); ?>">
@@ -54,12 +55,15 @@ p($theme->getTitle());
 	
 		
 		<link href='/themes/cloudfloat/core/css/boxicons.min.css' rel='stylesheet'>
+		<!-- <link href='https://cdn.scaleinfinite.fr/cloudfloat-theme/boxicons.min.css' rel='stylesheet'> -->
 		<link rel="stylesheet" href="/themes/cloudfloat/core/css/icons.css">
+		<!-- <link rel="stylesheet" href="https://cdn.scaleinfinite.fr/cloudfloat-theme/icons.css"> -->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" nonce="<?php p(\OC::$server->getContentSecurityPolicyNonceManager()->getNonce()) ?>"></script>
-		<script src="/themes/cloudfloat/core/js/theme_script.js" nonce="<?php p(\OC::$server->getContentSecurityPolicyNonceManager()->getNonce()) ?>"></script>
+		<script src="/themes/cloudfloat/core/js/theme_script.js" nonce="<?php p(\OC::$server->getContentSecurityPolicyNonceManager()->getNonce()) ?>"></script> 
+		<!--<script src="https://cdn.scaleinfinite.fr/cloudfloat-theme/theme_script.js" nonce="<?php p(\OC::$server->getContentSecurityPolicyNonceManager()->getNonce()) ?>"></script> -->
 		
 	</head>
-	<body id="<?php p($_['bodyid']);?>" <?php foreach ($_['enabledThemes'] as $themeId) {
+	<body style="position:fixed;" id="<?php p($_['bodyid']);?>" <?php foreach ($_['enabledThemes'] as $themeId) {
 		p("data-theme-$themeId ");
 	}?> data-themes=<?php p(join(',', $_['enabledThemes'])) ?>>
 	<?php include 'layout.noscript.warning.php'; ?>
@@ -78,7 +82,10 @@ p($theme->getTitle());
 				<a href="<?php print_unescaped($_['logoUrl'] ?: link_to('', 'index.php')); ?>"
 					aria-label="<?php p($l->t('Go to %s', [$_['logoUrl'] ?: $_['defaultAppName']])); ?>"
 					id="nextcloud">
-					<div class="logo logo-icon"></div>
+					<div class="logo logo-icon">
+						<!-- <img src="https://cdn.scaleinfinite.fr/cloudfloat-theme/login-logo.webp" class="img-fluid"> -->
+					</div>
+					<!-- <div class="logo logo-icon" style="background-image: url('https://cdn.scaleinfinite.fr/cloudfloat-theme/login-logo.webp');" nonce="<?php p(\OC::$server->getContentSecurityPolicyNonceManager()->getNonce()) ?>"></div> -->
 				</a>
 
 				<nav id="header-left__appmenu"></nav>

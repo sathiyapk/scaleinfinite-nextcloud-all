@@ -9,7 +9,10 @@
 /** @var \OCP\Defaults $theme */
 
 ?>
-
+<div class="back-button" style="display: flex; align-items: center; cursor: pointer;" onclick="window.history.go(-1); return false;"  >
+    <i class="bx bx-chevron-left bx-md align-middle"></i>
+    <span style="margin-left: 5px;">Back</span>
+</div>
 <div id="security-warning" class="section">
 	<div class="security-warning__heading">
 		<h2><?php p($l->t('Security & setup warnings'));?></h2>

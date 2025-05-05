@@ -17,6 +17,10 @@ script('settings', [
 	'vue-settings-personal-info',
 ]);
 ?>
+<div class="back-button" style="display: flex; align-items: center; cursor: pointer;" onclick="window.history.go(-1); return false;"  >
+    <i class="bx bx-chevron-left bx-md align-middle"></i>
+    <span style="margin-left: 5px;">Back</span>
+</div>
 <?php if (!$_['isFairUseOfFreePushService']) : ?>
 	<div class="section">
 		<div class="warning">
