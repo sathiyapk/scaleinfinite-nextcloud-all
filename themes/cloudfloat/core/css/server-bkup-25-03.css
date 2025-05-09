@@ -171,8 +171,6 @@ button.primary:focus,
 	height: 128px;
 }
 #header .logo-icon {
-	background-image: url('https://cloud.fltt.fr/themes/cloudfloat/core/img/login-logo.webp');
-/*	background-image: url('https://cdn.scaleinfinite.fr/cloudfloat-theme/login-logo.webp');*/
 	width: 280px;
 	height: auto;
 }
@@ -183,30 +181,26 @@ button.primary:focus,
 
 @media (max-width: 768px) {
     #nextcloud {
-        padding-left: 65px !important;
+        padding-left: 60px !important;
     }
 }
 /* ----------------------- */
 /* Disable the rounded corners for the main content area */
-#body-user #header, #body-settings #header, #body-public #header {
-  	position: relative !important;
-  }
 
 #content, .content {
 	border-radius:0 !important;
 
-  }  
+  }
+  
   /* Remove margins for the main content area */
   
   #content, .content {
-  	margin:0 !important;
 	margin-left:0 !important;
 	margin-right:0 !important;
 	margin-bottom:0 !important;
 	width:100% !important;
 	height: calc(var(--body-height) + var(--body-container-margin)) !important;
   }
-
   
   /* Make input element  corners a bit less rounded
 	 (may need some additional classes, as I did not check every detail in the UI) */
@@ -432,30 +426,12 @@ button{
 #app-navigation:not(.vue) {
 	/* background-color: #282828 !important; */
 	background-color: var(--color-main-text);
-	/*	For Personal settings Naviagtion sidebar */
-	display: none;
-}
-@media only screen and (width < 1024px) {
-  #app-navigation-toggle {
-  	display: none !important;
-  }
-}
-.icon-info{
-	display: none;
 }
 .without-app-settings{
 	color: #fff !important;
 }
 nav  ul li a{
 	color: #fff !important;
-}
-.navigation-list__link[data-v-d9de5a67]{
-	color: #000 !important;
-	background-color: #d2d3ff !important;
-}
-.navigation-list__link--active[data-v-d9de5a67]{
-	color: #fff !important;
-	background-color: #745bca !important;
 }
 .user-menu ul li a{
 color: #000 !important;
@@ -1038,24 +1014,4 @@ footer.guest-box{
 }
 
 
-/*li.app-menu-entry a[href="/index.php/apps/activity/"] {
-	display: none !important;
-}*/
-/*Hide activity app icon in header*/
-li.app-menu-entry a[href="/index.php/apps/activity/"] {
-  display: none !important;
-}
 
-/* Hides the entire <li> if it has no visible child (after hiding the <a>) */
-li.app-menu-entry:has(> a[href="/index.php/apps/activity/"]) {
-	display: none !important;
-}
-/* Hide Dashboard Customize button */ 
-#app-dashboard .footer button
-{
-	display: none !important;
-}
-#accessibility_settings
-{
-	display: none !important;
-}
