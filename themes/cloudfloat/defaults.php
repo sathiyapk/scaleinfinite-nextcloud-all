@@ -12,7 +12,7 @@ class OC_Theme {
 	 * @return string URL
 	 */
 	public function getBaseUrl(): string {
-		return 'https://nextcloud.com';
+		return 'https://scaleinfinite.fr';
 	}
 
 	/**
@@ -28,7 +28,7 @@ class OC_Theme {
 	 * @return string title
 	 */
 	public function getTitle(): string {
-		return 'Custom Cloud';
+		return 'Cloud Float';
 	}
 
 	/**
@@ -36,7 +36,7 @@ class OC_Theme {
 	 * @return string title
 	 */
 	public function getName(): string {
-		return 'Custom Cloud';
+		return 'Cloud Float';
 	}
 
 	/**
@@ -44,7 +44,7 @@ class OC_Theme {
 	 * @return string title
 	 */
 	public function getHTMLName(): string {
-		return 'Custom Cloud';
+		return 'Cloud Float';
 	}
 
 	/**
@@ -52,7 +52,7 @@ class OC_Theme {
 	 * @return string entity name
 	 */
 	public function getEntity(): string {
-		return 'Custom Cloud Co.';
+		return 'Scaleinfinite Technologies ';
 	}
 
 	/**
@@ -60,7 +60,8 @@ class OC_Theme {
 	 * @return string slogan
 	 */
 	public function getSlogan(): string {
-		return 'Your custom cloud, personalized for you!';
+		// return 'Your custom cloud, personalized for you!';
+		return 'Self-Driving Cloud Applications. Put your applications on autopilot mode in our AI managed environment';		
 	}
 
 	/**
@@ -107,7 +108,7 @@ class OC_Theme {
 	 * @return string
 	 */
 	public function getColorPrimary(): string {
-		return '#745bca';
+		return '#02075d';
 	}
 
 	/**
@@ -115,7 +116,7 @@ class OC_Theme {
 	 * @return string
 	 */
 	public function getColorBackground(): string {
-		return '#3d85c6';
+		return '#2731db';
 	}
 
 	/**
@@ -124,7 +125,7 @@ class OC_Theme {
 	 */
 	public function getScssVariables(): array {
 		return [
-			'color-primary' => '#745bca'
+			'color-primary' => '#02075d'
 		];
 	}
 }
