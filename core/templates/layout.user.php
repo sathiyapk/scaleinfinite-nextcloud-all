@@ -43,7 +43,16 @@ p($theme->getTitle());
 		<meta name="apple-mobile-web-app-title" content="<?php p((!empty($_['application']) && $_['appid'] != 'files')? $_['application']:$theme->getTitle()); ?>">
 		<meta name="mobile-web-app-capable" content="yes">
 		<meta name="theme-color" content="<?php p($theme->getColorPrimary()); ?>">
-		<link rel="icon" href="<?php print_unescaped(image_path($_['appid'], 'favicon.png')); /* IE11+ supports png */ ?>">
+		<!-- <link rel="icon" href="<?php//rint_unescaped(image_path($_['appid'], 'favicon.png')); /* IE11+ supports png */ ?>"> -->
+		<script nonce="<?php p(\OC::$server->getContentSecurityPolicyNonceManager()->getNonce()) ?>">
+				const link = document.createElement('link');
+				link.rel = 'icon';
+				link.type = 'image/png';
+				link.href = window.matchMedia('(prefers-color-scheme: dark)').matches
+					? "<?php print_unescaped(image_path($_['appid'], 'favicon-light.png')); ?>"
+					: "<?php print_unescaped(image_path($_['appid'], 'favicon-dark.png')); ?>";
+				document.head.appendChild(link);
+		</script>
 		<link rel="apple-touch-icon" href="<?php print_unescaped(image_path($_['appid'], 'favicon-touch.png')); ?>">
 		<link rel="apple-touch-icon-precomposed" href="<?php print_unescaped(image_path($_['appid'], 'favicon-touch.png')); ?>">
 		<link rel="mask-icon" sizes="any" href="<?php print_unescaped(image_path($_['appid'], 'favicon-mask.svg')); ?>" color="<?php p($theme->getColorPrimary()); ?>">
