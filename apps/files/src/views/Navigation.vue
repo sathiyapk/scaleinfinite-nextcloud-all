@@ -8,7 +8,12 @@
 		:aria-label="t('files', 'Files')">
 	<template #default>
 		<div class="app-logo">
-			<img src='/themes/cloudfloat/core/img/storage.png' class="img-fluid " />
+			<span class="app-brand-logo demo " style="left: -20px;   position: relative;">
+				  <img src="/themes/cloudfloat/core/img/s2-logo.png" class="img-fluid" alt="Cloud Float" style="width: 80px;  height: auto;">				  
+				</span>
+			<span class="app-brand-text demo  menu-text fw-bolder ms-2 text-capitalize ">
+				  <img src="/themes/cloudfloat/core/img/storage.png" class="img-fluid" alt="Cloud Float" style="width: 150px;  height: auto;  left: -60px;  position: relative;  text-align: center; ">
+				</span>
 			<div  class="app-navigation-toggle-wrapper-new">
 				<button aria-label="Close navigation" type="button"  class="app-navigation-toggle">
 				<i class="bx bx-chevron-left bx-sm align-middle"></i>
@@ -209,7 +214,7 @@ export default defineComponent({
 			return this.childViews[view.id]?.length > 0
 		},
 		redirectToStorageSettings() {
-			window.location.href = 'https://'+window.location.hostname+'/index.php/settings/user/externalstorages'; // Adjust the URL if needed
+			window.location.href = 'https://cloud.fltt.fr/index.php/settings/user/externalstorages'; // Adjust the URL if needed
 		},
 
 		/**
