@@ -22,9 +22,12 @@ use OCP\EventDispatcher\IEventDispatcher;
 use OCP\IConfig;
 use OCP\IL10N;
 use OCP\IRequest;
+use OCP\AppFramework\Http\ContentSecurityPolicy;
 
 #[OpenAPI(scope: OpenAPI::SCOPE_IGNORE)]
 class DashboardController extends Controller {
+
+	private $policy;
 
 	public function __construct(
 		string $appName,
@@ -36,8 +39,15 @@ class DashboardController extends Controller {
 		private IL10N $l10n,
 		private ?string $userId,
 		private DashboardService $service,
+		ContentSecurityPolicy $csp
 	) {
 		parent::__construct($appName, $request);
+		$this->policy = $csp;
+        $this->policy->addAllowedChildSrcDomain('\'self\'');
+        $this->policy->addAllowedFontDomain('data:');
+        $this->policy->addAllowedImageDomain('*');
+        // Needed for the ES5 compatible build of PDF.js
+        $this->policy->allowEvalScript(true);
 	}
 
 	/**
@@ -91,6 +101,7 @@ class DashboardController extends Controller {
 		$featurePolicy = new Http\FeaturePolicy();
 		$featurePolicy->addAllowedGeoLocationDomain('\'self\'');
 		$response->setFeaturePolicy($featurePolicy);
+		$response->setContentSecurityPolicy($this->policy);
 
 		return $response;
 	}

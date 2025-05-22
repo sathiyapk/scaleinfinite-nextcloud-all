@@ -199,7 +199,7 @@ button.primary:focus,
   /* Remove margins for the main content area */
   
   #content, .content {
-  	margin:-2px 0px 0px 0px !important;
+  	margin:-4px 0px 0px 0px !important;
 	margin-left:0 !important;
 	margin-right:0 !important;
 	margin-bottom:0 !important;
@@ -336,8 +336,11 @@ button{
 	font-weight: 400 !important;
 	font-size: 0.9rem !important;
 }
-.dots-horizontal-icon{
-	color: #FF5733 !important;
+.action-item .dots-horizontal-icon{
+	color: #43489a !important;
+}
+.app-menu .dots-horizontal-icon{
+	color: #fff !important;
 }
 .action-button__text{
 	font-size: 0.9rem !important;
@@ -1072,3 +1075,14 @@ li.app-menu-entry:has(> a[href="/index.php/apps/activity/"]) {
 }
 /* Input text box border color */
 
+/*cloud-float top bar position*/
+html:not(.layout-navbar-fixed) .layout-content-navbar .layout-page, html:not(.layout-navbar-fixed):not(.layout-menu-fixed):not(.layout-menu-fixed-offcanvas) .layout-page {
+   margin-top: -6px;
+  }
+/*Server-topbar-zindex-while popup*/
+.server-topbar-postion-popup{
+	z-index: 9;
+}
+.cf-search-text-box-card[data-v-862aa946]{
+	border:0px !important;
+}

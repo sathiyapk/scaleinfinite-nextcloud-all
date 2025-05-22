@@ -47,6 +47,14 @@
                                                     </div>
                                                 </div>
                                              </div>
+                  <div class="totalCPUusage_loader" style="position: relative;">
+                        <div style="position: absolute; inset: 0; background: #fff; z-index: 9999; display: flex; align-items: center; justify-content: center;">
+                          <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                          </div>
+                        </div>
+                      </div>
+
                                              <div id="totalCPUusage" class="px-2"></div>
                                           </div>
                                           <div class="tab-pane fade" id="tab_totalMemoryUsage" role="tabpanel">
@@ -69,6 +77,13 @@
                                                    </div>
                                                 </div>
                                              </div>
+                                             <div class="totalMemoryUsage_loader" style="position: relative;">
+                        <div style="position: absolute; inset: 0; background: #fff; z-index: 9999; display: flex; align-items: center; justify-content: center;">
+                          <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                          </div>
+                        </div>
+                      </div>
                                              <div id="totalMemoryUsage" class="px-2"></div>
                                           </div>
                                           <div class="tab-pane fade" id="tab_networkUsage" role="tabpanel">
@@ -91,6 +106,13 @@
                                                    </div>
                                                 </div>
                                              </div>
+                                             <div class="networkUsage_loader" style="position: relative;">
+                        <div style="position: absolute; inset: 0; background: #fff; z-index: 9999; display: flex; align-items: center; justify-content: center;">
+                          <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                          </div>
+                        </div>
+                      </div>
                                              <div id="networkUsage" class="px-2"></div>
                                           </div>
                                           <div class="tab-pane fade" id="tab_ioUsage" role="tabpanel">
@@ -113,6 +135,13 @@
                                                    </div>
                                                 </div>
                                              </div>
+                                             <div class="ioUsage_loader" style="position: relative;">
+                        <div style="position: absolute; inset: 0; background: #fff; z-index: 9999; display: flex; align-items: center; justify-content: center;">
+                          <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                          </div>
+                        </div>
+                      </div>
                                              <div id="ioUsage" class="px-2"></div>
                                           </div>
                                        </div>
@@ -124,11 +153,18 @@
                               <div class="col-md-5">
                                  <div class="card-header d-flex justify-content-left" style="padding-left: 3px;">
                                     <div class="avatar card-title mb-0">
-                                       <img src="../../../dashboard/img/activity.png"  class="rounded p-2">                                    
+                                       <img src="https://cloud.fltt.fr/apps/dashboard/img/activity.png"  class="rounded p-2">                                    
                                     </div>
                                     <h5 class="mt-2">Compute Usages</h5>
                                  </div>
                                  <div class="">
+                                 <div class="CPUusage_loader" style="position: relative;">
+                        <div style="position: absolute; inset: 0; background: #fff; z-index: 9999; display: flex; align-items: center; justify-content: center;">
+                          <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                          </div>
+                        </div>
+                      </div>
                                     <div class="d-flex">
                                     <div id="CPUusage" style="height: 120px !important;   width: 150px !important; border-right:1px solid #d9dee3">
                                        <small class="d-block text-center" style="font-weight: 700;"> CPU Usages</small>
@@ -142,11 +178,18 @@
                                  <!-- Active Applications -->
                                  <div class=" d-flex justify-content-left">
                                     <div class="avatar card-title mb-0">
-                                       <img src="../../../dashboard/img/activity.png"  class="rounded p-2">                                    
+                                       <img src="https://cloud.fltt.fr/apps/dashboard/img/activity.png"  class="rounded p-2">                                    
                                     </div>
                                     <h5 class="mt-2">Active Applications</h5>
                                  </div>
                                  <div class="card" style="height: 250px;">
+                                 <div class="active_application_loader" style="position: relative;">
+                        <div style="position: absolute; inset: 0; background: #fff; z-index: 9999; display: flex; align-items: center; justify-content: center;">
+                          <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                          </div>
+                        </div>
+                      </div>
                                     <div class="p-2 mb-5" id="active-application-scroll">
                                        <ul class="p-0 m-0" id="active_application">
                                          
@@ -167,11 +210,18 @@
                               <div class="card overflow-hidden " style="height: 520px;">
                                  <div class="card-header d-flex justify-content-left">
                                     <div class="avatar card-title mb-0">
-                                       <img src="../../../dashboard/img/activity.png"  class="rounded p-2">                                    
+                                       <img src="https://cloud.fltt.fr/apps/dashboard/img/activity.png"  class="rounded p-2">                                    
                                     </div>
                                     <h5 class="mt-2">Compute Activity</h5>
                                  </div>
                                  <div class="card-body mb-5" id="compute-activity-scroll">
+                                 <div class="activity_txt_compute_loader" style="position: relative;">
+                        <div style="position: absolute; inset: 0; background: #fff; z-index: 9999; display: flex; align-items: center; justify-content: center;">
+                          <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                          </div>
+                        </div>
+                      </div>
                                     <ul class="list-unstyled mb-0" id="activity_txt">
                                       
                                     </ul>

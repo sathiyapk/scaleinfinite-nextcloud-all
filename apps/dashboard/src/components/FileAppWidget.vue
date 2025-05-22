@@ -11,7 +11,7 @@
                                  <div class="card-header flex-grow-0">
                                     <div class="d-flex align-items-center">
                                       <div class="avatar flex-shrink-0">
-                                       <img src="../../../dashboard/img/activity.png"  class="rounded p-2">    
+                                       <img src="https://cloud.fltt.fr/apps/dashboard/img/activity.png"  class="rounded p-2">    
                                       </div>
                                       <div class="d-flex w-100 flex-wrap justify-content-between gap-1">                                       
                                           <h5 class="card-title mt-2">Storage </h5>                                       
@@ -30,6 +30,13 @@
                                   </div>
                                     <div class="card-body">
                                        <!-- <div id="fileactivityChart"></div> -->
+                                        <div class="loader" style="position: relative;">
+                        <div style="position: absolute; inset: 0; background: #fff; z-index: 9999; display: flex; align-items: center; justify-content: center;">
+                          <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                          </div>
+                        </div>
+                      </div>
                                         <div id="fileactivityChart"></div>
                                     </div>
                               </div>
@@ -38,12 +45,20 @@
                               <div class="col-md-5">
                                  <div class="pt-4  d-flex justify-content-left" >
                                     <div class="avatar card-title mb-0">
-                                       <img src="../../../dashboard/img/activity.png"  class="rounded p-2">                                    
+                                       <img src="https://cloud.fltt.fr/apps/dashboard/img/activity.png"  class="rounded p-2">                                    
                                     </div>
                                     <h5 class="card-title mt-2">Storage Activities</h5>
                                     </div> 
                                     <div class="card overflow-hidden" > 
                                     <div class="card-body mb-5 "  id="storage-activity-scroll" style="height:300px;">
+                                     <div class="file_activity_loader" style="position: relative;">
+                        <div style="position: absolute; inset: 0; background: #fff; z-index: 9999; display: flex; align-items: center; justify-content: center;">
+                          <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                          </div>
+                        </div>
+                      </div>
+                                        
                                        <ul class="list-unstyled mb-0" id="file_activity_txt">
                                           
                                        </ul>
@@ -63,11 +78,18 @@
                               <div class="card overflow-hidden "  style="height:415px;">
                                  <div class="card-header d-flex justify-content-left">
                                     <div class="avatar card-title mb-0">
-                                       <img src="../../../dashboard/img/activity.png"  class="rounded p-2">                                    
+                                       <img src="https://cloud.fltt.fr/apps/dashboard/img/activity.png"  class="rounded p-2">                                    
                                     </div>
                                     <h5 class="mt-2">Storage usage</h5>
                                  </div>
                                  <div class="card-body">
+                                 <div class="file_space_loader" style="position: relative;">
+                        <div style="position: absolute; inset: 0; background: #fff; z-index: 9999; display: flex; align-items: center; justify-content: center;">
+                          <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                          </div>
+                        </div>
+                      </div>
                                     <div id="fileAppSpace"></div>
                                     <div class="d-flex justify-content-center align-items-center gap-4">
                                        <div class="d-flex align-items-center">
