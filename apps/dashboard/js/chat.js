@@ -1,4 +1,19 @@
+
 (function () {
+	$('#fileactivityChart').hide();
+	$('#file_activity_txt').hide();
+	$('#fileAppSpace').hide();
+	$('#totalCPUusage').hide();
+	$('#totalMemoryUsage').hide();
+	$('#networkUsage').hide();
+	$('#ioUsage_loader').hide();
+	$('#active_application').hide();
+	$('#activity_txt').hide();
+	$('#CPUusage').hide();
+	$('#MemoryUsage').hide();
+
+
+	
     const setColorsBasedOnStyle = (isDarkStyle) => {
         if (isDarkStyle) {
             return {
@@ -89,13 +104,17 @@
    // renderRadialBarChart("#network-Usage", [79], ["#28ccee", "#28ccee"], colors.headingColor);
 
 	$.ajax({
-		url: "https://"+window.location.hostname+"/index.php/apps/cloudfloat/gettotalmetrics",
+		url: "https://cloud.fltt.fr/index.php/apps/cloudfloat/gettotalmetrics",
 		method: 'POST',
 		data: {},
 		dataType: 'json',
 		success: function(response) {
 			 //  console.log(response.cpu_percentage);
+
+			 $('.CPUusage_loader').hide();
+$('#CPUusage').show();
 			
+$('#MemoryUsage').show();
 				renderRadialBarChart("#CPUusage", [response.cpu_percentage], ["#696cff"], "#384551");
 				renderRadialBarChart("#MemoryUsage", [response.cpu_percentage], ["#face1b", "#face1b"], "#384551");
 				renderRadialBarChart("#network-Usage", [response.cpu_percentage], ["#28ccee", "#28ccee"], "#384551");
@@ -644,7 +663,7 @@
 		var chart =  new ApexCharts(d1, options);
 		chart.render();
 	  $.ajax({
-			  url: "https://"+window.location.hostname+"/index.php/apps/cloudfloat/getallmetrics",
+			  url: "https://cloud.fltt.fr/index.php/apps/cloudfloat/getallmetrics",
 			  method: 'POST',
 			  data: {
 			  'chart_type':'cpu',
@@ -653,6 +672,8 @@
 			  },
 			  dataType: 'json',
 			  success: function(response) {
+				$('.totalCPUusage_loader').hide();
+				$('#totalCPUusage').show();
 				  chart.updateSeries([{
 							  data: response.cpu_percentage
 						  }]);
@@ -746,7 +767,7 @@
 	  var chart1 =  new ApexCharts(d2, options2);
 	  chart1.render();
 			$.ajax({
-					url: "https://"+window.location.hostname+"/index.php/apps/cloudfloat/getallmetrics",
+					url: "https://cloud.fltt.fr/index.php/apps/cloudfloat/getallmetrics",
 					method: 'POST',
 					data: {
 					'chart_type':'memory',
@@ -755,6 +776,8 @@
 					},
 					dataType: 'json',
 					success: function(response) {
+						$('.totalMemoryUsage_loader').hide();
+						$('#totalMemoryUsage').show();
 						chart1.updateSeries([{
 									data: response.cpu_percentage
 								}]);
@@ -853,7 +876,7 @@
 				var chart2 =  new ApexCharts(d3, options3);
 				chart2.render();
 					  $.ajax({
-							  url: "https://"+window.location.hostname+"/index.php/apps/cloudfloat/getallmetrics",
+							  url: "https://cloud.fltt.fr/index.php/apps/cloudfloat/getallmetrics",
 							  method: 'POST',
 							  data: {
 							  'chart_type':'network',
@@ -862,6 +885,8 @@
 							  },
 							  dataType: 'json',
 							  success: function(response) {
+								$('.networkUsage_loader').hide();
+								$('#networkUsage').show();
 								  chart2.updateSeries([{
 											  data: response.cpu_percentage
 										  }]);
@@ -961,7 +986,7 @@
 						  var chart3 =  new ApexCharts(d4, options4);
 						  chart3.render();
 						$.ajax({
-								url: "https://"+window.location.hostname+"/index.php/apps/cloudfloat/getallmetrics",
+								url: "https://cloud.fltt.fr/index.php/apps/cloudfloat/getallmetrics",
 								method: 'POST',
 								data: {
 								'chart_type':'input',
@@ -970,6 +995,8 @@
 								},
 								dataType: 'json',
 								success: function(response) {
+									$('.ioUsage_loader').hide();
+									$('#ioUsage').show();
 									chart3.updateSeries([{
 												data: response.cpu_percentage
 											}]);
@@ -1123,7 +1150,7 @@ let d5 = document.querySelector("#fileactivityChart");
 
 
 	$.ajax({
-		url: "https://"+window.location.hostname+"/index.php/apps/cloudfloat/getactivity",
+		url: "https://cloud.fltt.fr/index.php/apps/cloudfloat/getactivity",
 		method: 'POST',
 		data: {
 		'chart_type':'input',
@@ -1131,9 +1158,13 @@ let d5 = document.querySelector("#fileactivityChart");
 		},
 		dataType: 'json',
 		success: function(response) {
+			$('.loader').hide();
+			$('#fileactivityChart').show();
+			
 			chart4.updateSeries([{
 						data: response.cpu_percentage
 					}]);
+					
 		},
 });
 
@@ -1149,7 +1180,7 @@ var pods;
 	var input_options =  '<select id="io_pod" class="form-select form-select-md"><option value="0">All Pods</option>'; 
 	var activity_options =  '<select id="activity_pod" class="form-select form-select-md"><option value="0">All Pods</option>'; 
     $.ajax({
-        url: "https://"+window.location.hostname+"/index.php/apps/cloudfloat/getallmetrics",
+        url: "https://cloud.fltt.fr/index.php/apps/cloudfloat/getallmetrics",
         method: 'POST',
         data: {
         'chart_type':'pod',
@@ -1173,7 +1204,7 @@ var pods;
 
 var updatechart = function(chart_type,pod,periods){
 	$.ajax({
-								url: "https://"+window.location.hostname+"/index.php/apps/cloudfloat/getallmetrics",
+								url: "https://cloud.fltt.fr/index.php/apps/cloudfloat/getallmetrics",
 								method: 'POST',
 								data: {
 								'chart_type':chart_type,
@@ -1213,15 +1244,18 @@ var updatechart = function(chart_type,pod,periods){
 var loadevent = function(pod,periods){
 var j=1;
 $.ajax({
-	url: "https://"+window.location.hostname+"/index.php/apps/cloudfloat/getevents",
-	method: 'POST',
+	url: "https://cloud.fltt.fr/index.php/apps/cloudfloat/allevents",
+	method: 'GET',
 	data: {
 	'pod':pod,
 	'periods':periods,
 	},
 	dataType: 'json',
 	success: function(response) {
-		var textData=response.cpu_percentage;
+		var textData=response.Response;
+
+		$('.activity_txt_compute_loader').hide();
+$('#activity_txt').show();
 
 		$.each(textData, function(index, value) {
 		//	console.log(value['name']);
@@ -1230,14 +1264,15 @@ var msg=value['msg'];
 var namespace=value['namespace'];
 var date=value['date'];
 var type=value['type'];
+$('#activity_txt').append('<ul class="list-unstyled m-0 timeline"><div class="timeline-item border-left-dashed ps-4" style="border-bottom:1px dashed #d9dee3 "><span class="timeline-indicator-advanced timeline-indicator-success border-0 shadow-none"><i class="icon-base bx bx-check-circle"></i></span><li class="email-list-item email-marked-read d-flex align-items-center " data-starred="true" data-bs-toggle="sidebar" data-target="#app-email-view"><div class="d-flex align-items-center w-100"><div class="email-list-item-content ms-2 ms-sm-0 me-2"><span class="email-list-item-username me-2 text-heading"><a href="">'+name+'</a></span></div><div class="email-list-item-meta ms-auto d-flex align-items-center"></div></div></li><div class="d-flex"><small class="email-list-item-subject d-xl-inline-block d-block">'+msg+'</small></div><div class="d-flex pt-1 pb-1"><span class="badge bg-label-danger">NS</span><small class="email-list-item-subject d-xl-inline-block d-block ps-1"> <a href="#">'+namespace+'</a></small></div><div class="d-flex justify-content-between pt-1 pb-2"><span class="badge bg-label-success">'+date+'</span><span class="email-list-item-username me-2 ">'+type+'</span></div></div></ul>');
 
 
-			$('#activity_txt').append('<ul class="list-unstyled m-0 timeline"><div class="timeline-item border-left-dashed ps-4" style="border-bottom:1px dashed #d9dee3 "><span class="timeline-indicator-advanced timeline-indicator-success border-0 shadow-none"><i class="icon-base bx bx-check-circle"></i></span>');
+/*			$('#activity_txt').append('<ul class="list-unstyled m-0 timeline"><div class="timeline-item border-left-dashed ps-4" style="border-bottom:1px dashed #d9dee3 "><span class="timeline-indicator-advanced timeline-indicator-success border-0 shadow-none"><i class="icon-base bx bx-check-circle"></i></span>');
 			$('#activity_txt').append('<li class="email-list-item email-marked-read d-flex align-items-center " data-starred="true" data-bs-toggle="sidebar" data-target="#app-email-view"><div class="d-flex align-items-center w-100"><div class="email-list-item-content ms-2 ms-sm-0 me-2"><span class="email-list-item-username me-2 text-heading"><a href="">'+name+'</a></span></div><div class="email-list-item-meta ms-auto d-flex align-items-center"></div></div></li>');
 			$('#activity_txt').append('<div class="d-flex"><small class="email-list-item-subject d-xl-inline-block d-block">'+msg+'</small></div>');
 			$('#activity_txt').append('<div class="d-flex pt-1 pb-1"><span class="badge bg-label-danger">NS</span><small class="email-list-item-subject d-xl-inline-block d-block ps-1"> <a href="#">'+namespace+'</a></small></div>');
 			$('#activity_txt').append('<div class="d-flex justify-content-between pt-1 pb-2"><span class="badge bg-label-success">'+date+'</span><span class="email-list-item-username me-2 ">'+type+'</span></div></div></ul>');
-		
+*/		
 		  });
 
 
@@ -1348,7 +1383,7 @@ function timeConverter(UNIX_timestamp){
   //https://cloud.fltt.fr/ocs/v2.php/apps/activity/api/v2/activity/all?format=json&previews=true&since=0
 //https://cloud.fltt.fr/index.php/apps/cloudfloat/activity
 $.ajax({
-	url: "https://"+window.location.hostname+"/ocs/v2.php/apps/activity/api/v2/activity/all?format=json&previews=true&since=0",
+	url: "https://cloud.fltt.fr/ocs/v2.php/apps/activity/api/v2/activity/all?format=json&previews=true&since=0",
 	method: 'GET',
 	data: {
 	'user':1,
@@ -1358,7 +1393,10 @@ $.ajax({
 	{
 	//	console.log(response);
 	var textData=response.ocs.data;
-	console.log(textData);
+	//console.log(textData);
+	$('.file_activity_loader').hide();
+	$('#file_activity_txt').show();
+
 
 	
 	$.each(textData, function(index, value) {
@@ -1404,7 +1442,7 @@ $('#file_activity_txt').append(' <ul class="list-unstyled m-0 timeline"><div cla
 	}
 });
 $.ajax({
-	url: "https://"+window.location.hostname+"/index.php/apps/files/api/v1/stats",
+	url: "https://cloud.fltt.fr/index.php/apps/files/api/v1/stats",
 	method: 'GET',
 	data: {
 	'user':1,
@@ -1415,6 +1453,8 @@ $.ajax({
 		var per=(response.data.used/response.data.total)*100;
 		//console.log(response.data.total);
 		console.log(Math.round(per));
+		$('.file_space_loader').hide();
+		$('#fileAppSpace').show();
 		fileChart(Math.round(per));
 	
 	},
@@ -1424,7 +1464,7 @@ $.ajax({
 });
 var j=0;
 $.ajax({
-	url: "https://"+window.location.hostname+"/index.php/apps/cloudfloat/getapps",
+	url: "https://cloud.fltt.fr/index.php/apps/cloudfloat/getapps",
 	method: 'POST',
 	data: {
 	'user':1,
@@ -1433,13 +1473,17 @@ $.ajax({
 	success: function(response) 
 	{
 		//var per=(response.data.used/response.data.total)*100;
-		console.log(response);
+		
+		$('.active_application_loader').hide();
+$('#active_application').show();
+//var json = $.parseJSON(response);
+console.log(response.apps);
 		//console.log(Math.round(per));
-		var textData=response.cpu_percentage;
+		var textData=response.apps;
 		//var aLines = textData.split("\\n");
   
 		var time = 500;
-		 $.each(response, function(n, sLine) 
+		 $.each(response.apps, function(n, sLine) 
 		 {
 		   setTimeout( function(){
 
