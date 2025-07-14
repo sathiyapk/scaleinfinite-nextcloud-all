@@ -213,10 +213,14 @@ export default defineComponent({
 		useExactRouteMatching(view: View): boolean {
 			return this.childViews[view.id]?.length > 0
 		},
+		// redirectToStorageSettings() {
+		// 	window.location.href = 'https://cloud.fltt.fr/index.php/settings/user/externalstorages'; 
+		// },
+		BASE_URL = window.location.origin,
 		redirectToStorageSettings() {
-			window.location.href = 'https://cloud.fltt.fr/index.php/settings/user/externalstorages'; // Adjust the URL if needed
-		},
-
+			const BASE_URL = window.location.origin ;
+			window.location.href = `${BASE_URL}/index.php/settings/user/externalstorages`;
+		}
 		/**
 		 * Set the view as active on the navigation and handle internal state
 		 * @param view View to set active
