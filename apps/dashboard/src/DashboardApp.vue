@@ -133,7 +133,8 @@
                             <h4 class="text-warning mb-0">14</h4>
                           </div>
                         </div>
-                       <img src="https://cloud.fltt.fr/apps/dashboard/img/man-with-laptop.png" height="175" class="scaleX-n1-rtl" alt="View Badge User" />
+                       <!-- <img src="https://cloud.fltt.fr/apps/dashboard/img/man-with-laptop.png" height="175" class="scaleX-n1-rtl" alt="View Badge User" /> -->
+						<img :src="badgeImage" height="175" class="scaleX-n1-rtl" alt="Scale Badge User" />
                         <div id="leadsReportChart"></div>
                       </div>
                     </div>
@@ -334,6 +335,9 @@ export default {
 		}
 	},
 	computed: {
+	badgeImage() {
+      return `${window.location.origin}/apps/dashboard/img/man-with-laptop.png`;
+    },
 		greeting() {
 			const time = this.timer.getHours()
 
