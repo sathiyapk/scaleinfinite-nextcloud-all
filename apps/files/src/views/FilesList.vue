@@ -685,4 +685,9 @@ export default defineComponent({
 		margin: auto;
 	}
 }
+:deep(#search_files input) {
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
 </style>

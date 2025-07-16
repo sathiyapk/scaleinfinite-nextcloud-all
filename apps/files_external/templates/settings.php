@@ -113,6 +113,13 @@ function writeParameterInput($parameter, $options, $classes = []) {
 		font-size: 18px;
 		
 	}
+	#externalStorage td.configuration label {
+	  display: none !important;
+	}
+	input[data-parameter="storageClass"]
+	{
+  	display: none !important;
+	}
 </style>
 <!-- <div class="back-button" >
 	<a href= "https://cloud.fltt.fr/index.php/apps/files/files">
