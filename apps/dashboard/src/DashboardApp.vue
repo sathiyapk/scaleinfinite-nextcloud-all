@@ -110,7 +110,8 @@
                             </div>
                             <!-- Image SVG -->
                             <div class="mt-auto text-center">
-								<img src="https://cloud.scaleinfinite.fr/apps/dashboard/img/man-working.png" class="img-fluid mb-2" style="max-height: 160px;" alt="View Badge User" />
+								<img :src="`${baseUrl}/apps/dashboard/img/man-working.png`" class="img-fluid mb-2" style="max-height: 160px;" alt="View Badge User" />
+								<!-- <img src="https://cloud.scaleinfinite.fr/apps/dashboard/img/man-working.png" class="img-fluid mb-2" style="max-height: 160px;" alt="View Badge User" /> -->
 							</div>
                           </div>
                         </div>
@@ -307,6 +308,7 @@ export default {
 			apiWidgets: [],
 			apiWidgetItems: {},
 			loadingItems: true,
+			baseUrl: window.location.origin,
 		}
 	},
 	computed: {
