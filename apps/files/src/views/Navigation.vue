@@ -51,15 +51,7 @@
 					<NcIconSvgWrapper v-if="child.icon" slot="icon" :svg="child.icon" />
 				</NcAppNavigationItem>
 			</NcAppNavigationItem>
-			<!-- Custom External Storage Config link -->
-				<!-- <NcAppNavigationItem
-				:name="t('files', ' External Storage Configuration')"
-				:icon="'icon-settings'"
-				:to="{ path: '/settings/user/externalstorages' }">
-				<template #icon>
-					<i class="bx bx-hdd bx-sm"></i>
-				</template>
-				</NcAppNavigationItem> -->
+	
 		</NcAppNavigationList>
 
 		<!-- Settings modal-->
@@ -147,6 +139,7 @@ export default defineComponent({
 	data() {
 		return {
 			settingsOpened: false,
+			baseUrl: window.location.origin,
 		}
 	},
 
@@ -213,9 +206,10 @@ export default defineComponent({
 		useExactRouteMatching(view: View): boolean {
 			return this.childViews[view.id]?.length > 0
 		},
-		redirectToStorageSettings() {
-			window.location.href = 'https://cloud.scaleinfinite.fr/index.php/settings/user/externalstorages'; 
-		},
+	redirectToStorageSettings() {
+	const baseUrl = window.location.origin;
+	window.location.href = `${baseUrl}/index.php/settings/user/externalstorages`;
+},
 
 		/**
 		 * Set the view as active on the navigation and handle internal state
