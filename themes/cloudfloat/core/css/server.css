@@ -1086,3 +1086,10 @@ html:not(.layout-navbar-fixed) .layout-content-navbar .layout-page, html:not(.la
 .cf-search-text-box-card[data-v-862aa946]{
 	border:0px !important;
 }
+
+/* ONLY OFFICE */
+#app > iframe{
+	height: 93vh !important;
+	width: 100vw !important;
+	margin-top: 0 !important;
+}
