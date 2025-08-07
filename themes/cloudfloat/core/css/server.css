@@ -854,9 +854,9 @@ h3[data-v-3705ae06]{
   }
   button:not(.button-vue, [class^="vs__"]), .button, input[type="button"], input[type="submit"], input[type="reset"]{
 	font-weight: 400 !important;
-	border-radius: 0px !important;
+	/*border-radius: 0px !important;
 	background: none;
-	border: none;
+	border: none;*/
   }
   /* input:not([type="range"], .input-field__input, [type="submit"], [type="button"], [type="reset"], .multiselect__input, .select2-input, .action-input__input, [class^="vs__"]), select, div[contenteditable="true"], textarea{
 	border:none !important;
@@ -1092,4 +1092,9 @@ html:not(.layout-navbar-fixed) .layout-content-navbar .layout-page, html:not(.la
 	height: 93vh !important;
 	width: 100vw !important;
 	margin-top: 0 !important;
+}
+
+button:not(.button-vue, [class^="vs__"]){
+	background: none !important;
+	border: none !important;
 }
