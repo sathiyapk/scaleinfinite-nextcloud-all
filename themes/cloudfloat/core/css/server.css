@@ -1094,7 +1094,8 @@ html:not(.layout-navbar-fixed) .layout-content-navbar .layout-page, html:not(.la
 	margin-top: 0 !important;
 }
 
-button:not(.button-vue, [class^="vs__"]){
-	background: none !important;
-	border: none !important;
+button:not(.button-vue):not(.icon-more):not(.icon-checkmark):not([class^="vs__"]) {
+  background: none !important;
+  border: none !important;
 }
+
