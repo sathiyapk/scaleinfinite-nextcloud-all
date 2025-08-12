@@ -9,7 +9,7 @@
 	<template #default>
 		<div class="app-logo">
 			<span class="app-brand-logo demo " style="left: -20px;   position: relative;">
-				  <img src="/themes/cloudfloat/core/img/s2-logo.png" class="img-fluid" alt="Cloud Float" style="width: 80px;  height: auto;">				  
+				  <img src="/themes/cloudfloat/core/img/s2-logo.png" class="img-fluid" alt="Cloud Float">				  
 				</span>
 			<span class="app-brand-text demo  menu-text fw-bolder ms-2 text-capitalize ">
 				  <img src="/themes/cloudfloat/core/img/storage.png" class="img-fluid" alt="Cloud Float" style="width: 150px;  height: auto;  left: -60px;  position: relative;  text-align: center; ">

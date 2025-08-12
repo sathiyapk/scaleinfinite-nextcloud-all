@@ -491,7 +491,7 @@ color: #000 !important;
 }
 .app-navigation-hover
 {
-		margin-right: -210px !important;
+		margin-right: -160px !important;
 }
 .app-navigation-hover-1200
 {
@@ -650,12 +650,40 @@ h3[data-v-3705ae06]{
 	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
 	width: 260px !important;
   }
-
+  
   .app-navigation--close{
 	margin-left: calc(-1 * min(0px, var(--app-navigation-max-width))) !important;
-	width: 50px !important;
-	/* margin-left: 0px !important; */
+	width: 80px !important;
+	/* margin-left: 0px !important; */	
   }
+  .app-navigation--close .app-logo .app-brand-logo img {
+    width: 60px;
+    height: auto;
+	}
+	.app-navigation-entry .app-navigation-entry-link .app-navigation-entry__name[data-v-018c4203],
+	.app-navigation-entry .app-navigation-entry-button .app-navigation-entry__name[data-v-018c4203] {
+	    display: inline-block;
+	    opacity: 1;
+/*	    transform: translateX(0);*/
+/*	    transition: opacity 0.3s ease, transform 0.3s ease;*/
+	}
+
+	.app-navigation--close .app-navigation-entry .app-navigation-entry-link .app-navigation-entry__name[data-v-018c4203],
+	.app-navigation--close .app-navigation-entry .app-navigation-entry-button .app-navigation-entry__name[data-v-018c4203] {
+	    opacity: 0;
+/*	    transform: translateX(-10px);*/
+	    pointer-events: none; /* prevent click when hidden */
+	}
+	.app-navigation-entry-link {
+    transition: all 0.3s ease;
+	}
+	.app-navigation--close .app-navigation-entry .app-navigation-entry-link {
+    display: flex !important;
+   /* align-items: center !important;
+    justify-content: center !important;*/
+    position: relative;
+    left: 10px;
+	}
   .app-navigation-entry__children .app-navigation-entry {
 	padding-left: 0px !important;
   }
@@ -666,6 +694,14 @@ h3[data-v-3705ae06]{
   .app-navigation-entry .app-navigation-entry-link .app-navigation-entry-icon{
 	color:#697a8d;
   }
+  .app-navigation-entry-icon .menu-icon {
+    font-size: 28px; /* increase icon size */
+    line-height: 1;  /* keep it vertically centered */
+    transition: font-size 0.3s ease; /* smooth effect if changing on hover/close */
+	}
+	.app-navigation-entry.active .menu-icon {
+	    color: white !important;
+	}
  
 .main-expanded{
 	position: absolute !important;
@@ -785,11 +821,22 @@ h3[data-v-3705ae06]{
 	background-size: contain;
 	background-position: center;
   }
-  .app-logo img{
-	width: 250px;
+  /*.app-logo img{
+	width: 80px;
 	height: auto;
 	margin: 10px 0px 10px 35px;
-  }
+  }*/
+  .app-logo img {
+    width: 80px; /* expanded size */
+    height: auto;
+    margin: 10px 0px 10px 35px;
+    transition: width 0.3s ease, height 0.3s ease; /* smooth change */
+}
+
+.app-navigation--close .app-logo .app-brand-logo img {
+    width: 60px; /* collapsed size */
+}
+
   /* .storage-logo{
 	background-image: url('../img/storage.png');
   } */
