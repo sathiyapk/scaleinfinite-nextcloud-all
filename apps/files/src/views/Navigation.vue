@@ -15,7 +15,8 @@
 				  <img src="/themes/cloudfloat/core/img/storage.png" class="img-fluid" alt="Cloud Float" style="width: 150px;  height: auto;  left: -60px;  position: relative;  text-align: center; ">
 				</span>
 			<div  class="app-navigation-toggle-wrapper-new">
-				<button aria-label="Close navigation" type="button"  class="app-navigation-toggle">
+				<button aria-label="Close navigation" type="button"  class="app-navigation-toggle" style="background: none;
+  border: none;">
 				<i class="bx bx-chevron-left bx-sm align-middle"></i>
 			   </button>
 			</div>

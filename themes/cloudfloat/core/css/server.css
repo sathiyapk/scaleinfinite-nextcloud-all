@@ -901,9 +901,7 @@ h3[data-v-3705ae06]{
   }
   button:not(.button-vue, [class^="vs__"]), .button, input[type="button"], input[type="submit"], input[type="reset"]{
 	font-weight: 400 !important;
-	/*border-radius: 0px !important;
-	background: none;
-	border: none;*/
+	
   }
   /* input:not([type="range"], .input-field__input, [type="submit"], [type="button"], [type="reset"], .multiselect__input, .select2-input, .action-input__input, [class^="vs__"]), select, div[contenteditable="true"], textarea{
 	border:none !important;
@@ -939,13 +937,7 @@ h3[data-v-3705ae06]{
 	.app-navigation-vue{
 		padding-left: 25px;
 	}
-	/* .topbar-stick{
-		width: 100vw !important;
-	} */
-
-	/* .app-navigation {
-		position: absolute !important;
-	  } */
+	
 }
 
 @media (max-width:1024px) {
@@ -1021,8 +1013,8 @@ footer.guest-box{
     position: relative;
     transition: 0.5s;
 	display: flex;
-
 }
+
 .search-card-container.active{
     width: 100%;
 	border-radius: 25px;
@@ -1060,7 +1052,8 @@ footer.guest-box{
 /* For screens larger than 1024px (typically tablets and above) */
 @media only screen and (min-width: 1024px) {
     .search-card-container {
-        width: 225px; /* Default for larger screens */
+        width: 300px; /* Default for larger screens */
+        left: 3.5rem;
     }	
 	.search-card-container.active {
         /* width: 100%; */
@@ -1071,6 +1064,7 @@ footer.guest-box{
 		width: 100% !important;
 			
 	}
+	
 }
 /* top 3 icons */
 .app-menu-icon__icon{
@@ -1140,9 +1134,28 @@ html:not(.layout-navbar-fixed) .layout-content-navbar .layout-page, html:not(.la
 	width: 100vw !important;
 	margin-top: 0 !important;
 }
+/* ONLY OFFICE END */
 
-button:not(.button-vue):not(.icon-more):not(.icon-checkmark):not([class^="vs__"]) {
+
+.nav-pills .nav-link.active{
+	border: none;    
+ 	border-radius: 0;
+}
+.nav-pills .nav-link{
+	background: none;
+	border: none;
+}
+/*button:not(.button-vue):not(.icon-more):not(.icon-checkmark):not([class^="vs__"]) {
   background: none !important;
   border: none !important;
+}*/
+/*button:not(.button-vue):not(.icon-more):not(.icon-checkmark):not([class^="vs__"]):not(.nav-item > .nav-link[role="tab"]) {
+  background: none !important;
+  border: none !important;
+}*/
+button:not([role="tab"]) {
+ border-radius: 2px;
 }
+
+
 
