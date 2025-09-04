@@ -14,30 +14,39 @@
                                        <img src="https://cloud.fltt.fr/apps/dashboard/img/activity.png"  class="rounded p-2">    
                                       </div>
                                       <div class="d-flex w-100 flex-wrap justify-content-between gap-1">                                       
-                                          <h5 class="card-title mt-2">Storage </h5>                                       
-                                        <div class="dropdown">
-                                          <button class="btn text-muted p-0" type="button" id="" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="bx bx-dots-vertical-rounded bx-sm"></i>
-                                          </button>
-                                          <div class="dropdown-menu dropdown-menu-end" aria-labelledby="">
-                                            <a class="dropdown-item" href="javascript:void(0);">Last 28 Days</a>
-                                            <a class="dropdown-item" href="javascript:void(0);">Last Month</a>
-                                            <a class="dropdown-item" href="javascript:void(0);">Last Year</a>
-                                          </div>
-                                        </div>
+                                          <h5 class="card-title mt-2">Storage </h5>   
+                                          <div class="col-4 p-1">
+                                                 <select id="defaultSelect" class="form-select">                                                      
+                                                      <option value="1" class="dropdown-item ">Last 28 Days</option>
+                                                      <option value="2" class="dropdown-item ">Last Month</option>
+                                                      <option value="3" class="dropdown-item ">Last Year</option>
+                                                </select>
+                                           </div>                                    
+                                          <!-- <div class="dropdown">
+                                             <button class="btn text-muted p-0" type="button" id="" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                             <i class="bx bx-dots-vertical-rounded bx-sm"></i>
+                                             </button>
+                                             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="">
+                                             <a class="dropdown-item" href="javascript:void(0);">Last 28 Days</a>
+                                             <a class="dropdown-item" href="javascript:void(0);">Last Month</a>
+                                             <a class="dropdown-item" href="javascript:void(0);">Last Year</a>
+                                             </div>
+                                          </div> -->
                                       </div>
                                     </div>
                                   </div>
                                     <div class="card-body">
                                        <!-- <div id="fileactivityChart"></div> -->
                                         <div class="loader" style="position: relative;">
-                        <div style="position: absolute; inset: 0; background: #fff; z-index: 9999; display: flex; align-items: center; justify-content: center;">
-                          <div class="spinner-border text-primary" role="status">
-                            <span class="visually-hidden">Loading...</span>
-                          </div>
-                        </div>
-                      </div>
-                                        <div id="fileactivityChart"></div>
+                                             <div style="position: absolute; inset: 0; background: #fff; z-index: 9999; display: flex; align-items: center; justify-content: center;">
+                                             <div class="spinner-border text-primary" role="status">
+                                                <span class="visually-hidden">Loading...</span>
+                                             </div>
+                                             </div>
+                                          </div>
+                                        <div class="chart-scroll-wrapper">
+                                             <div id="fileactivityChart"></div>
+                                       </div>
                                     </div>
                               </div>
                               <!-- /Compute line chart end -->
@@ -115,4 +124,18 @@ export default {
 	
 }
 </script>
+<style>
+@media (max-width: 768px) {
+  .chart-scroll-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    display: block;
+  }
+
+  #fileactivityChart {
+    min-width: 600px;
+    width: 100%;
+  }
+}
+</style>
 

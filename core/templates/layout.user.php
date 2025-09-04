@@ -43,7 +43,6 @@ p($theme->getTitle());
 		<meta name="apple-mobile-web-app-title" content="<?php p((!empty($_['application']) && $_['appid'] != 'files')? $_['application']:$theme->getTitle()); ?>">
 		<meta name="mobile-web-app-capable" content="yes">
 		<meta name="theme-color" content="<?php p($theme->getColorPrimary()); ?>">
-		<!-- <link rel="icon" href="<?php//rint_unescaped(image_path($_['appid'], 'favicon.png')); /* IE11+ supports png */ ?>"> -->
 		<script nonce="<?php p(\OC::$server->getContentSecurityPolicyNonceManager()->getNonce()) ?>">
 				const link = document.createElement('link');
 				link.rel = 'icon';

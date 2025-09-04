@@ -3,7 +3,7 @@
  - SPDX-License-Identifier: AGPL-3.0-or-later
  -->
 <template>
-	<div class="row">
+   <div class="row">
                      <div  class="col-12 col-lg-8 order-2 order-md-3 order-lg-2 mb-4">
                         <div class="card" >
                            <div class="row row-bordered g-0">
@@ -29,44 +29,46 @@
                                        <div class="tab-content p-0">
                                           <div class="tab-pane fade show active" id="tab_totalcpuUsage" role="tabpanel">
                                              <div class="justify-content-left d-flex">
-                                                <div class="align-item-right">
-                                                   <div id="cpu_pod_container">        
+                                                <div class="align-item-right p-1"  >
+                                                   <div id="cpu_pod_container">
+                                                       <div class="col-9">        
                                                     <select id="cpu_pod" class="form-select form-select-md">
                                                       <option value="0">All Pods</option>
                                                     </select>
                                                     </div>
-                                                </div>
-                                                <div class="dropdown">
-                                                   <button class="btn p-0" type="button" id="totalIncome" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                   <i class="bx bx-dots-vertical-rounded bx-sm text-muted"></i>
-                                                   </button>
-                                                   <div class="dropdown-menu dropdown-menu-end background-white" aria-labelledby="totalIncome">
-                                                        <a class="dropdown-item cpu_period" data-value="1" >6 Hours</a>
-                                                        <a class="dropdown-item cpu_period" data-value="2" >24 Hours</a>
-                                                        <a class="dropdown-item cpu_period" data-value="3" >48 Hours</a>
                                                     </div>
                                                 </div>
+                                                 <div class="col-3 p-1">
+                                                 <select id="defaultSelect" class="form-select cpu_period">                                                      
+                                                      <option value="1" class="dropdown-item ">6 Hrs</option>
+                                                      <option value="2" class="dropdown-item ">24 Hrs</option>
+                                                      <option value="3" class="dropdown-item ">48 Hrs</option>
+                                                </select>
+                                                </div>
                                              </div>
-                  <div class="totalCPUusage_loader" style="position: relative;">
-                        <div style="position: absolute; inset: 0; background: #fff; z-index: 9999; display: flex; align-items: center; justify-content: center;">
-                          <div class="spinner-border text-primary" role="status">
-                            <span class="visually-hidden">Loading...</span>
-                          </div>
-                        </div>
-                      </div>
-
-                                             <div id="totalCPUusage" class="px-2"></div>
+                                                      <div class="totalCPUusage_loader" style="position: relative;">
+                                                            <div style="position: absolute; inset: 0; background: #fff; z-index: 9999; display: flex; align-items: center; justify-content: center;">
+                                                               <div class="spinner-border text-primary" role="status">
+                                                                  <span class="visually-hidden">Loading...</span>
+                                                               </div>
+                                                            </div>
+                                                      </div>
+                                                      <div class="chart-scroll-wrapper_cpu_usage">
+                                                               <div id="totalCPUusage" class="px-2"></div>
+                                                      </div>
                                           </div>
                                           <div class="tab-pane fade" id="tab_totalMemoryUsage" role="tabpanel">
                                              <div class="justify-content-left d-flex">
-                                                <div class="align-item-right">
-                                                    <div id="memory_pod_container">        
-                                                      <select id="memory_pod" class="form-select form-select-md">
-                                                        <option value="0">All Pods</option>
-                                                      </select>
-                                                    </div>
+                                                <div class="align-item-right p-1">
+                                                    <div id="memory_pod_container"> 
+                                                         <div class="col-9 ">        
+                                                            <select id="memory_pod" class="form-select form-select-md">
+                                                            <option value="0">All Pods</option>
+                                                            </select>
+                                                      </div>
+                                                    </div> 
                                                 </div>
-                                                <div class="dropdown">
+                                                <!-- <div class="dropdown">
                                                    <button class="btn p-0" type="button" id="totalIncome" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                    <i class="bx bx-dots-vertical-rounded bx-sm text-muted"></i>
                                                    </button>
@@ -75,6 +77,13 @@
                                                        <a class="dropdown-item memory_period" data-value="2" >24 Hours</a>
                                                        <a class="dropdown-item memory_period" data-value="3" >48 Hours</a>
                                                    </div>
+                                                </div> -->
+                                                 <div class="col-3 p-1">
+                                                 <select id="defaultSelect" class="form-select memory_period">                                                      
+                                                      <option value="1" class="dropdown-item ">6 Hrs</option>
+                                                      <option value="2" class="dropdown-item ">24 Hrs</option>
+                                                      <option value="3" class="dropdown-item ">48 Hrs</option>
+                                                </select>
                                                 </div>
                                              </div>
                                              <div class="totalMemoryUsage_loader" style="position: relative;">
@@ -88,14 +97,16 @@
                                           </div>
                                           <div class="tab-pane fade" id="tab_networkUsage" role="tabpanel">
                                              <div class="justify-content-left d-flex">
-                                                <div class="align-item-right">
-                                                   <div id="network_pod_container">        
+                                                <div class="align-item-right p-1">
+                                                   <div id="network_pod_container"> 
+                                                   <div class="col-9 ">       
                                                       <select id="network_pod" class="form-select form-select-md">
                                                         <option value="0">All Pods</option>
                                                       </select>
+                                                      </div>
                                                     </div>
                                                 </div>
-                                                <div class="dropdown">
+                                                <!-- <div class="dropdown">
                                                    <button class="btn p-0" type="button" id="totalIncome" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                    <i class="bx bx-dots-vertical-rounded bx-sm text-muted"></i>
                                                    </button>
@@ -104,6 +115,13 @@
                                                      <a class="dropdown-item network_period" data-value="2" >24 Hours</a>
                                                      <a class="dropdown-item network_period" data-value="3" >48 Hours</a>
                                                    </div>
+                                                </div> -->
+                                                 <div class="col-3 p-1">
+                                                      <select id="defaultSelect" class="form-select network_period">                                                      
+                                                            <option value="1" class="dropdown-item ">6 Hrs</option>
+                                                            <option value="2" class="dropdown-item ">24 Hrs</option>
+                                                            <option value="3" class="dropdown-item ">48 Hrs</option>
+                                                      </select>
                                                 </div>
                                              </div>
                                              <div class="networkUsage_loader" style="position: relative;">
@@ -117,14 +135,16 @@
                                           </div>
                                           <div class="tab-pane fade" id="tab_ioUsage" role="tabpanel">
                                              <div class="justify-content-left d-flex">
-                                                <div class="align-item-right">
-                                                   <div id="io_pod_container">        
+                                                <div class="align-item-right p-1">
+                                                   <div id="io_pod_container">  
+                                                      <div class="col-9 ">        
                                                       <select id="io_pod" class="form-select form-select-md">
                                                         <option value="0">All Pods</option>
                                                       </select>
                                                       </div>
+                                                      </div>
                                                 </div>
-                                                <div class="dropdown">
+                                                <!-- <div class="dropdown">
                                                    <button class="btn p-0" type="button" id="totalIncome" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                    <i class="bx bx-dots-vertical-rounded bx-sm text-muted"></i>
                                                    </button>
@@ -133,6 +153,13 @@
                                                         <a class="dropdown-item input_period" data-value="2" >24 Hours</a>
                                                         <a class="dropdown-item input_period" data-value="3" >48 Hours</a>
                                                    </div>
+                                                </div> -->
+                                                <div class="col-3 p-1">
+                                                      <select id="defaultSelect" class="form-select input_period">                                                      
+                                                            <option value="1" class="dropdown-item ">6 Hrs</option>
+                                                            <option value="2" class="dropdown-item ">24 Hrs</option>
+                                                            <option value="3" class="dropdown-item ">48 Hrs</option>
+                                                      </select>
                                                 </div>
                                              </div>
                                              <div class="ioUsage_loader" style="position: relative;">
@@ -236,10 +263,30 @@
 
 <script>
 export default {
-	name: 'CloudfloatWidget',
-	
+   name: 'CloudfloatWidget',
+   
 }
 </script>
 
 <style lang="scss" scoped>
+@media (max-width: 768px) {
+  .chart-scroll-wrapper_cpu_usage {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    display: block;
+    width: 100%;
+  }
+
+//  .chart-scroll-wrapper > div {
+//  min-width: 600px;
+//    width: 100%;
+//  }
+  #totalCPUusage {
+     min-width: 600px;
+    width: 100%;
+  }
+}
+
+
+
 </style>

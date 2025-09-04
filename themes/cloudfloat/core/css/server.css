@@ -1149,12 +1149,26 @@ html:not(.layout-navbar-fixed) .layout-content-navbar .layout-page, html:not(.la
   background: none !important;
   border: none !important;
 }*/
-/*button:not(.button-vue):not(.icon-more):not(.icon-checkmark):not([class^="vs__"]):not(.nav-item > .nav-link[role="tab"]) {
-  background: none !important;
-  border: none !important;
-}*/
+
 button:not([role="tab"]) {
  border-radius: 2px;
+
+}
+
+/*iOS container bottom */
+.layout-container{
+ min-height: 100vh !important;
+  padding-bottom: 14px;
+}
+.ios-device .layout-container {
+  min-height: calc(var(--vh, 1vh) * 100) !important;
+  padding-bottom: calc(24px + env(safe-area-inset-bottom)) !important;
+  padding-bottom: calc(24px + constant(safe-area-inset-bottom)) !important; /* older iOS */
+}
+
+/*iOS Server menu Bottom*/
+.menu-vertical .menu-sub {
+	padding-bottom: 10rem !important;
 }
 
 

@@ -308,16 +308,19 @@ $('#MemoryUsage').show();
 									opacity: 0.09
 								}
 							},
-							series: [{
-								name: "Network Usage",
-								data: [20, 54, 20, 38, 22, 28, 16, 19, 26, 78, 82, 13]
-							}, {
+							series: [
+							// 	{
+							// 	name: "Network Usage",
+							// 	data: [20, 54, 20, 38, 22, 28, 16, 19, 26, 78, 82, 13]
+							// }, 
+							{
 								name: "Last Hour",
 								data: [20, 32, 22, 65, 40, 46, 34, 70, 24, 80, 38, 92]
-							}],
+							}
+						],
 							stroke: {
 								curve: "smooth",
-								dashArray: [12, 0],
+								dashArray: [0, 0],
 								width: [3, 4]
 							},
 							legend: {
@@ -337,7 +340,7 @@ $('#MemoryUsage').show();
 								size: 6,
 								colors: "transparent",
 								strokeColors: "transparent",
-								strokeWidth: 5,
+								strokeWidth: 6,
 								hover: {
 									size: 6
 								},
@@ -371,7 +374,7 @@ $('#MemoryUsage').show();
 								}
 							},
 							yaxis: {
-								show: false
+								show: true
 							}
 						};
 
@@ -650,7 +653,7 @@ $('#MemoryUsage').show();
 				labels: {
 					offsetX: -15,
 					formatter: function (o) {
-						return parseInt(o / 1000);
+						return parseInt(o);
 					},
 					style: {
 						fontSize: "13px",
@@ -1319,6 +1322,45 @@ $(".network_period").on("click", function(){
 $(".input_period").on("click", function(){
 	updatechart('input',$('#io_pod').val(),$(this).data("value"));
 });
+
+/*$("#cpu_pod").on("change", function(){
+	updatechart('cpu',$('#cpu_pod').val(),$(this).data("value"));
+});*/
+$(document).on("change", "#cpu_pod", function() {
+    updatechart(
+        'cpu',
+        $(this).val(),
+        1
+    );
+});
+
+$(document).on("change", "#memory_pod", function() {
+    updatechart(
+        'memory',
+        $(this).val(),
+        1
+    );
+});
+
+$(document).on("change", "#network_pod", function() {
+    updatechart(
+        'network',
+        $(this).val(),
+        1
+    );
+});
+
+$(document).on("change", "#io_pod", function() {
+    updatechart(
+        'input',
+        $(this).val(),
+        1
+    );
+});
+
+
+
+
 $(".activity_period").on("click", function(){
 	loadevent($('#activity_pod').val(),$(this).data("value"));
 });
