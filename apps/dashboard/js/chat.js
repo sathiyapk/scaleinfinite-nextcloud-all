@@ -1006,6 +1006,326 @@ $('#MemoryUsage').show();
 								},
 						});
 					
+
+
+						// Time Spend Chart Start
+							
+					$.ajax({
+  url: window.location.origin + "/index.php/apps/cloudfloat/getdashboard",
+  method: "POST",
+  data: {
+    chart_type: "input",
+    pod: 0,
+    periods: 1,
+  },
+  dataType: "json",
+  success: function (response) {
+    console.log("Hours Spent (raw):", response.data.hours_spent);
+
+    // --- Convert HH:MM string into hours ---
+    function toHours(val) {
+      if (typeof val === "string" && val.includes(":")) {
+        const parts = val.split(":").map(Number);
+        if (parts.length === 2) {
+          const [h, m] = parts;
+          return (h || 0) + (m || 0) / 60;
+        }
+      }
+      return Number(val) || 0;
+    }
+
+    // --- Convert HH:MM string into minutes (for display) ---
+    function toMinutes(val) {
+      if (typeof val === "string" && val.includes(":")) {
+        const parts = val.split(":").map(Number);
+        if (parts.length === 2) {
+          const [h, m] = parts;
+          return (h || 0) * 60 + (m || 0);
+        }
+      }
+      return 0;
+    }
+
+    let ts = document.querySelector("#timeSpent");
+    if (ts !== null) {
+      const total = 2; // 2 hours target
+      const spentHrs = toHours(response.data.hours_spent);
+      const spentMins = toMinutes(response.data.hours_spent);
+      const percent = (spentHrs / total) * 100;
+
+      let p = {
+        chart: {
+          height: 145,
+          width: 145,
+          type: "radialBar",
+        },
+        series: [Number(percent.toFixed(0))],
+        plotOptions: {
+          radialBar: {
+            startAngle: 0,
+            endAngle: 360,
+            hollow: {
+              margin: 0,
+              size: "65%",
+            },
+            track: {
+              strokeWidth: "95%",
+              background: "#ccc",
+            },
+            dataLabels: {
+              name: { show: false },
+              value: {
+                show: true,
+                formatter: function () {
+                  // ✅ Show minutes instead of 0.01
+                  return `${spentMins}min / ${total}hrs`;
+                },
+                offsetY: 0,
+                color: "#444",
+                fontSize: "13px",
+                fontWeight: "600",
+                fontFamily: "Public Sans",
+              },
+            },
+          },
+        },
+        fill: {
+          type: "solid",
+          colors: ["#28a745"],
+        },
+        stroke: {
+          lineCap: "round",
+        },
+      };
+
+      new ApexCharts(ts, p).render();
+    }
+  },
+});
+
+
+
+
+						// Time Spend Chart End
+											$.ajax({
+											url: window.location.origin+"/index.php/apps/cloudfloat/getdashboard",
+											method: 'POST',
+											data: {
+											'chart_type':'input',
+											'pod':0,
+											'periods':1
+											},
+											dataType: 'json',
+											success: function(response) 
+											{
+											console.log(response.data.storage_used);
+																				// Used Storage
+											var storage_used=response.data.storage_used;
+											var hours_spent=response.data.hours_spent;
+											var installed_app=response.data.installed_app;
+											var running_app=response.data.running_app;
+
+											let sub = document.querySelector("#storageUsedBar");
+											if (sub !== null) {
+													let total = 1000; // 1GB = 1000MB
+													let used = storage_used; // Example: 700MB used
+													let free = total - used;
+
+													let p = {
+														chart: {
+															type: "bar",
+															height: 135,
+															stacked: true,
+															sparkline: { enabled: true }
+														},
+														plotOptions: {
+															bar: {
+																horizontal: true,
+																barHeight: "25%",
+																borderRadius: 5,
+																dataLabels: {
+																	position: "center"
+																}
+															}
+														},
+														series: [
+															{ name: "Used", data: [used] },
+															{ name: "Free", data: [free] }
+														],
+														colors: ["#ff0808ff", "#c8c7c7ff"],
+														xaxis: {
+															max: total,
+															labels: { show: false },
+															axisBorder: { show: false },
+															axisTicks: { show: false }
+														},
+														yaxis: { show: false },
+														dataLabels: {
+															enabled: true,
+															// formatter: function () {
+															// 	return `${used}MB / ${total}MB`;
+															// },
+															style: {
+																colors: ["#fff"],
+																fontSize: "13px",
+																fontWeight: "600"
+															},
+															background: { enabled: false }
+														},
+														tooltip: { enabled: false },
+														legend: { show: false }
+													};
+
+													new ApexCharts(sub, p).render();
+												}
+												//  Installed apps end
+											// Check if the element exists and render the chart
+											// let ts = document.querySelector("#timeSpent");
+											// if (ts !== null) {
+											// 	let total = 2;       // Total hours
+											// 	let spent = hours_spent;    // Hours spent
+											// 	let percent = (spent / total) * 100;
+
+											// 	let p = {
+											// 		chart: {
+											// 			height: 145,
+											// 			width: 145,
+											// 			type: "radialBar"
+											// 		},
+											// 		 series: [Number(percent.toFixed(0))], // ✅ must be number
+											// 		plotOptions: {
+											// 			radialBar: {
+											// 				startAngle: 0,
+											// 				endAngle: 360,
+											// 				hollow: {
+											// 					margin: 0,
+											// 					size: "65%"
+											// 				},
+											// 				track: {
+											// 					strokeWidth: "95%",
+											// 					background: "#ccc"
+											// 				},
+											// 				dataLabels: {
+											// 					name: { show: false }, // hide default label
+											// 					value: {
+											// 						show: true,
+											// 						formatter: function () {
+											// 							return `${spent} / ${total} hrs`;
+											// 						},
+											// 						offsetY: 0,
+											// 						color: "#444",
+											// 						fontSize: "13px",
+											// 						fontWeight: "600",
+											// 						fontFamily: "Public Sans"
+											// 					}
+											// 				}
+											// 			}
+											// 		},
+											// 		fill: {
+											// 			type: "solid",
+											// 			colors: ["#28a745"] // green for hours spent
+											// 		},
+											// 		stroke: {
+											// 			lineCap: "round"
+											// 		}
+											// 	};
+
+											// 	new ApexCharts(ts, p).render();
+											// }
+
+												// Dashboard Installed apps
+
+let appChart = document.querySelector("#installedApps");
+
+let installedApps = [
+  { name: "Python",  timestamp: "2025-08-08 09:30:00" },
+  { name: "Ubuntu",  timestamp: "2025-09-09 10:15:00" },
+  { name: "Buzybox",  timestamp: "2025-09-01 10:15:00" },
+];
+
+if (appChart !== null) {
+  let data = installedApps.map(app => {
+    return {
+      x: app.name,
+      y: 1,
+      z: 8,  // increase bubble size for visibility
+      label: `${app.name} v${app.version}`
+    };
+  });
+
+  let chartOptions = {
+    chart: {
+      type: "bubble",
+      height: 150,
+      width: 300,  // increase width a bit
+      toolbar: { show: false }
+    },
+    plotOptions: {
+      bubble: {
+        minBubbleRadius: 8,
+        maxBubbleRadius: 8
+      }
+    },
+    series: [
+      {
+        name: "Installed Apps",
+        data: data
+      }
+    ],
+    xaxis: {
+      type: "category",
+      labels: { 
+        style: { fontSize: "12px", colors: "#444" },
+        trim: false,
+        rotate: 0
+      },
+      tickPlacement: 'on',
+      offsetX: 0   // keeps first and last bubbles within chart
+    },
+    yaxis: {
+      show: false,
+      min: 0,
+      max: 2
+    },
+    grid: {
+      yaxis: { lines: { show: false } },
+      xaxis: { lines: { show: false } },
+      padding: {
+        left: 40,   // extra padding for first bubble
+        right: 40   // extra padding for last bubble
+      },
+	  margin:{
+		left: 20,
+		right: 20,
+	  }
+    },
+    dataLabels: { enabled: false },
+    colors: ["#007bff"],
+    tooltip: {
+      x: {
+        formatter: function (val, opts) {
+          let app = opts.w.config.series[0].data[opts.dataPointIndex];
+          return app.label;
+        }
+      },
+      y: { show: false }
+    }
+  };
+
+  new ApexCharts(appChart, chartOptions).render();
+}
+
+
+
+
+
+
+
+},
+						});
+// END
+
+						
 // Check if the element exists and render the chart
 const fileChart = (series) => {
 

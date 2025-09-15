@@ -13,55 +13,41 @@
                           <div class="p-4">
                                <h5 class="mb-2">{{ greeting.text }},<span class="h4"> {{ displayName }} </span></h5>
                             <p>Your progress this week is Awesome. Let's keep it up and get a lot of points reward!</p>
-
-                            <div class="d-flex flex-column flex-sm-row flex-wrap justify-content-between gap-4">
+							<div class="d-flex flex-column flex-sm-row flex-wrap justify-content-between gap-4">
                               <!-- Item 1 -->
-                              <div class="d-flex align-items-center gap-3 flex-grow-1">
-                                <div class="avatar avatar-lg">
-                                  <div class="avatar-initial bg-label-primary rounded">
-                                    <div class="text-primary">
-                                      <!-- Your SVG icon here -->
-                                      <!-- Replace with actual icon if needed -->
-                                      <i class="bx bx-laptop" style="font-size: 2rem !important; "></i>
-                                    </div>
-                                  </div>
-                                </div>
-                                <div>
-                                  <p class="mb-0 fw-medium">Hours Spent</p>
-                                  <h4 class="text-primary mb-0">34h</h4>
-                                </div>
+                              <div class="d-flex flex-column align-items-center text-center ">  
+								<div class="chart-wrapper">
+									<div id="timeSpent"></div> 
+									 <div class="spinner"></div> 
+								</div>	                      
+								   <div> <p class="mb-0 fw-medium" style="font-size: 1.1rem;">Hours Spent</p>   </div>
                               </div>
 
                               <!-- Item 2 -->
-                              <div class="d-flex align-items-center gap-3 flex-grow-1">
-                                <div class="avatar avatar-lg">
-                                  <div class="avatar-initial bg-label-info rounded">
-                                    <div class="text-info">
-                                      <i class="bx bx-bulb" style="font-size: 2rem !important; "></i>
-                                    </div>
-                                  </div>
-                                </div>
+                              <div class="d-flex flex-column align-items-center text-center "> 
+								<div class="chart-wrapper">
+									 <div id="installedApps"></div> 
+									 <div class="spinner"></div> 
+								</div>	
                                 <div>
-                                  <p class="mb-0 fw-medium">Test Results</p>
-                                  <h4 class="text-info mb-0">82%</h4>
+                                  <p class="mb-0 fw-medium" style="font-size: 1.1rem;">Installed Apps</p>                                  
                                 </div>
                               </div>
 
                               <!-- Item 3 -->
-                              <div class="d-flex align-items-center gap-3 flex-grow-1">
-                                <div class="avatar avatar-lg">
-                                  <div class="avatar-initial bg-label-warning rounded">
-                                    <div class="text-warning">
-                                      <i class="bx bx-check-circle" style="font-size: 2rem !important; "></i>
-                                    </div>
-                                  </div>
-                                </div>
+                             <div class="d-flex flex-column align-items-center text-center ">  
+								<div class="chart-wrapper">
+									<div id="storageUsedBar"></div>   
+									<div class="spinner"></div> 
+								 </div>
                                 <div>
-                                  <p class="mb-0 fw-medium">Course Completed</p>
-                                  <h4 class="text-warning mb-0">14</h4>
+                                  <p class="mb-0 fw-medium" style="font-size: 1.1rem;">Used Storage</p>
+                                  
                                 </div>
                               </div>
                             </div>
+
+
                           </div>
                         </div>
                       </div>
@@ -110,8 +96,7 @@
                             </div>
                             <!-- Image SVG -->
                             <div class="mt-auto text-center">
-								<img :src="`${baseUrl}/apps/dashboard/img/man-working.png`" class="img-fluid mb-2" style="max-height: 160px;" alt="View Badge User" />
-								<!-- <img src="https://cloud.scaleinfinite.fr/apps/dashboard/img/man-working.png" class="img-fluid mb-2" style="max-height: 160px;" alt="View Badge User" /> -->
+								<img src="https://cloud.fltt.fr/apps/dashboard/img/man-working.png" class="img-fluid mb-2" style="max-height: 160px;" alt="View Badge User" />
 							</div>
                           </div>
                         </div>
@@ -308,7 +293,12 @@ export default {
 			apiWidgets: [],
 			apiWidgetItems: {},
 			loadingItems: true,
-			baseUrl: window.location.origin,
+			hours_spent:null,
+			 loading: {
+					timeSpent: true,
+					installedApps: true,
+					storageUsed: true,
+    }
 		}
 	},
 	computed: {
@@ -417,6 +407,7 @@ export default {
 	},
 	mounted() {
 		this.updateSkipLink()
+		this.updateDashboard()
 		window.addEventListener('scroll', this.handleScroll)
 
 		setInterval(() => {
@@ -875,4 +866,24 @@ html, body {
 #content {
 	overflow: auto;
 }
+.chart-wrapper {
+  position: relative;
+  min-height: 160px;
+}
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #ddd;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 20px auto;
+}
+
+#timeSpent:not(:empty) + .spinner,
+#installedApps:not(:empty) + .spinner,
+#storageUsedBar:not(:empty) + .spinner {
+  display: none;
+}
+
 </style>
