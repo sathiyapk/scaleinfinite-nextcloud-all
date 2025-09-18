@@ -27,15 +27,11 @@ jobs:
       - name: Install dependencies
         run: npm install --force
 
-      # Step 4: Install Firebase
-      - name: Install Firebase
-        run: npm install firebase
-
-      # Step 5: Build project
+      # Step 4: Build project
       - name: Build project
         run: npm run build
 
-      # Step 6: Package app in /tmp (safe, avoids tar-included-itself error)
+      # Step 5: Package app in /tmp (safe, avoids tar-included-itself error)
       - name: Package app
         run: |
           tar --exclude='node_modules' \
@@ -44,7 +40,7 @@ jobs:
               --exclude='dist' \
               -czf /tmp/scaleinfinite-nextcloud-all.tar.gz .
 
-      # Step 7: Create GitHub release
+      # Step 6: Create GitHub release
       - name: Create Release
         id: create_release
         uses: ncipollo/release-action@v1
@@ -55,7 +51,7 @@ jobs:
           allowUpdates: true
           replacesArtifacts: true
 
-      # Step 8: Upload release asset from /tmp
+      # Step 7: Upload release asset from /tmp
       - name: Upload Release Asset
         run: |
           gh release upload v${{ github.run_number }} /tmp/scaleinfinite-nextcloud-all.tar.gz --clobber
