@@ -17,21 +17,29 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # Step 2: Set up Node.js
+      # Step 2: Refresh 3rdparty folder
+      - name: Refresh 3rdparty
+        run: |
+          rm -rf 3rdparty
+          git clone https://github.com/nextcloud/3rdparty.git 3rdparty
+          cd 3rdparty
+          git checkout e153540bcc9c2dca7742763e071b07b97d3d55b8
+
+      # Step 3: Set up Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      # Step 3: Install dependencies
+      # Step 4: Install dependencies
       - name: Install dependencies
         run: npm install --force
 
-      # Step 4: Build project
+      # Step 5: Build project
       - name: Build project
         run: npm run build
 
-      # Step 5: Package app in /tmp (safe, avoids tar-included-itself error)
+      # Step 6: Package app in /tmp (safe, avoids tar-included-itself error)
       - name: Package app
         run: |
           tar --exclude='node_modules' \
@@ -40,7 +48,7 @@ jobs:
               --exclude='dist' \
               -czf /tmp/scaleinfinite-nextcloud-all.tar.gz .
 
-      # Step 6: Create GitHub release
+      # Step 7: Create GitHub release
       - name: Create Release
         id: create_release
         uses: ncipollo/release-action@v1
@@ -51,7 +59,7 @@ jobs:
           allowUpdates: true
           replacesArtifacts: true
 
-      # Step 7: Upload release asset from /tmp
+      # Step 8: Upload release asset from /tmp
       - name: Upload Release Asset
         run: |
           gh release upload v${{ github.run_number }} /tmp/scaleinfinite-nextcloud-all.tar.gz --clobber
