@@ -42,9 +42,8 @@ jobs:
       # Step 6: Package app in /tmp (safe, avoids tar-included-itself error)
       - name: Package app
         run: |
-          tar --exclude='.git' \
-              --exclude='dist' \
-              -czf /tmp/scaleinfinite-nextcloud-all.tar.gz .
+          tar --exclude='.git' \              
+               -czf /tmp/scaleinfinite-nextcloud-all.tar.gz .
 
       # Step 7: Create GitHub release
       - name: Create Release
