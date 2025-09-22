@@ -17,7 +17,6 @@ jobs:
       - name: Checkout Nextcloud specific branch
         uses: actions/checkout@v4
         with:
-          repository: nextcloud/server
           ref:  FileApp-Navigation         # branch to build
           path: nextcloud-src
 
