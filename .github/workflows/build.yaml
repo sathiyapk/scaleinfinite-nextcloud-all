@@ -21,7 +21,7 @@ jobs:
           path: nextcloud-src
 
       - name: Clone 3rdparty repo
-        run: |
+        run: | 
           cd nextcloud-src
           rm -rf 3rdparty
           git clone https://github.com/nextcloud/3rdparty.git 3rdparty
