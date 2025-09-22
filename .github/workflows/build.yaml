@@ -1,64 +1,56 @@
-name: Build and Release
+name: Build and Release Nextcloud
 
 on:
+  workflow_dispatch: # manual trigger
   push:
     branches:
-      - FileApp-Navigation
-
-permissions:
-  contents: write
+      - FileApp-Navigation   # replace with the branch you want to release
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout code
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: Create working directory
+        run: mkdir -p nextcloud-src
 
-      # Step 2: Refresh 3rdparty folder
-      - name: Refresh 3rdparty
+      - name: Checkout Nextcloud specific branch
+        uses: actions/checkout@v4
+        with:
+          repository: nextcloud/server
+          ref: - FileApp-Navigation         # branch to build
+          path: nextcloud-src
+
+      - name: Clone 3rdparty repo
         run: |
+          cd nextcloud-src
           rm -rf 3rdparty
           git clone https://github.com/nextcloud/3rdparty.git 3rdparty
           cd 3rdparty
           git checkout e153540bcc9c2dca7742763e071b07b97d3d55b8
 
-      # Step 3: Set up Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: '20'
 
-      # Step 4: Install dependencies
-      - name: Install dependencies
-        run: npm install --force
-
-      # Step 5: Build project
-      - name: Build project
-        run: npm run build
-
-      # Step 6: Package app in /tmp (safe, avoids tar-included-itself error)
-      - name: Package app
+      - name: Install dependencies and build
         run: |
-          tar --exclude='.git' \              
-               -czf /tmp/scaleinfinite-nextcloud-all.tar.gz .
+          cd nextcloud-src
+          npm install
+          npm run build
 
-      # Step 7: Create GitHub release
-      - name: Create Release
-        id: create_release
-        uses: ncipollo/release-action@v1
+      - name: Create tarball (exclude .git dirs, include only nextcloud-src)
+        run: |
+          tar --exclude='nextcloud-src/.git' \
+              --exclude='nextcloud-src/3rdparty/.git' \
+              -czf nextcloud-build.tar.gz nextcloud-src
+
+      - name: Upload Release
+        uses: softprops/action-gh-release@v2
         with:
-          tag: v${{ github.run_number }}
-          name: Release v${{ github.run_number }}
-          generateReleaseNotes: true
-          allowUpdates: true
-          replacesArtifacts: true
-
-      # Step 8: Upload release asset from /tmp
-      - name: Upload Release Asset
-        run: |
-          gh release upload v${{ github.run_number }} /tmp/scaleinfinite-nextcloud-all.tar.gz --clobber
+          tag_name: v${{ github.run_number }}   # auto-generate tag
+          name: Nextcloud Build ${{ github.run_number }}
+          files: nextcloud-build.tar.gz
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
