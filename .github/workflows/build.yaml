@@ -4,23 +4,27 @@ on:
   workflow_dispatch: # manual trigger
   push:
     branches:
-      - FileApp-Navigation   # replace with the branch you want to release
+      - FileApp-Navigation   # branch you want to release
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
+      # Step 1: Create working directory
       - name: Create working directory
         run: mkdir -p nextcloud-src
 
+      # Step 2: Checkout Nextcloud specific branch
       - name: Checkout Nextcloud specific branch
         uses: actions/checkout@v4
         with:
           repository: nextcloud/server
-          ref: - FileApp-Navigation         # branch to build
+          ref: FileApp-Navigation
           path: nextcloud-src
+          token: ${{ secrets.GITHUB_TOKEN }}
 
+      # Step 3: Clone 3rdparty repo
       - name: Clone 3rdparty repo
         run: |
           cd nextcloud-src
@@ -29,28 +33,32 @@ jobs:
           cd 3rdparty
           git checkout e153540bcc9c2dca7742763e071b07b97d3d55b8
 
+      # Step 4: Set up Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
 
+      # Step 5: Install dependencies and build
       - name: Install dependencies and build
         run: |
           cd nextcloud-src
           npm install
           npm run build
 
+      # Step 6: Create tarball (exclude .git dirs)
       - name: Create tarball (exclude .git dirs, include only nextcloud-src)
         run: |
           tar --exclude='nextcloud-src/.git' \
               --exclude='nextcloud-src/3rdparty/.git' \
               -czf nextcloud-build.tar.gz nextcloud-src
 
+      # Step 7: Upload Release
       - name: Upload Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v${{ github.run_number }}   # auto-generate tag
-          name: Nextcloud Build ${{ github.run_number }}
+          tag_name: v${{ github.run_number }}
+          name: scaleinfinite-nextcloud-all Build ${{ github.run_number }}
           files: nextcloud-build.tar.gz
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
