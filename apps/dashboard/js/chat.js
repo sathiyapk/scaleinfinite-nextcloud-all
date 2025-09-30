@@ -1237,19 +1237,20 @@ $('#MemoryUsage').show();
 
 let appChart = document.querySelector("#installedApps");
 
-let installedApps = [
+/*let installedApps = [
   { name: "Python",  timestamp: "2025-08-08 09:30:00" },
   { name: "Ubuntu",  timestamp: "2025-09-09 10:15:00" },
   { name: "Buzybox",  timestamp: "2025-09-01 10:15:00" },
-];
+];*/
+let installedApps=response.data.apps;
 
 if (appChart !== null) {
   let data = installedApps.map(app => {
     return {
-      x: app.name,
+      x: app.created_date,
       y: 1,
       z: 8,  // increase bubble size for visibility
-      label: `${app.name} v${app.version}`
+      label: `${app.name} ${app.status}`
     };
   });
 
