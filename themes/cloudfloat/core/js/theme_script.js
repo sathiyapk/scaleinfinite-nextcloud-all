@@ -57,6 +57,20 @@
 			}
 	$(document).ready(function() {	
 
+
+		 $(".dropdown-toggle").on("click", function(e) {
+    e.preventDefault(); // prevent button default
+    $(this).next(".dropdown-menu").toggle(); // toggle only this dropdown
+  });
+
+  // Close dropdown if clicked outside
+  $(document).on("click", function(e) {
+    if (!$(e.target).closest(".dropdown").length) {
+      $(".dropdown-menu").hide();
+    }
+  });
+
+
 	//iOS bottom Space
 	 function isiOS() {
 	    return /iP(ad|hone|od)/.test(navigator.userAgent);
