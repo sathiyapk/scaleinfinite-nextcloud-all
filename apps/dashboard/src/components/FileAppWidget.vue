@@ -85,31 +85,16 @@
                         <div class="row">                           
                            <div class="col-12 mb-4">
                               <div class="card overflow-hidden "  style="height:415px;">
-                                 <div class="card-header d-flex justify-content-left">
+                                 <div class="card-header d-flex justify-content-left pb-1" >
                                     <div class="avatar card-title mb-0">
                                        <img src="https://cloud.fltt.fr/apps/dashboard/img/activity.png"  class="rounded p-2">                                    
                                     </div>
-                                    <h5 class="mt-2">Storage usage</h5>
+                                    <h5 class="mt-2">📂 Root Files</h5>
                                  </div>
                                  <div class="card-body">
-                                 <div class="file_space_loader" style="position: relative;">
-                        <div style="position: absolute; inset: 0; background: #fff; z-index: 9999; display: flex; align-items: center; justify-content: center;">
-                          <div class="spinner-border text-primary" role="status">
-                            <span class="visually-hidden">Loading...</span>
-                          </div>
-                        </div>
-                      </div>
-                                    <div id="fileAppSpace"></div>
-                                    <div class="d-flex justify-content-center align-items-center gap-4">
-                                       <div class="d-flex align-items-center">
-                                          <span class="badge badge-dot bg-success me-2"></span> Used Space
-                                       </div>
-                                       <div class="d-flex align-items-center">
-                                          <span class="badge badge-dot bg-label-secondary me-2"></span> Free Space
-                                       </div>
-                                    </div>
-                                 </div>
-                                 
+                                  <div id="jstree-context-menu" style="max-height: 350px; overflow: auto; margin:0px"></div>
+                                                             
+                                 </div>                                 
                               </div>
                            </div>
                         </div>
@@ -117,12 +102,189 @@
                      <!-- compute activity closed -->
                   </div>
 </template>
-
 <script>
+import config from "../config/config.js";
+
 export default {
-	name: 'FileAppWidget',
-	
+  name: 'FileAppWidget',
+
+  data() {
+    return {
+      baseUrl: config.BASE_URL,
+    };
+  },
+
+  mounted() {
+  
+    this.loadJstreeCss();       // CDN jsTree CSS
+    this.loadCustomJstreeCss(); // Local overrides
+    this.loadJquery();
+  },
+
+  methods: {
+ 
+
+    loadJstreeCss() {
+      // const url = "https://cdn.jsdelivr.net/npm/jstree@3.3.16/dist/themes/default/style.min.css";
+       const url = `${this.baseUrl}/src/assets/css/jstree-style.css`;
+      if (!document.querySelector(`link[href="${url}"]`)) {
+        const link = document.createElement("link");
+        link.rel = "stylesheet";
+        link.href = url;
+        document.head.appendChild(link);
+        console.log("Local jsTree min style loaded");
+      }
+    },
+
+    loadCustomJstreeCss() {
+      const url = `${this.baseUrl}/src/assets/css/jstree.css`;
+      if (!document.querySelector(`link[href="${url}"]`)) {
+        const link = document.createElement("link");
+        link.rel = "stylesheet";
+        link.href = url;
+        document.head.appendChild(link);
+        console.log("custom jstree.css loaded");
+      }
+    },
+
+    loadJquery() {
+      if (!window.jQuery) {
+        const script = document.createElement("script");
+        // script.src = "https://code.jquery.com/jquery-3.7.1.min.js";
+        script.src=`${this.baseUrl}/src/assets/js/jquery-3.7.1.min.js`;
+        script.onload = () => {
+          console.log("jQuery loaded");
+          this.loadJstreeScript();
+        };
+        document.head.appendChild(script);
+      } else {
+        console.log("jQuery already loaded");
+        this.loadJstreeScript();
+      }
+    },
+
+    loadJstreeScript() {
+      if ($.jstree) {
+        this.initJsTree();
+        return;
+      }
+
+      const script = document.createElement("script");
+      script.src = "https://cdn.jsdelivr.net/npm/jstree@3.3.16/dist/jstree.min.js";
+      script.async = true;
+      script.onload = () => {
+        console.log("jsTree loaded");
+        this.loadExtendedTreeviewScript();
+      };
+      document.head.appendChild(script);
+    },
+
+    loadExtendedTreeviewScript() {
+      const url = `${this.baseUrl}/src/assets/js/extended-ui-treeview.js`;
+      if (!document.querySelector(`script[src="${url}"]`)) {
+        const script = document.createElement("script");
+        script.src = url;
+        script.async = true;
+        script.onload = () => {
+          console.log("extended-ui-treeview.js loaded");
+          this.initJsTree(); // init AFTER your custom logic is loaded
+        };
+        document.head.appendChild(script);
+      }
+    },
+
+    // 🔹 file type mapping
+    getFileType(filename) {
+      const ext = filename.split(".").pop().toLowerCase();
+      const mapping = {
+        html: "html",
+        css: "css",
+        png: "img", jpg: "img", jpeg: "img", gif: "img", svg: "img",
+        js: "js", json: "js", node: "nodejs",
+        txt: "file", log: "file",
+        doc: "document", docx: "document",
+        pdf: "pdf",
+        mp4: "video", avi: "video", mkv: "video",
+        mp3: "music", wav: "music",
+        zip: "zip", rar: "zip", tar: "zip", gz: "zip",
+        py: "python",
+        php: "php",
+        java: "java",
+        go: "go",
+        git: "git",
+        docker: "docker",
+        yml: "kubernetes", yaml: "kubernetes",
+        jsx: "react", tsx: "react",
+        vue: "vue",
+        angular: "angular",
+        bootstrap: "bootstrap",
+        tailwind: "tailwind",
+        scss: "sass", sass: "sass",
+      };
+      return mapping[ext] || "file"; // fallback
+    },
+
+    // 🔹 init jsTree dynamically
+    initJsTree() {
+  this.$nextTick(() => {
+    $("#jstree-context-menu").jstree({
+      core: {
+        check_callback: true,
+        data: [
+          {
+            text: "Root Files",
+            state: { opened: true },
+            children: [
+              {
+                text: "css",
+                state: { opened: true },
+                children: [
+                  { text: "app.css", type: "css" },
+                  { text: "style.css", type: "css" }
+                ]
+              },
+              {
+                text: "img",
+                state: { opened: true },
+                children: [
+                  { text: "bg.jpg", type: "img" },
+                  { text: "logo.png", type: "img" },
+                  { text: "avatar.png", type: "img" }
+                ]
+              },
+              {
+                text: "js",
+                state: { opened: true },
+                children: [
+                  { text: "jquery.js", type: "js" },
+                  { text: "app.js", type: "js" }
+                ]
+              },
+              { text: "index.html", type: "html" },
+              { text: "page-one.html", type: "html" },
+              { text: "page-two.html", type: "html" }
+            ]
+          }
+        ],
+         themes: {
+      name: "default",
+      dots: true,    // enables connector lines
+      icons: true    // shows icons
+    }
+      },
+      plugins: ["types", "state", "wholerow", "contextmenu"], // added wholerow and contextmenu
+      types: {
+        default: { icon: "bx bx-folder" },
+        html: { icon: "bx bxl-html5 text-danger" },
+        css: { icon: "bx bxl-css3 text-info" },
+        img: { icon: "bx bx-image text-success" },
+        js: { icon: "bx bxl-javascript text-warning" }
+      }
+    });
+  });
 }
+  },
+};
 </script>
 <style>
 @media (max-width: 768px) {
@@ -138,4 +300,3 @@ export default {
   }
 }
 </style>
-
