@@ -7,101 +7,129 @@
 		<div class="container-xxl flex-grow-1 container-p-y">			
 		<!-- 1st row -->
 				 <div class="row g-4 mb-4">
-                      <!-- Left Card (Welcome section) -->
-                      <div class="col-12 col-xl-8">
-                        <div class="card h-100">
-                          <div class="p-4">
-                               <h5 class="mb-2">{{ greeting.text }},<span class="h4"> {{ displayName }} </span></h5>
-                            <p>Your progress this week is Awesome. Let's keep it up and get a lot of points reward!</p>
-							<div class="d-flex flex-column flex-sm-row flex-wrap justify-content-between gap-4">
-                              <!-- Item 1 -->
-                              <div class="d-flex flex-column align-items-center text-center ">  
-								<div class="chart-wrapper">
-									<div id="timeSpent"></div> 
-									 <div class="spinner"></div> 
-								</div>	                      
-								   <div> <p class="mb-0 fw-medium" style="font-size: 1.1rem;">Hours Spent</p>   </div>
-                              </div>
+                      <!-- leftside Card -->
+							<div class="col-12 col-xl-4">
+									<div class="card h-100">
+										<h5 class="mb-0" style="align-items: center;display: flex;justify-content: center; ">
+											<span style="padding-top: 10px;">{{ greeting.text }}</span>
+											<span style="font-size: 1.5rem;padding: 10px 0px 0px 10px;  text-transform:uppercase;"> {{ displayName }} </span>
+										</h5>
+										
+									<div class="p-4 d-flex flex-column flex-md-row justify-content-between gap-3" >
+										<div class="mt-auto text-center">
+											<img src="https://cloud.fltt.fr/apps/dashboard/img/man-working.png" class="img-fluid mb-2" style="max-height: 160px; transform: scaleX(-1);" alt="View Badge User" />
+										</div>
+										<div class="flex-fill">
+										<div class="report-list">
+												<div class="report-list-item rounded-2 pb-1"> 
+													<div class="d-flex align-items-center gap-3 flex-grow-" style="border-radius: 5px; border:1px solid #e8e2e2;">
+														<div class="avatar avatar-lg" style="padding: 10px;border: 1px solid #cdcdca2b;">
+															<div class="avatar-initial  rounded" style="padding: 10px;background: #f1f2f3;">
+															<div class="text-primary">
+															<i class="bx bx-globe" style="font-size: 1.7rem !important;"></i>
+															</div>
+														</div>
+														</div>
+													<div class="d-flex justify-content-between align-items-center w-100 flex-wrap gap-2">
+														<div class="d-flex flex-column">
+														<span>No IP Address</span>
+														<h5 class="mb-0">
+															<button data-v-1d90c380="" type="button" class="btn btn-primary btn-lg" style="background-color: #696cff;color: #fff;">Request IP Address</button>
+															</h5>
+														</div>                                       
+													</div>
+													</div>
+												</div>
+												<div class="report-list-item rounded-2 pb-1">
+													<div class="d-flex align-items-center gap-3 flex-grow-" style="border-radius: 5px; border:1px solid #e8e2e2;">
+														<div class="avatar avatar-lg" style="padding: 10px;border: 1px solid #cdcdca2b;">
+															<div class="avatar-initial  rounded" style="padding: 10px;background: #f1f2f3;">
+																<div class="text-success">
+																	<img src="https://flagcdn.com/fr.svg" alt="France" width="20">
+																<!-- <i class="bx bx-download" style="font-size: 1.7rem !important;"></i> -->
+																</div>
+															</div>
+														</div>
+														<div class="d-flex justify-content-between align-items-center w-100 flex-wrap gap-2">
+															<div class="d-flex flex-column">
+															<span>Server Location</span>
+															<h5 class="mb-0"> France</h5>
+															</div>                                       
+														</div>
+													</div>
+												</div>
 
-                              <!-- Item 2 -->
-                              <div class="d-flex flex-column align-items-center text-center "> 
-								<div class="chart-wrapper">
-									 <div id="installedApps"></div> 
-									 <div class="spinner"></div> 
-								</div>	
-                                <div>
-                                  <p class="mb-0 fw-medium" style="font-size: 1.1rem;">Installed Apps</p>                                  
-                                </div>
-                              </div>
-
-                              <!-- Item 3 -->
-                             <div class="d-flex flex-column align-items-center text-center ">  
-								<div class="chart-wrapper">
-									<div id="storageUsedBar"></div>   
-									<div class="spinner"></div> 
-								 </div>
-                                <div>
-                                  <p class="mb-0 fw-medium" style="font-size: 1.1rem;">Used Storage</p>
-                                  
-                                </div>
-                              </div>
-                            </div>
-
-
-                          </div>
-                        </div>
-                      </div>
-
-                      <!-- Right Card -->
-                      <div class="col-12 col-xl-4">
-                        <div class="card h-100">
-                          <div class="p-4 d-flex flex-column flex-md-row justify-content-between gap-3" >
-                            <div class="flex-fill">
-                              <div class="report-list">
-                                  <div class="report-list-item rounded-2 mb-4">
-                                    <div class="d-flex align-items-center gap-3 flex-grow-" style="border-radius: 5px; background-color: #cdcdca2b;">
-                                          <div class="avatar avatar-lg" style="padding: 10px;border: 1px solid #cdcdca2b;">
-                                            <div class="avatar-initial  rounded" style="padding: 10px;background: #fff;">
-                                            <div class="text-primary">
-                                              <i class="bx bx-globe" style="font-size: 1.7rem !important;"></i>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      <div class="d-flex justify-content-between align-items-center w-100 flex-wrap gap-2">
-                                        <div class="d-flex flex-column">
-                                          <span>Public IP</span>
-                                          <h5 class="mb-0">124.25.64.168</h5>
-                                        </div>                                       
-                                      </div>
-                                    </div>
-                                  </div>
-                                    <div class="report-list-item rounded-2 mb-4">
-                                    <div class="d-flex align-items-center gap-3 flex-grow-" style="border-radius: 5px; background-color: #cdcdca2b;">
-                                          <div class="avatar avatar-lg" style="padding: 10px;border: 1px solid #cdcdca2b;">
-                                            <div class="avatar-initial  rounded" style="padding: 10px;background: #fff;">
-                                            <div class="text-success">
-                                              <i class="bx bx-download" style="font-size: 1.7rem !important;"></i>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      <div class="d-flex justify-content-between align-items-center w-100 flex-wrap gap-2">
-                                        <div class="d-flex flex-column">
-                                          <span>Installed app</span>
-                                          <h5 class="mb-0">5</h5>
-                                        </div>                                       
-                                      </div>
-                                    </div>
-                                  </div>
-                                  </div>
-                            </div>
-                            <!-- Image SVG -->
-                            <div class="mt-auto text-center">
-								<img src="https://cloud.fltt.fr/apps/dashboard/img/man-working.png" class="img-fluid mb-2" style="max-height: 160px;" alt="View Badge User" />
+												<div class="report-list-item rounded-2 pb-1">
+													<div class="d-flex align-items-center gap-3 flex-grow-" style="border-radius: 5px; border:1px solid #e8e2e2;">
+														<div class="avatar avatar-lg" style="padding: 10px;border: 1px solid #cdcdca2b;">
+															<div class="avatar-initial  rounded" style="padding: 10px;background: #f1f2f3;">
+															<div class="text-warning">
+															<i class="bx bx-plus-circle" style="font-size: 1.7rem !important;"></i>
+															</div>
+														</div>
+														</div>
+													<div class="d-flex justify-content-between align-items-center w-100 flex-wrap gap-2">
+														<div class="d-flex flex-column">
+														<span>Your plan</span>
+														<h5 class="mb-0">
+															<button data-v-1d90c380="" type="button" class="btn btn-primary btn-lg" style="background-color: #ffab00;color: #fff;">Upgrade to Pro</button>
+															</h5>
+														</div>                                       
+													</div>
+													</div>
+												</div>
+												
+											</div>
+										</div>
+										<!-- Image SVG -->
+										
+									</div>
+									</div>
 							</div>
-                          </div>
-                        </div>
+                    
+					<!-- Rightside card-->
+					<div class="col-12 col-xl-8">
+							<div class="card h-100">
+							<div class="p-4">
+								
+								<p>Your progress this week is Awesome. Let's keep it up and get a lot of points reward!</p>
+								<div class="d-flex flex-column flex-sm-row flex-wrap justify-content-between gap-4">
+								<!-- Item 1 -->
+								<div class="d-flex flex-column align-items-center text-center ">  
+									<div class="chart-wrapper">
+										<div id="timeSpent"></div> 
+										<div class="spinner"></div> 
+									</div>	                      
+									<div> <p class="mb-0 fw-medium" style="font-size: 1.1rem;">Hours Spent</p>   </div>
+								</div>
+
+								<!-- Item 2 -->
+								<div class="d-flex flex-column align-items-center text-center "> 
+									<div class="chart-wrapper">
+										<div id="installedApps"></div> 
+										<div class="spinner"></div> 
+									</div>	
+									<div>
+									<p class="mb-0 fw-medium" style="font-size: 1.1rem;">Installed Apps</p>                                  
+									</div>
+								</div>
+
+								<!-- Item 3 -->
+								<div class="d-flex flex-column align-items-center text-center ">  
+									<div class="chart-wrapper">
+										<div id="storageUsedBar"></div>   
+										<div class="spinner"></div> 
+									</div>
+									<div>
+									<p class="mb-0 fw-medium" style="font-size: 1.1rem;">Used Storage</p>
+									
+									</div>
+								</div>
+								</div>
+							</div>
+							</div>
                       </div>
-                    </div>
+					  </div>
 		</div>
 		<!-- 2nd row -->
 <div class="container-xxl flex-grow-1">

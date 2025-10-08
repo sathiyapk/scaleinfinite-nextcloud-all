@@ -213,11 +213,15 @@ uasort($sortedBackends, function ($a, $b) {
 					</td>
 				<?php endif; ?>
 				<td class="mountOptionsToggle hidden">
-					<button type="button" class="icon-more" aria-expanded="false" title="<?php p($l->t('Advanced settings')); ?>"></button>
+					<button type="button" class="icon-more" aria-expanded="false" title="<?php p($l->t('Advanced settings')); ?>">
+						<i class="bx bx-dots-horizontal-rounded"></i>
+					</button>
 					<input type="hidden" class="mountOptions" value="" />
 				</td>
 				<td class="save hidden">
-					<button type="button" class="icon-checkmark" title="<?php p($l->t('Save')); ?>"></button>
+					<button type="button" class="icon-more" title="<?php p($l->t('Save')); ?>">
+						<i class="bx bx-check-circle"></i>
+					</button>
 				</td>
 			</tr>
 		</tbody>
