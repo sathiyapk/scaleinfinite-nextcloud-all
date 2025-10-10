@@ -51,6 +51,7 @@ class ComposerStaticInitFiles_External
         'OCA\\Files_External\\Controller\\UserGlobalStoragesController' => __DIR__ . '/..' . '/../lib/Controller/UserGlobalStoragesController.php',
         'OCA\\Files_External\\Controller\\UserStoragesController' => __DIR__ . '/..' . '/../lib/Controller/UserStoragesController.php',
         'OCA\\Files_External\\Lib\\Auth\\AmazonS3\\AccessKey' => __DIR__ . '/..' . '/../lib/Lib/Auth/AmazonS3/AccessKey.php',
+        'OCA\\Files_External\\Lib\\Auth\\AmazonS3\\CookieAccessKey' => __DIR__ . '/..' . '/../lib/Lib/Auth/AmazonS3/CookieAccessKey.php',
         'OCA\\Files_External\\Lib\\Auth\\AuthMechanism' => __DIR__ . '/..' . '/../lib/Lib/Auth/AuthMechanism.php',
         'OCA\\Files_External\\Lib\\Auth\\Builtin' => __DIR__ . '/..' . '/../lib/Lib/Auth/Builtin.php',
         'OCA\\Files_External\\Lib\\Auth\\IUserProvided' => __DIR__ . '/..' . '/../lib/Lib/Auth/IUserProvided.php',

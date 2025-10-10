@@ -36,6 +36,7 @@ return array(
     'OCA\\Files_External\\Controller\\UserGlobalStoragesController' => $baseDir . '/../lib/Controller/UserGlobalStoragesController.php',
     'OCA\\Files_External\\Controller\\UserStoragesController' => $baseDir . '/../lib/Controller/UserStoragesController.php',
     'OCA\\Files_External\\Lib\\Auth\\AmazonS3\\AccessKey' => $baseDir . '/../lib/Lib/Auth/AmazonS3/AccessKey.php',
+    'OCA\\Files_External\\Lib\\Auth\\AmazonS3\\CookieAccessKey' => $baseDir . '/../lib/Lib/Auth/AmazonS3/CookieAccessKey.php',
     'OCA\\Files_External\\Lib\\Auth\\AuthMechanism' => $baseDir . '/../lib/Lib/Auth/AuthMechanism.php',
     'OCA\\Files_External\\Lib\\Auth\\Builtin' => $baseDir . '/../lib/Lib/Auth/Builtin.php',
     'OCA\\Files_External\\Lib\\Auth\\IUserProvided' => $baseDir . '/../lib/Lib/Auth/IUserProvided.php',

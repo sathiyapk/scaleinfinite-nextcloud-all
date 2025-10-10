@@ -1197,11 +1197,28 @@ let installedApps = response.data.apps;
 
 if (appChart !== null) {
 
+    // Check if apps exist
+    if (!installedApps || installedApps.length === 0) {
+        appChart.innerHTML = `
+            <div style="
+                text-align:center; 
+                color:#6c757d; 
+                font-family:'Segoe UI', Tahoma, sans-serif; 
+                font-size:14px; 
+                padding:30px 0;
+            ">
+                <i class='bx bx-info-circle' style="font-size:18px; vertical-align:middle;"></i>
+                &nbsp; No App Found
+            </div>
+        `;
+        return; // stop execution here
+    }
+
     // prepare data with port info and dynamic color
     let data = installedApps.map(app => {
         let bubbleColor = (app.status && app.status.toLowerCase() === "stopped") 
             ? "#dc3545"   // red if stopped
-            : "#0fb536ff";  // blue otherwise
+            : "#0fb536ff";  // green otherwise
 
         return {
             x: app.created_date,
@@ -1210,7 +1227,7 @@ if (appChart !== null) {
             name: app.name,       
             status: app.status,   
             port: app.port || 8080,
-            fillColor: bubbleColor   // <-- individual bubble color
+            fillColor: bubbleColor
         };
     });
 
@@ -1227,12 +1244,7 @@ if (appChart !== null) {
                 maxBubbleRadius: 8
             }
         },
-        series: [
-            {
-                name: "Installed Apps",
-                data: data
-            }
-        ],
+        series: [{ name: "Installed Apps", data: data }],
         xaxis: {
             type: "category",
             labels: { 
@@ -1243,98 +1255,80 @@ if (appChart !== null) {
             tickPlacement: 'on',
             offsetX: 0
         },
-        yaxis: {
-            show: false,
-            min: 0,
-            max: 2
-        },
+        yaxis: { show: false, min: 0, max: 2 },
         grid: {
             yaxis: { lines: { show: false } },
             xaxis: { lines: { show: false } },
-            padding: {
-                left: 40,
-                right: 40
-            },
-            margin: {
-                left: 20,
-                right: 20
-            }
+            padding: { left: 40, right: 40 },
+            margin: { left: 20, right: 20 }
         },
         dataLabels: { enabled: false },
-        
-        // remove static colors option here 👇
-        // colors: ["#007bff"],
 
         tooltip: {
-    custom: function({ series, seriesIndex, dataPointIndex, w }) {
-        let app = w.config.series[seriesIndex].data[dataPointIndex];
+            custom: function({ series, seriesIndex, dataPointIndex, w }) {
+                let app = w.config.series[seriesIndex].data[dataPointIndex];
+                let statusColor = "#6c757d"; 
+                if (app.status) {
+                    let st = app.status.toLowerCase();
+                    if (st === "running") statusColor = "#28a745";
+                    else if (st === "stopped") statusColor = "#dc3545";
+                    else if (st === "pending") statusColor = "#ffc107";
+                }
 
-        // status color mapping for tooltip badge
-        let statusColor = "#6c757d"; 
-        if (app.status) {
-            let st = app.status.toLowerCase();
-            if (st === "running") statusColor = "#28a745";   // green
-            else if (st === "stopped") statusColor = "#dc3545"; // red
-            else if (st === "pending") statusColor = "#ffc107"; // yellow
-        }
-
-        return `
-            <div style="
-                position: relative;
-                background: linear-gradient(135deg, #f8f9fa, #f8fafbff);
-                padding: 10px 14px;
-                border-radius: 8px;
-                box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-                font-family: 'Segoe UI', Tahoma, sans-serif;
-                font-size: 13px;
-                color: #333;
-                text-align: left;
-                line-height: 1.5;
-            ">
-                <div>
-                    <span style="font-weight:600; color:#007bff;">${app.name}</span>					
-                </div>
-				<div style="width: 100%; height: 1px; background-color: #e0e0e0; margin: 8px 0;"></div>
-				 <div><span style="font-weight:500;">Image:</span></div>
-                <div>
-                    <span style="font-weight:500;">Status:</span> 
-                    <span style="
-                        display:inline-block;
-                        padding:2px 8px;
-                        margin-left:4px;
-                        border-radius:12px;
-                        background:${statusColor};
-                        color:#fff;
-                        font-size:12px;
-                        font-weight:600;
+                return `
+                    <div style="
+                        position: relative;
+                        background: linear-gradient(135deg, #f8f9fa, #f8fafbff);
+                        padding: 10px 14px;
+                        border-radius: 8px;
+                        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+                        font-family: 'Segoe UI', Tahoma, sans-serif;
+                        font-size: 13px;
+                        color: #333;
+                        text-align: left;
+                        line-height: 1.5;
                     ">
-                    ${app.status}
-                    </span>
-                </div>
-                <div><span style="font-weight:500;">Port:</span> ${app.port}</div>
-               
-
-                <!-- Arrow -->
-                <div style="
-                    position: absolute;
-                    bottom: -6px;
-                    left: 50%;
-                    transform: translateX(-50%);
-                    width: 0;
-                    height: 0;
-                    border-left: 6px solid transparent;
-                    border-right: 6px solid transparent;
-                    border-top: 6px solid #e9ecef;
-                "></div>
-            </div>
-        `;
-    }
-}
-
+                        <div>
+                            <span style="font-weight:600; color:#007bff;">${app.name}</span>					
+                        </div>
+                        <div style="width: 100%; height: 1px; background-color: #e0e0e0; margin: 8px 0;"></div>
+                        <div><span style="font-weight:500;">Image:</span></div>
+                        <div>
+                            <span style="font-weight:500;">Status:</span> 
+                            <span style="
+                                display:inline-block;
+                                padding:2px 8px;
+                                margin-left:4px;
+                                border-radius:12px;
+                                background:${statusColor};
+                                color:#fff;
+                                font-size:12px;
+                                font-weight:600;
+                            ">
+                            ${app.status}
+                            </span>
+                        </div>
+                        <div><span style="font-weight:500;">Port:</span> ${app.port}</div>
+                        <div style="
+                            position: absolute;
+                            bottom: -6px;
+                            left: 50%;
+                            transform: translateX(-50%);
+                            width: 0;
+                            height: 0;
+                            border-left: 6px solid transparent;
+                            border-right: 6px solid transparent;
+                            border-top: 6px solid #e9ecef;
+                        "></div>
+                    </div>
+                `;
+            }
+        }
     };
 
     new ApexCharts(appChart, chartOptions).render();
 }
+
 
 
 
