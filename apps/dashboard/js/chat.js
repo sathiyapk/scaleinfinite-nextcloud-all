@@ -1152,12 +1152,24 @@ $('#MemoryUsage').show();
 															{ name: "Used", data: [used] },
 															{ name: "Free", data: [free] }
 														],
-														colors: ["#ff0808ff", "#c8c7c7ff"],
+														colors: ["#ff0808ff", "#d1cdcdff"],
 														xaxis: {
 															max: total,
 															labels: { show: false },
 															axisBorder: { show: false },
 															axisTicks: { show: false }
+														},
+														states: {
+															normal: {
+																filter: {
+																type: 'none'
+																}
+															},
+															hover: {
+																filter: {
+																type: 'none'
+																}
+															},
 														},
 														yaxis: { show: false },
 														dataLabels: {
@@ -1177,63 +1189,7 @@ $('#MemoryUsage').show();
 													};
 
 													new ApexCharts(sub, p).render();
-												}
-												//  Installed apps end
-											// Check if the element exists and render the chart
-											// let ts = document.querySelector("#timeSpent");
-											// if (ts !== null) {
-											// 	let total = 2;       // Total hours
-											// 	let spent = hours_spent;    // Hours spent
-											// 	let percent = (spent / total) * 100;
-
-											// 	let p = {
-											// 		chart: {
-											// 			height: 145,
-											// 			width: 145,
-											// 			type: "radialBar"
-											// 		},
-											// 		 series: [Number(percent.toFixed(0))], // ✅ must be number
-											// 		plotOptions: {
-											// 			radialBar: {
-											// 				startAngle: 0,
-											// 				endAngle: 360,
-											// 				hollow: {
-											// 					margin: 0,
-											// 					size: "65%"
-											// 				},
-											// 				track: {
-											// 					strokeWidth: "95%",
-											// 					background: "#ccc"
-											// 				},
-											// 				dataLabels: {
-											// 					name: { show: false }, // hide default label
-											// 					value: {
-											// 						show: true,
-											// 						formatter: function () {
-											// 							return `${spent} / ${total} hrs`;
-											// 						},
-											// 						offsetY: 0,
-											// 						color: "#444",
-											// 						fontSize: "13px",
-											// 						fontWeight: "600",
-											// 						fontFamily: "Public Sans"
-											// 					}
-											// 				}
-											// 			}
-											// 		},
-											// 		fill: {
-											// 			type: "solid",
-											// 			colors: ["#28a745"] // green for hours spent
-											// 		},
-											// 		stroke: {
-											// 			lineCap: "round"
-											// 		}
-											// 	};
-
-											// 	new ApexCharts(ts, p).render();
-											// }
-
-												// Dashboard Installed apps
+												}												
 
 			// Dashboard Installed apps
 let appChart = document.querySelector("#installedApps");			
@@ -1245,7 +1201,7 @@ if (appChart !== null) {
     let data = installedApps.map(app => {
         let bubbleColor = (app.status && app.status.toLowerCase() === "stopped") 
             ? "#dc3545"   // red if stopped
-            : "#007bff";  // blue otherwise
+            : "#0fb536ff";  // blue otherwise
 
         return {
             x: app.created_date,
@@ -1325,7 +1281,7 @@ if (appChart !== null) {
         return `
             <div style="
                 position: relative;
-                background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+                background: linear-gradient(135deg, #f8f9fa, #f8fafbff);
                 padding: 10px 14px;
                 border-radius: 8px;
                 box-shadow: 0 2px 8px rgba(0,0,0,0.15);
@@ -1336,9 +1292,10 @@ if (appChart !== null) {
                 line-height: 1.5;
             ">
                 <div>
-                    <span style="font-weight:500;">Name:</span> 
-                    <span style="font-weight:600; color:#007bff;">${app.name}</span>
+                    <span style="font-weight:600; color:#007bff;">${app.name}</span>					
                 </div>
+				<div style="width: 100%; height: 1px; background-color: #e0e0e0; margin: 8px 0;"></div>
+				 <div><span style="font-weight:500;">Image:</span></div>
                 <div>
                     <span style="font-weight:500;">Status:</span> 
                     <span style="
@@ -1355,7 +1312,7 @@ if (appChart !== null) {
                     </span>
                 </div>
                 <div><span style="font-weight:500;">Port:</span> ${app.port}</div>
-                <div><span style="font-weight:500;">Image:</span></div>
+               
 
                 <!-- Arrow -->
                 <div style="

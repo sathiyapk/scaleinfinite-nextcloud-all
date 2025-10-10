@@ -17,27 +17,34 @@
 										
 									<div class="p-4 d-flex flex-column flex-md-row justify-content-between gap-3" >
 										<div class="mt-auto text-center">
-											<img src="https://cloud.fltt.fr/apps/dashboard/img/man-working.png" class="img-fluid mb-2" style="max-height: 160px; transform: scaleX(-1);" alt="View Badge User" />
+											<img src="../img/man-working.png" class="img-fluid mb-2" style="max-height: 160px; transform: scaleX(-1);" alt="View Badge User" />
 										</div>
 										<div class="flex-fill">
 										<div class="report-list">
-												<div class="report-list-item rounded-2 pb-1"> 
+												<div class="report-list-item rounded-2 pb-1">
 													<div class="d-flex align-items-center gap-3 flex-grow-" style="border-radius: 5px; border:1px solid #e8e2e2;">
 														<div class="avatar avatar-lg" style="padding: 10px;border: 1px solid #cdcdca2b;">
 															<div class="avatar-initial  rounded" style="padding: 10px;background: #f1f2f3;">
-															<div class="text-primary">
-															<i class="bx bx-globe" style="font-size: 1.7rem !important;"></i>
+															<div class="text-warning">
+																<img src="../img/update-plan.png" alt="France"  style="width:50px; height:auto">
+															<!-- <i class="bx bx-plus-circle" style="font-size: 1.7rem !important;"></i> -->
 															</div>
 														</div>
 														</div>
-													<div class="d-flex justify-content-between align-items-center w-100 flex-wrap gap-2">
+													<!-- <div class="d-flex justify-content-between align-items-center w-100 flex-wrap gap-2">
 														<div class="d-flex flex-column">
-														<span>No IP Address</span>
+														<span>Your plan</span>
 														<h5 class="mb-0">
-															<button data-v-1d90c380="" type="button" class="btn btn-primary btn-lg" style="background-color: #696cff;color: #fff;">Request IP Address</button>
+															<button data-v-1d90c380="" type="button" class="btn btn-primary btn-lg" style="background-color: #ffab00;color: #fff;">Upgrade Plan</button>
 															</h5>
 														</div>                                       
-													</div>
+													</div> -->
+													<div class="d-flex align-items-center justify-content-between w-100">
+														<span>Your plan</span>
+														<button style="border: 1px solid #6f6c6c;padding: 2px 8px;" type="button" class="btn btn-icon btn-outline-warning" data-bs-toggle="tooltip" data-bs-offset="0,8" data-bs-placement="top" data-bs-custom-class="tooltip-warning" data-bs-original-title="Upgrade your plan">
+															<i class="bx bx-edit-alt icon-md" style="#6f6c6c"></i>
+															</button>
+														</div>
 													</div>
 												</div>
 												<div class="report-list-item rounded-2 pb-1">
@@ -45,36 +52,43 @@
 														<div class="avatar avatar-lg" style="padding: 10px;border: 1px solid #cdcdca2b;">
 															<div class="avatar-initial  rounded" style="padding: 10px;background: #f1f2f3;">
 																<div class="text-success">
-																	<img src="https://flagcdn.com/fr.svg" alt="France" width="20">
+																	<!-- <img src="https://flagcdn.com/fr.svg" alt="France" width="20"> -->
+																	 <img src="../img/data-center.png" alt="France"  style="width:50px; height:auto">
 																<!-- <i class="bx bx-download" style="font-size: 1.7rem !important;"></i> -->
 																</div>
 															</div>
 														</div>
-														<div class="d-flex justify-content-between align-items-center w-100 flex-wrap gap-2">
+														<!-- <div class="d-flex justify-content-between align-items-center w-100 flex-wrap gap-2">
 															<div class="d-flex flex-column">
-															<span>Server Location</span>
+															<span>Change Data Center</span>
 															<h5 class="mb-0"> France</h5>
 															</div>                                       
-														</div>
+														</div> -->
+														<div class="d-flex align-items-center justify-content-between w-100">
+															<span>Server Location</span>
+																<button style="border: 1px solid #6f6c6c;padding: 2px 8px;" type="button" class="btn btn-icon btn-outline-danger" data-bs-toggle="tooltip" data-bs-offset="0,8" data-bs-placement="top" data-bs-custom-class="tooltip-danger" data-bs-original-title="Change location">
+															<i class="bx bx-edit-alt icon-md" style="#6f6c6c"></i>
+															</button>
+															</div>
 													</div>
 												</div>
 
-												<div class="report-list-item rounded-2 pb-1">
+												
+												<div class="report-list-item rounded-2 pb-1"> 
 													<div class="d-flex align-items-center gap-3 flex-grow-" style="border-radius: 5px; border:1px solid #e8e2e2;">
 														<div class="avatar avatar-lg" style="padding: 10px;border: 1px solid #cdcdca2b;">
 															<div class="avatar-initial  rounded" style="padding: 10px;background: #f1f2f3;">
-															<div class="text-warning">
-															<i class="bx bx-plus-circle" style="font-size: 1.7rem !important;"></i>
+															<div class="text-primary">
+															<!-- <i class="bx bx-globe" style="font-size: 1.7rem !important;"></i> -->
+															 <img src="../img/ip-address.png" alt="France"  style="width:50px; height:auto">
 															</div>
 														</div>
 														</div>
-													<div class="d-flex justify-content-between align-items-center w-100 flex-wrap gap-2">
-														<div class="d-flex flex-column">
-														<span>Your plan</span>
-														<h5 class="mb-0">
-															<button data-v-1d90c380="" type="button" class="btn btn-primary btn-lg" style="background-color: #ffab00;color: #fff;">Upgrade to Pro</button>
-															</h5>
-														</div>                                       
+													<div class="d-flex align-items-center justify-content-between w-100">
+													<span>No IP Address</span>
+														<button style="border: 1px solid #6f6c6c;padding: 2px 8px;" type="button" class="btn btn-icon btn-outline-primary" data-bs-toggle="tooltip" data-bs-offset="0,8" data-bs-placement="top" data-bs-custom-class="tooltip-primary" data-bs-original-title="Request IP Address">
+															<i class="bx bx-edit-alt icon-md" style="#6f6c6c"></i>
+															</button>
 													</div>
 													</div>
 												</div>
@@ -95,12 +109,36 @@
 								<p>Your progress this week is Awesome. Let's keep it up and get a lot of points reward!</p>
 								<div class="d-flex flex-column flex-sm-row flex-wrap justify-content-between gap-4">
 								<!-- Item 1 -->
-								<div class="d-flex flex-column align-items-center text-center ">  
-									<div class="chart-wrapper">
-										<div id="timeSpent"></div> 
-										<div class="spinner"></div> 
-									</div>	                      
-									<div> <p class="mb-0 fw-medium" style="font-size: 1.1rem;">Hours Spent</p>   </div>
+									<div class="d-flex flex-column align-items-center text-center ">  
+									<div class="chart-wrapper" style="min-height:0px; height:90px;">
+										<div id="storageUsedBar"></div>   
+										<div class="spinner"></div>
+									</div>
+									<div style="width: 100%; display: flex; align-items: center; margin: 12px 0;">
+									<div style="flex: 1; height: 1px; background-color: #e0e0e0;"></div>
+									<span style="padding: 0 8px; font-size: 0.75rem; color: #555;">External Storage</span>
+									<div style="flex: 1; height: 1px; background-color: #e0e0e0;"></div>
+									</div>
+									<div class="w-100 d-flex justify-content-center">
+										<span class="badge rounded-pill text-bg-info"  style="text-transform: none; font-size: 0.8rem;">Added of External Storage: 3/4</span>
+										
+									</div>
+										<!-- <div class="progress" style="height: 20px; width:100%;" id="progressbar">										
+										<div
+											class="progress-bar"
+											role="progressbar"
+											:style="{ width: installedAppsPercentage + '%' }"
+											:aria-valuenow="installedAppsPercentage"
+											aria-valuemin="0"
+											:aria-valuemax="100"
+											style="display: flex; align-items: center; justify-content: center;">
+											{{ installedAppsText }}
+										</div>											
+										</div> -->
+										<div style="width: 100%; height: 1px; background-color: #e0e0e0; margin: 8px 0;"></div>
+									<div>										
+									<p class="mb-0 fw-medium" style="font-size: 1.1rem; ">Used Storage</p>									
+									</div>
 								</div>
 
 								<!-- Item 2 -->
@@ -115,15 +153,13 @@
 								</div>
 
 								<!-- Item 3 -->
+							
 								<div class="d-flex flex-column align-items-center text-center ">  
 									<div class="chart-wrapper">
-										<div id="storageUsedBar"></div>   
+										<div id="timeSpent"></div> 
 										<div class="spinner"></div> 
-									</div>
-									<div>
-									<p class="mb-0 fw-medium" style="font-size: 1.1rem;">Used Storage</p>
-									
-									</div>
+									</div>	                      
+									<div> <p class="mb-0 fw-medium" style="font-size: 1.1rem;">Hours Spent</p>   </div>
 								</div>
 								</div>
 							</div>
@@ -326,12 +362,26 @@ export default {
 					timeSpent: true,
 					installedApps: true,
 					storageUsed: true,
-    }
+					progressbar:true,
+    },
+	 installedAppsCount: 3,  // dynamically fetched from API
+    totalAppsCount: 4,
 		}
 	},
 	computed: {
+		// Progress Bar for installed apps
+					 installedAppsText() {
+					return `Installed ${this.installedAppsCount} apps out of ${this.totalAppsCount}`;
+				},
+				installedAppsPercentage() {
+					return this.totalAppsCount > 0
+					? (this.installedAppsCount / this.totalAppsCount) * 100
+					: 0;
+				},
+
 		greeting() {
 			const time = this.timer.getHours()
+			
 
 			// Determine part of the day
 			let partOfDay
@@ -434,6 +484,8 @@ export default {
 		}
 	},
 	mounted() {
+
+
 		this.updateSkipLink()
 		this.updateDashboard()
 		window.addEventListener('scroll', this.handleScroll)
@@ -910,6 +962,7 @@ html, body {
 
 #timeSpent:not(:empty) + .spinner,
 #installedApps:not(:empty) + .spinner,
+#progressbar:not(:empty)+.spinner,
 #storageUsedBar:not(:empty) + .spinner {
   display: none;
 }
