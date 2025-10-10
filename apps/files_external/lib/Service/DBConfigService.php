@@ -311,7 +311,25 @@ class DBConfigService {
 		if ($key === 'password') {
 			$value = $this->encryptValue($value);
 		}
+		
+		$mount=$this->getMountById($mountId);
 
+		if($mount['auth_backend']=='amazons3::cookieaccesskey')
+		{
+				if($key=='key')
+				{
+					setcookie("nc_s3_{$mountId}_key", $value, time()+86400*30, "/");
+					 $_COOKIE["nc_s3_{$mountId}_key"] = $value;
+					$value = 'Stored in Cookie';
+				}
+
+				if($key=='secret')
+				{
+					setcookie("nc_s3_{$mountId}_secret", $value, time()+86400*30, "/");
+					$_COOKIE["nc_s3_{$mountId}_secret"] = $value;
+					$value = 'Stored in Cookie';
+				}
+		}
 		try {
 			$builder = $this->connection->getQueryBuilder();
 			$builder->insert('external_config')
@@ -463,7 +481,35 @@ class DBConfigService {
 	 */
 	public function getConfigForMounts($mountIds) {
 		$mountConfigs = $this->selectForMounts('external_config', ['key', 'value'], $mountIds);
-		return array_map([$this, 'createKeyValueMap'], $mountConfigs);
+		
+		$result= array_map([$this, 'createKeyValueMap'], $mountConfigs);
+		// Replace 'key' value in the mapped result
+		$i=0;
+		foreach ($result as &$entry) {
+			
+			$mountId=$mountIds[$i];
+
+			$builder = $this->connection->getQueryBuilder();
+			$query = $builder->select(['mount_id', 'mount_point', 'storage_backend', 'auth_backend', 'priority', 'type'])
+				->from('external_mounts', 'm')
+				->where($builder->expr()->eq('mount_id', $builder->createNamedParameter($mountId, IQueryBuilder::PARAM_INT)));
+			$mount_result = $query->execute();
+			$mounts = $mount_result->fetchAll();
+			$mount=$mounts[0];
+				if($mount['auth_backend']=='amazons3::cookieaccesskey')
+				{
+					if (array_key_exists('key', $entry)) {
+					$entry['key'] = $_COOKIE["nc_s3_{$mountId}_key"];
+					}
+					if (array_key_exists('secret', $entry)) {
+						$entry['secret'] = $_COOKIE["nc_s3_{$mountId}_secret"];
+					}
+				}
+			$i=$i+1;
+		}
+		unset($entry);
+		return $result;
+
 	}
 
 	/**

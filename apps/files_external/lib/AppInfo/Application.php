@@ -10,6 +10,7 @@ use OCA\Files\Event\LoadAdditionalScriptsEvent;
 use OCA\Files_External\Config\ConfigAdapter;
 use OCA\Files_External\Config\UserPlaceholderHandler;
 use OCA\Files_External\Lib\Auth\AmazonS3\AccessKey;
+use OCA\Files_External\Lib\Auth\AmazonS3\CookieAccessKey;
 use OCA\Files_External\Lib\Auth\Builtin;
 use OCA\Files_External\Lib\Auth\NullMechanism;
 use OCA\Files_External\Lib\Auth\OAuth1\OAuth1;
@@ -151,6 +152,7 @@ class Application extends App implements IBackendProvider, IAuthMechanismProvide
 
 			// Specialized mechanisms
 			$container->get(AccessKey::class),
+			$container->get(CookieAccessKey::class),
 			$container->get(KerberosAuth::class),
 			$container->get(KerberosApacheAuth::class),
 		];

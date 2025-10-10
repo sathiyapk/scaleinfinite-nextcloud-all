@@ -409,8 +409,20 @@ abstract class StoragesService {
 			$this->dbConfig->addApplicable($id, DBConfigService::APPLICABLE_TYPE_GLOBAL, null);
 		}
 
+		if ($updatedStorage->getAuthMechanism()->getIdentifier() !== $oldStorage->getAuthMechanism()->getIdentifier()) {
+			$this->dbConfig->setAuthBackend($id, $updatedStorage->getAuthMechanism()->getIdentifier());
+		}
+
 		$changedConfig = array_diff_assoc($updatedStorage->getBackendOptions(), $oldStorage->getBackendOptions());
 		$changedOptions = array_diff_assoc($updatedStorage->getMountOptions(), $oldStorage->getMountOptions());
+
+		$updatedOptions = (array)$updatedStorage->getBackendOptions();
+		foreach (['key', 'secret'] as $field) {
+				if (isset($updatedOptions[$field])) {
+					$changedConfig[$field] = $updatedOptions[$field];
+				}
+		}
+
 
 		foreach ($changedConfig as $key => $value) {
 			if ($value !== DefinitionParameter::UNMODIFIED_PLACEHOLDER) {
@@ -425,9 +437,7 @@ abstract class StoragesService {
 			$this->dbConfig->setMountPoint($id, $updatedStorage->getMountPoint());
 		}
 
-		if ($updatedStorage->getAuthMechanism()->getIdentifier() !== $oldStorage->getAuthMechanism()->getIdentifier()) {
-			$this->dbConfig->setAuthBackend($id, $updatedStorage->getAuthMechanism()->getIdentifier());
-		}
+		
 
 		$this->triggerChangeHooks($oldStorage, $updatedStorage);
 
