@@ -88,6 +88,25 @@ class UserStoragesController extends StoragesController {
 		return parent::show($id, $testOnly);
 	}
 
+
+	 /**
+     * @NoAdminRequired
+     * @NoCSRFRequired
+     * @NoLoggedInRequired
+     */
+	public function getUserStorageCount() {
+
+		$user_storage_count=count($this->service->getStorages());
+		$config = \OC::$server->getConfig();
+        $limit = $config->getSystemValue('external_mount_limit', 3);
+		//$limit=3;
+		if($limit<=$user_storage_count)
+		 return 1;
+		else
+			return 0;
+	}
+
+
 	/**
 	 * Create an external storage entry.
 	 *
@@ -108,6 +127,24 @@ class UserStoragesController extends StoragesController {
 		$backendOptions,
 		$mountOptions
 	) {
+
+
+		//$user_storage=$this->service->getStorages();
+		$user_storage_count=count($this->service->getStorages());
+		$config = \OC::$server->getConfig();
+        $limit = $config->getSystemValue('external_mount_limit', 3);
+
+		//$limit=3;
+		if($limit<=$user_storage_count)
+		{
+			return new DataResponse(
+				[
+					'message' => $this->l10n->t('You Reached Maximum Limit')
+				],
+				Http::STATUS_FORBIDDEN
+			);
+		}
+
 		$canCreateNewLocalStorage = $this->config->getSystemValue('files_external_allow_create_new_local', true);
 		if (!$canCreateNewLocalStorage && $backend === 'local') {
 			return new DataResponse(

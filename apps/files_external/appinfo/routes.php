@@ -23,6 +23,10 @@ return [
 	],
 	'routes' => [
 		[
+			'name' => 'UserStorages#getUserStorageCount',
+			'url' => '/getUserStorageCount',
+			'verb' => 'GET',
+		],[
 			'name' => 'Ajax#getSshKeys',
 			'url' => '/ajax/public_key.php',
 			'verb' => 'POST',
