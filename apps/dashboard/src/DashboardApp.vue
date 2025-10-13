@@ -41,7 +41,7 @@
 													</div> -->
 													<div class="d-flex align-items-center justify-content-between w-100">
 														<span>Your plan</span>
-														<button style="border: 1px solid #6f6c6c;padding: 2px 8px;" type="button" class="btn btn-icon btn-outline-warning" data-bs-toggle="tooltip" data-bs-offset="0,8" data-bs-placement="top" data-bs-custom-class="tooltip-warning" data-bs-original-title="Upgrade your plan">
+														<button style="border: 1px solid #6f6c6c;padding: 2px 8px; background:none;" type="button" class="btn btn-icon btn-outline-warning" data-bs-toggle="tooltip" data-bs-offset="0,8" data-bs-placement="top" data-bs-custom-class="tooltip-warning" data-bs-original-title="Upgrade your plan">
 															<i class="bx bx-edit-alt icon-md" style="#6f6c6c"></i>
 															</button>
 														</div>
@@ -66,7 +66,7 @@
 														</div> -->
 														<div class="d-flex align-items-center justify-content-between w-100">
 															<span>Server Location</span>
-																<button style="border: 1px solid #6f6c6c;padding: 2px 8px;" type="button" class="btn btn-icon btn-outline-danger" data-bs-toggle="tooltip" data-bs-offset="0,8" data-bs-placement="top" data-bs-custom-class="tooltip-danger" data-bs-original-title="Change location">
+																<button style="border: 1px solid #6f6c6c;padding: 2px 8px; background:none;" type="button" class="btn btn-icon btn-outline-danger" data-bs-toggle="tooltip" data-bs-offset="0,8" data-bs-placement="top" data-bs-custom-class="tooltip-danger" data-bs-original-title="Change location">
 															<i class="bx bx-edit-alt icon-md" style="#6f6c6c"></i>
 															</button>
 															</div>
@@ -86,7 +86,7 @@
 														</div>
 													<div class="d-flex align-items-center justify-content-between w-100">
 													<span>No IP Address</span>
-														<button style="border: 1px solid #6f6c6c;padding: 2px 8px;" type="button" class="btn btn-icon btn-outline-primary" data-bs-toggle="tooltip" data-bs-offset="0,8" data-bs-placement="top" data-bs-custom-class="tooltip-primary" data-bs-original-title="Request IP Address">
+														<button style="border: 1px solid #6f6c6c;padding: 2px 8px; background:none;" type="button" class="btn btn-icon btn-outline-primary" data-bs-toggle="tooltip" data-bs-offset="0,8" data-bs-placement="top" data-bs-custom-class="tooltip-primary" data-bs-original-title="Request IP Address">
 															<i class="bx bx-edit-alt icon-md" style="#6f6c6c"></i>
 															</button>
 													</div>

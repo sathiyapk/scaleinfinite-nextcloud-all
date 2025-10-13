@@ -1192,12 +1192,11 @@ $('#MemoryUsage').show();
 												}												
 
 			// Dashboard Installed apps
-let appChart = document.querySelector("#installedApps");			
+			let appChart = document.querySelector("#installedApps");			
 let installedApps = response.data.apps;
 
 if (appChart !== null) {
 
-    // Check if apps exist
     if (!installedApps || installedApps.length === 0) {
         appChart.innerHTML = `
             <div style="
@@ -1211,31 +1210,55 @@ if (appChart !== null) {
                 &nbsp; No App Found
             </div>
         `;
-        return; // stop execution here
+        return;
     }
 
-    // prepare data with port info and dynamic color
-    let data = installedApps.map(app => {
+    // ✅ Sort by date (ascending)
+    installedApps.sort((a, b) => new Date(a.created_date) - new Date(b.created_date));
+
+    // ✅ Prepare bubble data
+    let data = installedApps.map((app, i) => {
+        let parsedDate = new Date(app.created_date);
+
+        // fallback if invalid date
+        if (isNaN(parsedDate)) {
+            // Try to parse manually if your date format is like "13/10/2025" or "13-10-2025"
+            let parts = app.created_date.split(/[-/]/);
+            if (parts.length === 3) {
+                // DD/MM/YYYY format assumed
+                parsedDate = new Date(parts[2], parts[1] - 1, parts[0]);
+            } else {
+                parsedDate = new Date(); // fallback to today
+            }
+        }
+
+        // formatted date for display
+        let dateStr = parsedDate.toLocaleDateString('en-GB', {
+            day: '2-digit', month: 'short', year: 'numeric'
+        });
+
         let bubbleColor = (app.status && app.status.toLowerCase() === "stopped") 
-            ? "#dc3545"   // red if stopped
-            : "#0fb536ff";  // green otherwise
+            ? "#dc3545"
+            : "#0fb536ff";
 
         return {
-            x: app.created_date,
+            x: dateStr,   // ✅ use readable date as label
             y: 1,
-            z: 8,  
-            name: app.name,       
-            status: app.status,   
+            z: 8,
+            name: app.name,
+            status: app.status,
             port: app.port || 8080,
             fillColor: bubbleColor
         };
     });
 
+    console.log("Bubble data:", data);
+
     let chartOptions = {
         chart: {
             type: "bubble",
-            height: 150,
-            width: 300,
+            height: 200,
+            width: "100%",
             toolbar: { show: false }
         },
         plotOptions: {
@@ -1247,94 +1270,92 @@ if (appChart !== null) {
         series: [{ name: "Installed Apps", data: data }],
         xaxis: {
             type: "category",
+            tickPlacement: "between",
             labels: { 
                 style: { fontSize: "12px", colors: "#444" },
-                trim: false,
                 rotate: 0
             },
-            tickPlacement: 'on',
-            offsetX: 0
+            axisTicks: { show: true },   // ✅ show small tick marks
+            axisBorder: { show: true, color: "#999" } // ✅ show horizontal x-axis line
         },
         yaxis: { show: false, min: 0, max: 2 },
-        grid: {
-            yaxis: { lines: { show: false } },
-            xaxis: { lines: { show: false } },
-            padding: { left: 40, right: 40 },
-            margin: { left: 20, right: 20 }
+        grid: { 
+            show: false  // ✅ no grid lines
         },
         dataLabels: { enabled: false },
-
         tooltip: {
-            custom: function({ series, seriesIndex, dataPointIndex, w }) {
-                let app = w.config.series[seriesIndex].data[dataPointIndex];
-                let statusColor = "#6c757d"; 
-                if (app.status) {
-                    let st = app.status.toLowerCase();
-                    if (st === "running") statusColor = "#28a745";
-                    else if (st === "stopped") statusColor = "#dc3545";
-                    else if (st === "pending") statusColor = "#ffc107";
-                }
+    custom: function({ series, seriesIndex, dataPointIndex, w }) {
+        let app = w.config.series[seriesIndex].data[dataPointIndex];
 
-                return `
-                    <div style="
-                        position: relative;
-                        background: linear-gradient(135deg, #f8f9fa, #f8fafbff);
-                        padding: 10px 14px;
-                        border-radius: 8px;
-                        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-                        font-family: 'Segoe UI', Tahoma, sans-serif;
-                        font-size: 13px;
-                        color: #333;
-                        text-align: left;
-                        line-height: 1.5;
-                    ">
-                        <div>
-                            <span style="font-weight:600; color:#007bff;">${app.name}</span>					
-                        </div>
-                        <div style="width: 100%; height: 1px; background-color: #e0e0e0; margin: 8px 0;"></div>
-                        <div><span style="font-weight:500;">Image:</span></div>
-                        <div>
-                            <span style="font-weight:500;">Status:</span> 
-                            <span style="
-                                display:inline-block;
-                                padding:2px 8px;
-                                margin-left:4px;
-                                border-radius:12px;
-                                background:${statusColor};
-                                color:#fff;
-                                font-size:12px;
-                                font-weight:600;
-                            ">
-                            ${app.status}
-                            </span>
-                        </div>
-                        <div><span style="font-weight:500;">Port:</span> ${app.port}</div>
-                        <div style="
-                            position: absolute;
-                            bottom: -6px;
-                            left: 50%;
-                            transform: translateX(-50%);
-                            width: 0;
-                            height: 0;
-                            border-left: 6px solid transparent;
-                            border-right: 6px solid transparent;
-                            border-top: 6px solid #e9ecef;
-                        "></div>
-                    </div>
-                `;
-            }
+        // Format the date & time properly
+        let dateObj = new Date(app.x);
+        let installedDate = dateObj.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+        let installedTime = dateObj.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+        let statusColor = "#6c757d";
+        if (app.status) {
+            let st = app.status.toLowerCase();
+            if (st === "running") statusColor = "#28a745";
+            else if (st === "stopped") statusColor = "#dc3545";
+            else if (st === "pending") statusColor = "#ffc107";
         }
-    };
 
-    new ApexCharts(appChart, chartOptions).render();
+        return `
+            <div style="
+                position: relative;
+                background: linear-gradient(135deg, #f8f9fa, #f8fafbff);
+                padding: 10px 14px;
+                border-radius: 8px;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+                font-family: 'Segoe UI', Tahoma, sans-serif;
+                font-size: 13px;
+                color: #333;
+                text-align: left;
+                line-height: 1.5;
+            ">
+                <div>
+                    <span style="font-weight:600; color:#007bff;">${app.name}</span>					
+                </div>
+                <div style="width: 100%; height: 1px; background-color: #e0e0e0; margin: 8px 0;"></div>
+                <div><span style="font-weight:500;">Image:</span></div>
+                
+                <div>
+                    <span style="font-weight:500;">Status:</span> 
+                    <span style="
+                        display:inline-block;
+                        padding:2px 8px;
+                        margin-left:4px;
+                        border-radius:12px;
+                        background:${statusColor};
+                        color:#fff;
+                        font-size:12px;
+                        font-weight:600;
+                    ">
+                    ${app.status}
+                    </span>
+                </div>
+                <div><span style="font-weight:500;">Port:</span> ${app.port}</div>
+                <div style="
+                    position: absolute;
+                    bottom: -6px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    width: 0;
+                    height: 0;
+                    border-left: 6px solid transparent;
+                    border-right: 6px solid transparent;
+                    border-top: 6px solid #e9ecef;
+                "></div>
+            </div>
+        `;
+    }
 }
 
+    };
 
-
-
-
-
-
+    appChart.innerHTML = "";
+    new ApexCharts(appChart, chartOptions).render();
+}
 
 
 
