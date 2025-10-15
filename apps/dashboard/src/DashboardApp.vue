@@ -39,8 +39,11 @@
 															</h5>
 														</div>                                       
 													</div> -->
-													<div class="d-flex align-items-center justify-content-between w-100">
-														<span>Your plan</span>
+													<div class="d-flex align-items-center justify-content-between w-100">														
+														 <div class="d-flex flex-column">
+																<span style="font-size: 12px; color: #6f6c6c;">Your plan</span>
+																<span style="font-size: 18px; font-weight: 600; color: rgb(75, 74, 74);">Free Plan</span>
+															</div>
 														<button style="border: 1px solid #6f6c6c;padding: 2px 8px; background:none;" type="button" class="btn btn-icon btn-outline-warning" data-bs-toggle="tooltip" data-bs-offset="0,8" data-bs-placement="top" data-bs-custom-class="tooltip-warning" data-bs-original-title="Upgrade your plan">
 															<i class="bx bx-edit-alt icon-md" style="#6f6c6c"></i>
 															</button>
@@ -65,7 +68,10 @@
 															</div>                                       
 														</div> -->
 														<div class="d-flex align-items-center justify-content-between w-100">
-															<span>Server Location</span>
+															 <div class="d-flex flex-column">
+																<span style="font-size: 12px; color: #6f6c6c;">Server Location</span>
+																<span style="font-size: 18px; font-weight: 600; color: rgb(75, 74, 74);">France</span>
+															</div>
 																<button style="border: 1px solid #6f6c6c;padding: 2px 8px; background:none;" type="button" class="btn btn-icon btn-outline-danger" data-bs-toggle="tooltip" data-bs-offset="0,8" data-bs-placement="top" data-bs-custom-class="tooltip-danger" data-bs-original-title="Change location">
 															<i class="bx bx-edit-alt icon-md" style="#6f6c6c"></i>
 															</button>
@@ -85,7 +91,10 @@
 														</div>
 														</div>
 													<div class="d-flex align-items-center justify-content-between w-100">
-													<span>No IP Address</span>
+													 <div class="d-flex flex-column">
+																<span style="font-size: 12px; color: #6f6c6c;">No IP Address</span>
+																<span style="font-size: 18px; font-weight: 600; color: rgb(75, 74, 74);">Request IP</span>
+															</div>
 														<button style="border: 1px solid #6f6c6c;padding: 2px 8px; background:none;" type="button" class="btn btn-icon btn-outline-primary" data-bs-toggle="tooltip" data-bs-offset="0,8" data-bs-placement="top" data-bs-custom-class="tooltip-primary" data-bs-original-title="Request IP Address">
 															<i class="bx bx-edit-alt icon-md" style="#6f6c6c"></i>
 															</button>
@@ -120,7 +129,7 @@
 									<div style="flex: 1; height: 1px; background-color: #e0e0e0;"></div>
 									</div>
 									<div class="w-100 d-flex justify-content-center">
-										<span class="badge rounded-pill text-bg-info"  style="text-transform: none; font-size: 0.8rem;">Added of External Storage: 3/4</span>
+										<span class="badge rounded-pill text-bg-info"  style="text-transform: none; font-size: 0.8rem;">Added of External Storage: <span id="external_mount"></span> </span>
 										
 									</div>
 										<!-- <div class="progress" style="height: 20px; width:100%;" id="progressbar">										

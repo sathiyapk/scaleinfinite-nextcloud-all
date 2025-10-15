@@ -92,8 +92,7 @@
                                     <h5 class="mt-2">📂 Root Files</h5>
                                  </div>
                                  <div class="card-body">
-                                  <div id="jstree-context-menu" style="max-height: 350px; overflow: auto; margin:0px"></div>
-                                                             
+                                  <div id="jstree-install-app-dashboard-root" style="max-height: 350px; overflow: auto; margin:0px"></div>                                                             
                                  </div>                                 
                               </div>
                            </div>
