@@ -107,6 +107,20 @@ class UserStoragesController extends StoragesController {
 	}
 
 
+	 /**
+     * @NoAdminRequired
+     * @NoCSRFRequired
+     * @NoLoggedInRequired
+     */
+	public function getUserStorageLimit() {
+
+		$user_storage_count=count($this->service->getStorages());
+		$config = \OC::$server->getConfig();
+        $limit = $config->getSystemValue('external_mount_limit', 3);
+		return "$user_storage_count/$limit";
+	}
+
+
 	/**
 	 * Create an external storage entry.
 	 *

@@ -27,6 +27,10 @@ return [
 			'url' => '/getUserStorageCount',
 			'verb' => 'GET',
 		],[
+			'name' => 'UserStorages#getUserStorageLimit',
+			'url' => '/getUserStorageLimit',
+			'verb' => 'GET',
+		],[
 			'name' => 'Ajax#getSshKeys',
 			'url' => '/ajax/public_key.php',
 			'verb' => 'POST',

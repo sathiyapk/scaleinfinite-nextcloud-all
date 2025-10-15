@@ -1248,6 +1248,7 @@ if (appChart !== null) {
             name: app.name,
             status: app.status,
             port: app.port || 8080,
+			 image: app.image || 8080,
             fillColor: bubbleColor
         };
     });
@@ -1317,7 +1318,7 @@ if (appChart !== null) {
                     <span style="font-weight:600; color:#007bff;">${app.name}</span>					
                 </div>
                 <div style="width: 100%; height: 1px; background-color: #e0e0e0; margin: 8px 0;"></div>
-                <div><span style="font-weight:500;">Image:</span></div>
+                <div><span style="font-weight:500;">Image:</span>${app.image}</div>
                 
                 <div>
                     <span style="font-weight:500;">Status:</span> 
@@ -1782,8 +1783,9 @@ function timeConverter(UNIX_timestamp){
   }
   //https://cloud.fltt.fr/ocs/v2.php/apps/activity/api/v2/activity/all?format=json&previews=true&since=0
 //https://cloud.fltt.fr/index.php/apps/cloudfloat/activity
+// window.location.origin+"/ocs/v2.php/apps/activity/api/v2/activity/all?format=json&previews=true&since=0",
 $.ajax({
-	url: window.location.origin+"/ocs/v2.php/apps/activity/api/v2/activity/all?format=json&previews=true&since=0",
+	url: window.location.origin+"/apps/cloudfloat/getallactivity",
 	method: 'GET',
 	data: {
 	'user':1,
@@ -1792,7 +1794,7 @@ $.ajax({
 	success: function(response) 
 	{
 	//	console.log(response);
-	var textData=response.ocs.data;
+	var textData=response.data;
 	//console.log(textData);
 	$('.file_activity_loader').hide();
 	$('#file_activity_txt').show();
@@ -1896,6 +1898,24 @@ console.log(response.apps);
 		  
 		 });
 		
+		
+	
+	},
+	error: function(error) {
+
+	}
+});
+
+$.ajax({
+	url: window.location.origin+"/index.php/apps/files_external/getUserStorageLimit",
+	method: 'GET',
+	data: {
+	'user':1,
+	},
+	dataType: 'json',
+	success: function(response) 
+	{
+		$('#external_mount').text(response);
 		
 	
 	},
