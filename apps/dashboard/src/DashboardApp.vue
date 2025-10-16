@@ -119,7 +119,7 @@
 								<div class="d-flex flex-column flex-sm-row flex-wrap justify-content-between gap-4">
 								<!-- Item 1 -->
 									<div class="d-flex flex-column align-items-center text-center ">  
-									<div class="chart-wrapper" style="min-height:0px; height:90px;">
+									<div class="chart-wrapper" style="min-height:0px; height:100px;">
 										<div id="storageUsedBar"></div>   
 										<div class="spinner"></div>
 									</div>

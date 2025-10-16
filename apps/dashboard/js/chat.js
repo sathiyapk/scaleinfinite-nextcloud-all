@@ -1119,77 +1119,117 @@ $('#MemoryUsage').show();
 											success: function(response) 
 											{
 											console.log(response.data.storage_used);
-																				// Used Storage
-											var storage_used=response.data.storage_used;
-											var hours_spent=response.data.hours_spent;
-											var installed_app=response.data.installed_app;
-											var running_app=response.data.running_app;
+																				
+											// Used Storage
+											var storage_used = response.data.storage_used;   // e.g. 11351.92 MB
+var hours_spent = response.data.hours_spent;
+var installed_app = response.data.installed_app;
+var running_app = response.data.running_app;
 
-											let sub = document.querySelector("#storageUsedBar");
-											if (sub !== null) {
-													let total = 1000; // 1GB = 1000MB
-													let used = storage_used; // Example: 700MB used
-													let free = total - used;
+let sub = document.querySelector("#storageUsedBar");
+if (sub !== null) {
+    // --- Handle unit conversion automatically ---
+    let total = 1024; // 1 GB = 1024 MB
+    let unit = "MB";
 
-													let p = {
-														chart: {
-															type: "bar",
-															height: 135,
-															stacked: true,
-															sparkline: { enabled: true }
-														},
-														plotOptions: {
-															bar: {
-																horizontal: true,
-																barHeight: "25%",
-																borderRadius: 5,
-																dataLabels: {
-																	position: "center"
-																}
-															}
-														},
-														series: [
-															{ name: "Used", data: [used] },
-															{ name: "Free", data: [free] }
-														],
-														colors: ["#ff0808ff", "#d1cdcdff"],
-														xaxis: {
-															max: total,
-															labels: { show: false },
-															axisBorder: { show: false },
-															axisTicks: { show: false }
-														},
-														states: {
-															normal: {
-																filter: {
-																type: 'none'
-																}
-															},
-															hover: {
-																filter: {
-																type: 'none'
-																}
-															},
-														},
-														yaxis: { show: false },
-														dataLabels: {
-															enabled: true,
-															// formatter: function () {
-															// 	return `${used}MB / ${total}MB`;
-															// },
-															style: {
-																colors: ["#fff"],
-																fontSize: "13px",
-																fontWeight: "600"
-															},
-															background: { enabled: false }
-														},
-														tooltip: { enabled: false },
-														legend: { show: false }
-													};
+    // Convert to GB if larger than 1GB
+    if (storage_used > 1024) {
+        storage_used = storage_used / 1024;
+        total = total / 1024;
+        unit = "GB";
+    }
 
-													new ApexCharts(sub, p).render();
-												}												
+    // --- Prevent negative values ---
+    let used = parseFloat(storage_used.toFixed(2));
+    let free = Math.max(total - used, 0);
+
+    // --- Remove any previous info (for re-render cases) ---
+    let existingInfo = document.querySelector("#storageUsedInfo");
+    if (existingInfo) existingInfo.remove();
+
+    // --- Create compact info section above chart ---
+    let info = document.createElement("div");
+    info.id = "storageUsedInfo";
+    info.style.textAlign = "center";
+    info.style.marginBottom = "2px"; // reduced from 8px
+    info.style.fontSize = "13px";
+    info.style.fontWeight = "600";
+    info.style.lineHeight = "1.2";
+    info.style.padding = "0";
+    info.innerHTML = `
+        <span style="color:#ff0808ff;">Used: ${used.toFixed(2)} ${unit}</span>
+        &nbsp;&nbsp;|&nbsp;&nbsp;
+        <span style="color:#6b6b6b;">Free: ${free.toFixed(2)} ${unit}</span>
+    `;
+
+    // Insert the info bar just above the chart
+    sub.parentNode.insertBefore(info, sub);
+
+    // --- Chart configuration ---
+    let p = {
+        chart: {
+            type: "bar",
+            height: 100, // slightly smaller to fit tighter layout 
+            stacked: true,
+            sparkline: { enabled: true },
+            toolbar: { show: false },
+            animations: { enabled: true }
+        },
+        grid: {
+            padding: {
+                top: -15, // remove default top padding from ApexCharts 
+                bottom: 0,
+                left: 0,
+                right: 0
+            }
+        },
+        plotOptions: {
+            bar: {
+                horizontal: true,
+                barHeight: "25%",
+                borderRadius: 5,
+                dataLabels: { position: "center" }
+            }
+        },
+        series: [
+            { name: "Used", data: [used] },
+            { name: "Free", data: [free] }
+        ],
+        colors: ["#ff0808ff", "#d1cdcdff"],
+        xaxis: {
+            max: total,
+            labels: { show: false },
+            axisBorder: { show: false },
+            axisTicks: { show: false }
+        },
+        states: {
+            normal: { filter: { type: 'none' } },
+            hover: { filter: { type: 'none' } }
+        },
+        yaxis: { show: false },
+        dataLabels: {
+            enabled: true,
+            formatter: function () {
+                return `${used.toFixed(2)} ${unit} / ${total.toFixed(2)} ${unit}`;
+            },
+            style: {
+                colors: ["#fff"],
+                fontSize: "12px",
+                fontWeight: "600"
+            },
+            background: { enabled: false }
+        },
+        tooltip: { enabled: false },
+        legend: { show: false }
+    };
+
+    // --- Render the chart ---
+    new ApexCharts(sub, p).render();
+}
+
+
+
+											//Used Storage end										
 
 			// Dashboard Installed apps
 			let appChart = document.querySelector("#installedApps");			
@@ -1242,13 +1282,13 @@ if (appChart !== null) {
             : "#0fb536ff";
 
         return {
-            x: dateStr,   // ✅ use readable date as label
+            x: app.created_date,   // ✅ use readable date as label
             y: 1,
             z: 8,
             name: app.name,
             status: app.status,
             port: app.port || 8080,
-			 image: app.image || 8080,
+			 image: app.image,
             fillColor: bubbleColor
         };
     });
