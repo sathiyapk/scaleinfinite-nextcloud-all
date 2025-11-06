@@ -6,175 +6,116 @@
 	<div id="app-dashboard">
 		<div class="container-xxl flex-grow-1 container-p-y">			
 		<!-- 1st row -->
-				 <div class="row g-4 mb-4">
-                      <!-- leftside Card -->
-							<div class="col-12 col-xl-4">
-									<div class="card h-100">
-										<h5 class="mb-0" style="align-items: center;display: flex;justify-content: center; ">
-											<span style="padding-top: 10px;">{{ greeting.text }}</span>
-											<span style="font-size: 1.5rem;padding: 10px 0px 0px 10px;  text-transform:uppercase;"> {{ displayName }} </span>
-										</h5>
-										
-									<div class="p-4 d-flex flex-column flex-md-row justify-content-between gap-3" >
-										<div class="mt-auto text-center">
-											<img src="../img/man-working.png" class="img-fluid mb-2" style="max-height: 160px; transform: scaleX(-1);" alt="View Badge User" />
-										</div>
-										<div class="flex-fill">
-										<div class="report-list">
-												<div class="report-list-item rounded-2 pb-1">
-													<div class="d-flex align-items-center gap-3 flex-grow-" style="border-radius: 5px; border:1px solid #e8e2e2;">
-														<div class="avatar avatar-lg" style="padding: 10px;border: 1px solid #cdcdca2b;">
-															<div class="avatar-initial  rounded" style="padding: 10px;background: #f1f2f3;">
-															<div class="text-warning">
-																<img src="../img/update-plan.png" alt="France"  style="width:50px; height:auto">
-															<!-- <i class="bx bx-plus-circle" style="font-size: 1.7rem !important;"></i> -->
-															</div>
-														</div>
-														</div>
-													<!-- <div class="d-flex justify-content-between align-items-center w-100 flex-wrap gap-2">
-														<div class="d-flex flex-column">
-														<span>Your plan</span>
-														<h5 class="mb-0">
-															<button data-v-1d90c380="" type="button" class="btn btn-primary btn-lg" style="background-color: #ffab00;color: #fff;">Upgrade Plan</button>
-															</h5>
-														</div>                                       
-													</div> -->
-													<div class="d-flex align-items-center justify-content-between w-100">														
-														 <div class="d-flex flex-column">
-																<span style="font-size: 12px; color: #6f6c6c;">Your plan</span>
-																<span style="font-size: 18px; font-weight: 600; color: rgb(75, 74, 74);">Free Plan</span>
-															</div>
-														<button style="border: 1px solid #6f6c6c;padding: 2px 8px; background:none;" type="button" class="btn btn-icon btn-outline-warning" data-bs-toggle="tooltip" data-bs-offset="0,8" data-bs-placement="top" data-bs-custom-class="tooltip-warning" data-bs-original-title="Upgrade your plan">
-															<i class="bx bx-edit-alt icon-md" style="#6f6c6c"></i>
-															</button>
-														</div>
-													</div>
-												</div>
-												<div class="report-list-item rounded-2 pb-1">
-													<div class="d-flex align-items-center gap-3 flex-grow-" style="border-radius: 5px; border:1px solid #e8e2e2;">
-														<div class="avatar avatar-lg" style="padding: 10px;border: 1px solid #cdcdca2b;">
-															<div class="avatar-initial  rounded" style="padding: 10px;background: #f1f2f3;">
-																<div class="text-success">
-																	<!-- <img src="https://flagcdn.com/fr.svg" alt="France" width="20"> -->
-																	 <img src="../img/data-center.png" alt="France"  style="width:50px; height:auto">
-																<!-- <i class="bx bx-download" style="font-size: 1.7rem !important;"></i> -->
-																</div>
-															</div>
-														</div>
-														<!-- <div class="d-flex justify-content-between align-items-center w-100 flex-wrap gap-2">
-															<div class="d-flex flex-column">
-															<span>Change Data Center</span>
-															<h5 class="mb-0"> France</h5>
-															</div>                                       
-														</div> -->
-														<div class="d-flex align-items-center justify-content-between w-100">
-															 <div class="d-flex flex-column">
-																<span style="font-size: 12px; color: #6f6c6c;">Server Location</span>
-																<span style="font-size: 18px; font-weight: 600; color: rgb(75, 74, 74);">France</span>
-															</div>
-																<button style="border: 1px solid #6f6c6c;padding: 2px 8px; background:none;" type="button" class="btn btn-icon btn-outline-danger" data-bs-toggle="tooltip" data-bs-offset="0,8" data-bs-placement="top" data-bs-custom-class="tooltip-danger" data-bs-original-title="Change location">
-															<i class="bx bx-edit-alt icon-md" style="#6f6c6c"></i>
-															</button>
-															</div>
-													</div>
-												</div>
-
-												
-												<div class="report-list-item rounded-2 pb-1"> 
-													<div class="d-flex align-items-center gap-3 flex-grow-" style="border-radius: 5px; border:1px solid #e8e2e2;">
-														<div class="avatar avatar-lg" style="padding: 10px;border: 1px solid #cdcdca2b;">
-															<div class="avatar-initial  rounded" style="padding: 10px;background: #f1f2f3;">
-															<div class="text-primary">
-															<!-- <i class="bx bx-globe" style="font-size: 1.7rem !important;"></i> -->
-															 <img src="../img/ip-address.png" alt="France"  style="width:50px; height:auto">
-															</div>
-														</div>
-														</div>
-													<div class="d-flex align-items-center justify-content-between w-100">
-													 <div class="d-flex flex-column">
-																<span style="font-size: 12px; color: #6f6c6c;">No IP Address</span>
-																<span style="font-size: 18px; font-weight: 600; color: rgb(75, 74, 74);">Request IP</span>
-															</div>
-														<button style="border: 1px solid #6f6c6c;padding: 2px 8px; background:none;" type="button" class="btn btn-icon btn-outline-primary" data-bs-toggle="tooltip" data-bs-offset="0,8" data-bs-placement="top" data-bs-custom-class="tooltip-primary" data-bs-original-title="Request IP Address">
-															<i class="bx bx-edit-alt icon-md" style="#6f6c6c"></i>
-															</button>
-													</div>
-													</div>
-												</div>
-												
-											</div>
-										</div>
-										<!-- Image SVG -->
-										
-									</div>
-									</div>
+				<div class="row g-4 mb-4">
+					<!-- Leftside Card -->
+					<div class="col-12 col-md-6 col-xl-3">
+						<div class="card h-100">
+						<div class="p-4 d-flex flex-column gap-3">
+							<div class="report-list">
+							<!-- Your Plan -->
+							<div class="report-list-item rounded-2 pb-2 border d-flex align-items-center gap-3 p-2 ">
+								<div class="avatar avatar-lg p-2 border rounded">
+								<div class="avatar-initial rounded p-2 bg-light">
+									<img src="../img/update-plan.png" alt="Plan" style="width: 50px; height: auto;">
+								</div>
+								</div>
+								<div class="d-flex align-items-center justify-content-between w-100 flex-wrap">
+								<div class="d-flex flex-column">
+									<span class="text-muted small">Your plan</span>
+									<span class="fw-semibold" style="font-size: 1rem;">Free Plan</span>
+								</div>
+								<button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Upgrade your plan">
+									<i class="bx bx-edit-alt"></i>
+								</button>
+								</div>
 							</div>
-                    
-					<!-- Rightside card-->
-					<div class="col-12 col-xl-8">
-							<div class="card h-100">
-							<div class="p-4">
-								
-								<p>Your progress this week is Awesome. Let's keep it up and get a lot of points reward!</p>
-								<div class="d-flex flex-column flex-sm-row flex-wrap justify-content-between gap-4">
-								<!-- Item 1 -->
-									<div class="d-flex flex-column align-items-center text-center ">  
-									<div class="chart-wrapper" style="min-height:0px; height:100px;">
-										<div id="storageUsedBar"></div>   
-										<div class="spinner"></div>
-									</div>
-									<div style="width: 100%; display: flex; align-items: center; margin: 12px 0;">
+
+							<!-- Server Location -->
+							<div class="report-list-item rounded-2 pb-2 border d-flex align-items-center gap-3 p-2 ">
+								<div class="avatar avatar-lg p-2 border rounded">
+								<div class="avatar-initial rounded p-2 bg-light">
+									<img src="../img/data-center.png" alt="Data Center" style="width: 50px; height: auto;">
+								</div>
+								</div>
+								<div class="d-flex align-items-center justify-content-between w-100 flex-wrap">
+								<div class="d-flex flex-column">
+									<span class="text-muted small">Server Location</span>
+									<span class="fw-semibold" style="font-size: 1rem;">France</span>
+								</div>
+								<button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Change location">
+									<i class="bx bx-edit-alt"></i>
+								</button>
+								</div>
+							</div>
+
+							<!-- IP Address -->
+							<div class="report-list-item rounded-2 border d-flex align-items-center gap-3 p-2 ">
+								<div class="avatar avatar-lg p-2 border rounded">
+								<div class="avatar-initial rounded p-2 bg-light">
+									<img src="../img/ip-address.png" alt="IP Address" style="width: 50px; height: auto;">
+								</div>
+								</div>
+								<div class="d-flex align-items-center justify-content-between w-100 flex-wrap">
+								<div class="d-flex flex-column">
+									<span class="text-muted small">No IP Address</span>
+									<span class="fw-semibold" style="font-size: 1rem;">Request IP</span>
+								</div>
+								<button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Request IP Address">
+									<i class="bx bx-edit-alt"></i>
+								</button>
+								</div>
+							</div>
+							</div>
+						</div>
+						</div>
+					</div>
+
+					<!-- Used Storage -->
+					<div class="col-12 col-md-6 col-xl-3">
+						<div class="card h-100">
+						<div class="p-4 text-center d-flex flex-column align-items-center">
+							<p class="mb-2 fw-medium" style="font-size: 1.1rem;">Used Storage</p>
+							<div class="mt-4 w-100" style="height: 100px;">
+							<div id="storageUsedBar"></div>
+							<div class="spinner"></div>
+							</div>
+							<div style="width: 100%; display: flex; align-items: center; margin: 12px 0;">
 									<div style="flex: 1; height: 1px; background-color: #e0e0e0;"></div>
 									<span style="padding: 0 8px; font-size: 0.75rem; color: #555;">External Storage</span>
 									<div style="flex: 1; height: 1px; background-color: #e0e0e0;"></div>
 									</div>
-									<div class="w-100 d-flex justify-content-center">
-										<span class="badge rounded-pill text-bg-info"  style="text-transform: none; font-size: 0.8rem;">Added of External Storage: <span id="external_mount"></span> </span>
-										
-									</div>
-										<!-- <div class="progress" style="height: 20px; width:100%;" id="progressbar">										
-										<div
-											class="progress-bar"
-											role="progressbar"
-											:style="{ width: installedAppsPercentage + '%' }"
-											:aria-valuenow="installedAppsPercentage"
-											aria-valuemin="0"
-											:aria-valuemax="100"
-											style="display: flex; align-items: center; justify-content: center;">
-											{{ installedAppsText }}
-										</div>											
-										</div> -->
-										<div style="width: 100%; height: 1px; background-color: #e0e0e0; margin: 8px 0;"></div>
-									<div>										
-									<p class="mb-0 fw-medium" style="font-size: 1.1rem; ">Used Storage</p>									
-									</div>
-								</div>
+							<span class="badge rounded-pill text-bg-info" style="font-size: 0.8rem;">Added External Storage: <span id="external_mount"></span></span>
+						</div>
+						</div>
+					</div>
 
-								<!-- Item 2 -->
-								<div class="d-flex flex-column align-items-center text-center "> 
-									<div class="chart-wrapper">
-										<div id="installedApps"></div> 
-										<div class="spinner"></div> 
-									</div>	
-									<div>
-									<p class="mb-0 fw-medium" style="font-size: 1.1rem;">Installed Apps</p>                                  
-									</div>
-								</div>
+					<!-- Installed Apps -->
+					<div class="col-12 col-md-6 col-xl-3">
+						<div class="card h-100">
+						<div class="p-4 text-center d-flex flex-column align-items-center">
+							<p class="mb-2 fw-medium" style="font-size: 1.1rem;">Installed Apps</p>
+							<div class="chart-wrapper w-100">
+							<div id="installedApps"></div>
+							<div class="spinner"></div>
+							</div>
+						</div>
+						</div>
+					</div>
 
-								<!-- Item 3 -->
-							
-								<div class="d-flex flex-column align-items-center text-center ">  
-									<div class="chart-wrapper">
-										<div id="timeSpent"></div> 
-										<div class="spinner"></div> 
-									</div>	                      
-									<div> <p class="mb-0 fw-medium" style="font-size: 1.1rem;">Hours Spent</p>   </div>
-								</div>
-								</div>
+					<!-- Hours Spent -->
+					<div class="col-12 col-md-6 col-xl-3">
+						<div class="card h-100">
+						<div class="p-4 text-center d-flex flex-column align-items-center">
+							<p class="mb-2 fw-medium" style="font-size: 1.1rem;">Hours Spent</p>
+							<div class="chart-wrapper w-100" style="height: 100px;">
+							<div id="timeSpent"></div>
+							<div class="spinner"></div>
 							</div>
-							</div>
-                      </div>
-					  </div>
+						</div>
+						</div>
+					</div>
+					</div>
+
 		</div>
 		<!-- 2nd row -->
 <div class="container-xxl flex-grow-1">

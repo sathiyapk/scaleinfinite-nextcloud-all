@@ -3,17 +3,19 @@
  - SPDX-License-Identifier: AGPL-3.0-or-later
  -->
 <template>
-	<div class="row">
-                     <div  class="col-12 col-lg-9 order-2 order-md-3 order-lg-2 mb-4">
-                        <div class="card">
-                           <div class="row row-bordered g-0">
-                              <div class="col-md-7">                             
-                                 <div class="card-header flex-grow-0">
-                                    <div class="d-flex align-items-center">
-                                      <div class="avatar flex-shrink-0">
-                                       <img src="https://cloud.fltt.fr/apps/dashboard/img/activity.png"  class="rounded p-2">    
-                                      </div>
-                                      <div class="d-flex w-100 flex-wrap justify-content-between gap-1">                                       
+	<div class="row g-4 mb-4">
+  <!-- Storage (Main Chart) -->
+  <div class="col-12 col-lg-6">
+    <div class="card h-100">
+      <div class="row g-0">
+        <div class="col-12">
+          <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
+            <div class="d-flex align-items-center gap-2">
+              <div class="avatar flex-shrink-0">
+                <img src="https://cloud.fltt.fr/apps/dashboard/img/activity.png" class="rounded p-2" />
+              </div>           
+            </div>
+            <div class="d-flex w-100 flex-wrap justify-content-between gap-1">                                       
                                           <h5 class="card-title mt-2">Storage </h5>   
                                           <div class="col-4 p-1">
                                                  <select id="defaultSelect" class="form-select">                                                      
@@ -21,22 +23,10 @@
                                                       <option value="2" class="dropdown-item ">Last Month</option>
                                                       <option value="3" class="dropdown-item ">Last Year</option>
                                                 </select>
-                                           </div>                                    
-                                          <!-- <div class="dropdown">
-                                             <button class="btn text-muted p-0" type="button" id="" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                             <i class="bx bx-dots-vertical-rounded bx-sm"></i>
-                                             </button>
-                                             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="">
-                                             <a class="dropdown-item" href="javascript:void(0);">Last 28 Days</a>
-                                             <a class="dropdown-item" href="javascript:void(0);">Last Month</a>
-                                             <a class="dropdown-item" href="javascript:void(0);">Last Year</a>
-                                             </div>
-                                          </div> -->
+                                           </div>  
                                       </div>
-                                    </div>
-                                  </div>
-                                    <div class="card-body">
-                                       <!-- <div id="fileactivityChart"></div> -->
+          </div>
+           <div class="card-body">
                                         <div class="loader" style="position: relative;">
                                              <div style="position: absolute; inset: 0; background: #fff; z-index: 9999; display: flex; align-items: center; justify-content: center;">
                                              <div class="spinner-border text-primary" role="status">
@@ -48,17 +38,21 @@
                                              <div id="fileactivityChart"></div>
                                        </div>
                                     </div>
-                              </div>
-                              <!-- /Compute line chart end -->
-                              <!-- Compute Usage -->
-                              <div class="col-md-5">
-                                 <div class="pt-4  d-flex justify-content-left" >
-                                    <div class="avatar card-title mb-0">
-                                       <img src="https://cloud.fltt.fr/apps/dashboard/img/activity.png"  class="rounded p-2">                                    
-                                    </div>
-                                    <h5 class="card-title mt-2">Storage Activities</h5>
-                                    </div> 
-                                    <div class="card overflow-hidden" > 
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Storage Activities -->
+  <div class="col-12 col-md-6 col-lg-3">
+    <div class="card h-100">
+      <div class="card-header d-flex align-items-center gap-2">
+        <div class="avatar flex-shrink-0">
+          <img src="https://cloud.fltt.fr/apps/dashboard/img/activity.png" class="rounded p-2" />
+        </div>
+        <h5 class="card-title mb-0">Storage Activities</h5>
+      </div>
+                    <div class="card overflow-hidden" > 
                                     <div class="card-body mb-5 "  id="storage-activity-scroll" style="height:300px;">
                                      <div class="file_activity_loader" style="position: relative;">
                         <div style="position: absolute; inset: 0; background: #fff; z-index: 9999; display: flex; align-items: center; justify-content: center;">
@@ -72,34 +66,26 @@
                                           
                                        </ul>
                                     </div>   
-                                 </div>                             
-                              </div>
-                             
-                           </div>
-                        </div>
-                     </div>
-             
-                     <!-- /closed chart -->
-                      <!-- Storate activity start -->
-                     <div class="col-12 col-md-8 col-lg-3 order-3 order-md-2">
-                        <div class="row">                           
-                           <div class="col-12 mb-4">
-                              <div class="card overflow-hidden "  style="height:415px;">
-                                 <div class="card-header d-flex justify-content-left pb-1" >
-                                    <div class="avatar card-title mb-0">
-                                       <img src="https://cloud.fltt.fr/apps/dashboard/img/activity.png"  class="rounded p-2">                                    
-                                    </div>
-                                    <h5 class="mt-2">📂 Root Files</h5>
-                                 </div>
-                                 <div class="card-body">
-                                  <div id="jstree-install-app-dashboard-root" style="max-height: 350px; overflow: auto; margin:0px; padding:10px;"></div>                                                             
-                                 </div>                                 
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                     <!-- compute activity closed -->
-                  </div>
+                                 </div>    
+    </div>
+  </div>
+
+  <!-- Root Files -->
+  <div class="col-12 col-md-6 col-lg-3">
+    <div class="card h-100">
+      <div class="card-header d-flex align-items-center gap-2">
+        <div class="avatar flex-shrink-0">
+          <img src="https://cloud.fltt.fr/apps/dashboard/img/activity.png" class="rounded p-2" />
+        </div>
+        <h5 class="card-title mb-0">📂 Root Files</h5>
+      </div>
+      <div class="card-body" style="max-height: 350px; overflow-y: auto;">
+        <div id="jstree-install-app-dashboard-root"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
 </template>
 <script>
 import config from "../config/config.js";

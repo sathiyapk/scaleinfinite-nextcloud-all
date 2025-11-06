@@ -3,262 +3,186 @@
  - SPDX-License-Identifier: AGPL-3.0-or-later
  -->
 <template>
-   <div class="row">
-                     <div  class="col-12 col-lg-8 order-2 order-md-3 order-lg-2 mb-4">
-                        <div class="card" >
-                           <div class="row row-bordered g-0">
-                              <div class="col-md-7">
-                                 <div class="">
-                                    <div class="card-header">
-                                       <ul class="nav nav-pills card-header-pills" role="tablist">
-                                          <li class="nav-item">
-                                             <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab" data-bs-target="#tab_totalcpuUsage" aria-controls="tab_totalcpuUsage" aria-selected="true">CPU Usage</button>
-                                          </li>
-                                          <li class="nav-item">
-                                             <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#tab_totalMemoryUsage" aria-controls="tab_totalMemoryUsage" aria-selected="false"> Memory Usage</button>
-                                          </li>
-                                          <li class="nav-item">
-                                             <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#tab_networkUsage" aria-controls="tab_networkUsage" aria-selected="false"> Network Usage</button>
-                                          </li>
-                                          <li class="nav-item">
-                                             <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#tab_ioUsage" aria-controls="tab_ioUsage" aria-selected="false"> I/O Usage</button>
-                                          </li>
-                                       </ul>
-                                    </div>
-                                    <div class="card-body">
-                                       <div class="tab-content p-0">
-                                          <div class="tab-pane fade show active" id="tab_totalcpuUsage" role="tabpanel">
-                                             <div class="justify-content-left d-flex">
-                                                <div class="align-item-right p-1"  >
-                                                   <div id="cpu_pod_container">
-                                                       <div class="col-9">        
-                                                    <select id="cpu_pod" class="form-select form-select-md">
-                                                      <option value="0">All Pods</option>
-                                                    </select>
-                                                    </div>
-                                                    </div>
-                                                </div>
-                                                 <div class="col-3 p-1">
-                                                 <select id="defaultSelect" class="form-select cpu_period">                                                      
-                                                      <option value="1" class="dropdown-item ">6 Hrs</option>
-                                                      <option value="2" class="dropdown-item ">24 Hrs</option>
-                                                      <option value="3" class="dropdown-item ">48 Hrs</option>
-                                                </select>
-                                                </div>
-                                             </div>
-                                                      <div class="totalCPUusage_loader" style="position: relative;">
-                                                            <div style="position: absolute; inset: 0; background: #fff; z-index: 9999; display: flex; align-items: center; justify-content: center;">
-                                                               <div class="spinner-border text-primary" role="status">
-                                                                  <span class="visually-hidden">Loading...</span>
-                                                               </div>
-                                                            </div>
-                                                      </div>
-                                                      <div class="chart-scroll-wrapper_cpu_usage">
-                                                               <div id="totalCPUusage" class="px-2"></div>
-                                                      </div>
-                                          </div>
-                                          <div class="tab-pane fade" id="tab_totalMemoryUsage" role="tabpanel">
-                                             <div class="justify-content-left d-flex">
-                                                <div class="align-item-right p-1">
-                                                    <div id="memory_pod_container"> 
-                                                         <div class="col-9 ">        
-                                                            <select id="memory_pod" class="form-select form-select-md">
-                                                            <option value="0">All Pods</option>
-                                                            </select>
-                                                      </div>
-                                                    </div> 
-                                                </div>
-                                                <!-- <div class="dropdown">
-                                                   <button class="btn p-0" type="button" id="totalIncome" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                   <i class="bx bx-dots-vertical-rounded bx-sm text-muted"></i>
-                                                   </button>
-                                                   <div class="dropdown-menu dropdown-menu-end background-white" aria-labelledby="totalIncome">
-                                                       <a class="dropdown-item memory_period" data-value="1" >6 Hours</a>
-                                                       <a class="dropdown-item memory_period" data-value="2" >24 Hours</a>
-                                                       <a class="dropdown-item memory_period" data-value="3" >48 Hours</a>
-                                                   </div>
-                                                </div> -->
-                                                 <div class="col-3 p-1">
-                                                 <select id="defaultSelect" class="form-select memory_period">                                                      
-                                                      <option value="1" class="dropdown-item ">6 Hrs</option>
-                                                      <option value="2" class="dropdown-item ">24 Hrs</option>
-                                                      <option value="3" class="dropdown-item ">48 Hrs</option>
-                                                </select>
-                                                </div>
-                                             </div>
-                                             <div class="totalMemoryUsage_loader" style="position: relative;">
-                        <div style="position: absolute; inset: 0; background: #fff; z-index: 9999; display: flex; align-items: center; justify-content: center;">
-                          <div class="spinner-border text-primary" role="status">
-                            <span class="visually-hidden">Loading...</span>
-                          </div>
-                        </div>
-                      </div>
-                                             <div id="totalMemoryUsage" class="px-2"></div>
-                                          </div>
-                                          <div class="tab-pane fade" id="tab_networkUsage" role="tabpanel">
-                                             <div class="justify-content-left d-flex">
-                                                <div class="align-item-right p-1">
-                                                   <div id="network_pod_container"> 
-                                                   <div class="col-9 ">       
-                                                      <select id="network_pod" class="form-select form-select-md">
-                                                        <option value="0">All Pods</option>
-                                                      </select>
-                                                      </div>
-                                                    </div>
-                                                </div>
-                                                <!-- <div class="dropdown">
-                                                   <button class="btn p-0" type="button" id="totalIncome" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                   <i class="bx bx-dots-vertical-rounded bx-sm text-muted"></i>
-                                                   </button>
-                                                   <div class="dropdown-menu dropdown-menu-end background-white" aria-labelledby="totalIncome">
-                                                     <a class="dropdown-item network_period" data-value="1" >6 Hours</a>
-                                                     <a class="dropdown-item network_period" data-value="2" >24 Hours</a>
-                                                     <a class="dropdown-item network_period" data-value="3" >48 Hours</a>
-                                                   </div>
-                                                </div> -->
-                                                 <div class="col-3 p-1">
-                                                      <select id="defaultSelect" class="form-select network_period">                                                      
-                                                            <option value="1" class="dropdown-item ">6 Hrs</option>
-                                                            <option value="2" class="dropdown-item ">24 Hrs</option>
-                                                            <option value="3" class="dropdown-item ">48 Hrs</option>
-                                                      </select>
-                                                </div>
-                                             </div>
-                                             <div class="networkUsage_loader" style="position: relative;">
-                        <div style="position: absolute; inset: 0; background: #fff; z-index: 9999; display: flex; align-items: center; justify-content: center;">
-                          <div class="spinner-border text-primary" role="status">
-                            <span class="visually-hidden">Loading...</span>
-                          </div>
-                        </div>
-                      </div>
-                                             <div id="networkUsage" class="px-2"></div>
-                                          </div>
-                                          <div class="tab-pane fade" id="tab_ioUsage" role="tabpanel">
-                                             <div class="justify-content-left d-flex">
-                                                <div class="align-item-right p-1">
-                                                   <div id="io_pod_container">  
-                                                      <div class="col-9 ">        
-                                                      <select id="io_pod" class="form-select form-select-md">
-                                                        <option value="0">All Pods</option>
-                                                      </select>
-                                                      </div>
-                                                      </div>
-                                                </div>
-                                                <!-- <div class="dropdown">
-                                                   <button class="btn p-0" type="button" id="totalIncome" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                   <i class="bx bx-dots-vertical-rounded bx-sm text-muted"></i>
-                                                   </button>
-                                                   <div class="dropdown-menu dropdown-menu-end background-white" aria-labelledby="totalIncome">
-                                                       <a class="dropdown-item input_period" data-value="1" >6 Hours</a>
-                                                        <a class="dropdown-item input_period" data-value="2" >24 Hours</a>
-                                                        <a class="dropdown-item input_period" data-value="3" >48 Hours</a>
-                                                   </div>
-                                                </div> -->
-                                                <div class="col-3 p-1">
-                                                      <select id="defaultSelect" class="form-select input_period">                                                      
-                                                            <option value="1" class="dropdown-item ">6 Hrs</option>
-                                                            <option value="2" class="dropdown-item ">24 Hrs</option>
-                                                            <option value="3" class="dropdown-item ">48 Hrs</option>
-                                                      </select>
-                                                </div>
-                                             </div>
-                                             <div class="ioUsage_loader" style="position: relative;">
-                        <div style="position: absolute; inset: 0; background: #fff; z-index: 9999; display: flex; align-items: center; justify-content: center;">
-                          <div class="spinner-border text-primary" role="status">
-                            <span class="visually-hidden">Loading...</span>
-                          </div>
-                        </div>
-                      </div>
-                                             <div id="ioUsage" class="px-2"></div>
-                                          </div>
-                                       </div>
-                                    </div>
-                                 </div>
-                              </div>
-                              <!-- /Compute line chart end -->
-                              <!-- Compute Usage -->
-                              <div class="col-md-5">
-                                 <div class="card-header d-flex justify-content-left" style="padding-left: 3px;">
-                                    <div class="avatar card-title mb-0">
-                                       <img src="https://cloud.fltt.fr/apps/dashboard/img/activity.png"  class="rounded p-2">                                    
-                                    </div>
-                                    <h5 class="mt-2">Compute Usages</h5>
-                                 </div>
-                                 <div class="">
-                                 <div class="CPUusage_loader" style="position: relative;">
-                        <div style="position: absolute; inset: 0; background: #fff; z-index: 9999; display: flex; align-items: center; justify-content: center;">
-                          <div class="spinner-border text-primary" role="status">
-                            <span class="visually-hidden">Loading...</span>
-                          </div>
-                        </div>
-                      </div>
-                                    <div class="d-flex">
-                                    <div id="CPUusage" style="height: 120px !important;   width: 150px !important; border-right:1px solid #d9dee3">
-                                       <small class="d-block text-center" style="font-weight: 700;"> CPU Usages</small>
-                                    </div>
-                                    <div id="MemoryUsage" style="height: 120px !important;   width: 150px !important; ">                                    
-                                       <small class="d-block text-center"  style="font-weight: 700;"> Memory Usages</small>
-                                       </div>
-                                    </div>
-                                    <hr>
-                                 </div>
-                                 <!-- Active Applications -->
-                                 <div class=" d-flex justify-content-left">
-                                    <div class="avatar card-title mb-0">
-                                       <img src="https://cloud.fltt.fr/apps/dashboard/img/activity.png"  class="rounded p-2">                                    
-                                    </div>
-                                    <h5 class="mt-2">Active Applications</h5>
-                                 </div>
-                                 <div class="card" style="height: 250px;">
-                                 <div class="active_application_loader" style="position: relative;">
-                        <div style="position: absolute; inset: 0; background: #fff; z-index: 9999; display: flex; align-items: center; justify-content: center;">
-                          <div class="spinner-border text-primary" role="status">
-                            <span class="visually-hidden">Loading...</span>
-                          </div>
-                        </div>
-                      </div>
-                                    <div class="p-2 mb-5" id="active-application-scroll">
-                                       <ul class="p-0 m-0" id="active_application">
-                                         
-                                       </ul>
-                                    </div>
-                                 </div>
-                                 <!-- /Active Applications End -->
-                              </div>
-                             
-                           </div>
-                        </div>
-                     </div>
-                     <!-- /closed chart -->
-                      <!-- Compute activity start -->
-                     <div class="col-12 col-md-8 col-lg-4 order-3 order-md-2 " style="margin-bottom:3rem;">
-                        <div class="row">                           
-                           <div class="col-12 mb-4">
-                              <div class="card overflow-hidden " style="height: 520px;">
-                                 <div class="card-header d-flex justify-content-left">
-                                    <div class="avatar card-title mb-0">
-                                       <img src="https://cloud.fltt.fr/apps/dashboard/img/activity.png"  class="rounded p-2">                                    
-                                    </div>
-                                    <h5 class="mt-2">Compute Activity</h5>
-                                 </div>
-                                 <div class="card-body mb-5" id="compute-activity-scroll">
-                                 <div class="activity_txt_compute_loader" style="position: relative;">
-                        <div style="position: absolute; inset: 0; background: #fff; z-index: 9999; display: flex; align-items: center; justify-content: center;">
-                          <div class="spinner-border text-primary" role="status">
-                            <span class="visually-hidden">Loading...</span>
-                          </div>
-                        </div>
-                      </div>
-                                    <ul class="list-unstyled mb-0" id="activity_txt">
-                                      
-                                    </ul>
-                                 </div>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                     <!-- compute activity closed -->
-                  </div>
+   <div class="row g-4 mb-4">
+  <!-- ====== Tabs Section (CPU, Memory, Network, IO) ====== -->
+  <div class="col-12 col-lg-6">
+    <div class="card h-100">
+      <div class="card-header pb-0">
+        <ul class="nav nav-pills card-header-pills flex-wrap" role="tablist">
+          <li class="nav-item">
+            <button type="button" class="nav-link active" role="tab" data-bs-toggle="tab"
+              data-bs-target="#tab_totalcpuUsage" aria-controls="tab_totalcpuUsage" aria-selected="true">CPU Usage</button>
+          </li>
+          <li class="nav-item">
+            <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
+              data-bs-target="#tab_totalMemoryUsage" aria-controls="tab_totalMemoryUsage" aria-selected="false">Memory
+              Usage</button>
+          </li>
+          <li class="nav-item">
+            <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
+              data-bs-target="#tab_networkUsage" aria-controls="tab_networkUsage" aria-selected="false">Network
+              Usage</button>
+          </li>
+          <li class="nav-item">
+            <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
+              data-bs-target="#tab_ioUsage" aria-controls="tab_ioUsage" aria-selected="false">I/O Usage</button>
+          </li>
+        </ul>
+      </div>
+
+      <div class="card-body">
+        <div class="tab-content p-0">
+          <!-- ===== CPU Usage ===== -->
+          <div class="tab-pane fade show active" id="tab_totalcpuUsage" role="tabpanel">
+            <div class="d-flex flex-wrap align-items-center justify-content-between mb-3">
+              <div class="flex-grow-1 me-2">
+                <select id="cpu_pod" class="form-select form-select-md">
+                  <option value="0">All Pods</option>
+                </select>
+              </div>
+              <div style="width: 150px;">
+                <select class="form-select cpu_period">
+                  <option value="1">6 Hrs</option>
+                  <option value="2">24 Hrs</option>
+                  <option value="3">48 Hrs</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="position-relative">
+              <div class="loader position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center bg-white" style="z-index:10;">
+                <div class="spinner-border text-primary" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+              </div>
+              <div id="totalCPUusage" class="px-2"></div>
+            </div>
+          </div>
+
+          <!-- ===== Memory Usage ===== -->
+          <div class="tab-pane fade" id="tab_totalMemoryUsage" role="tabpanel">
+            <div class="d-flex flex-wrap align-items-center justify-content-between mb-3">
+              <div class="flex-grow-1 me-2">
+                <select id="memory_pod" class="form-select form-select-md">
+                  <option value="0">All Pods</option>
+                </select>
+              </div>
+              <div style="width: 150px;">
+                <select class="form-select memory_period">
+                  <option value="1">6 Hrs</option>
+                  <option value="2">24 Hrs</option>
+                  <option value="3">48 Hrs</option>
+                </select>
+              </div>
+            </div>
+            <div class="position-relative">
+              <div class="loader position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center bg-white" style="z-index:10;">
+                <div class="spinner-border text-primary" role="status"></div>
+              </div>
+              <div id="totalMemoryUsage" class="px-2"></div>
+            </div>
+          </div>
+
+          <!-- ===== Network Usage ===== -->
+          <div class="tab-pane fade" id="tab_networkUsage" role="tabpanel">
+            <div class="d-flex flex-wrap align-items-center justify-content-between mb-3">
+              <div class="flex-grow-1 me-2">
+                <select id="network_pod" class="form-select form-select-md">
+                  <option value="0">All Pods</option>
+                </select>
+              </div>
+              <div style="width: 150px;">
+                <select class="form-select network_period">
+                  <option value="1">6 Hrs</option>
+                  <option value="2">24 Hrs</option>
+                  <option value="3">48 Hrs</option>
+                </select>
+              </div>
+            </div>
+            <div class="position-relative">
+              <div class="loader position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center bg-white" style="z-index:10;">
+                <div class="spinner-border text-primary" role="status"></div>
+              </div>
+              <div id="networkUsage" class="px-2"></div>
+            </div>
+          </div>
+
+          <!-- ===== I/O Usage ===== -->
+          <div class="tab-pane fade" id="tab_ioUsage" role="tabpanel">
+            <div class="d-flex flex-wrap align-items-center justify-content-between mb-3">
+              <div class="flex-grow-1 me-2">
+                <select id="io_pod" class="form-select form-select-md">
+                  <option value="0">All Pods</option>
+                </select>
+              </div>
+              <div style="width: 150px;">
+                <select class="form-select input_period">
+                  <option value="1">6 Hrs</option>
+                  <option value="2">24 Hrs</option>
+                  <option value="3">48 Hrs</option>
+                </select>
+              </div>
+            </div>
+            <div class="position-relative">
+              <div class="loader position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center bg-white" style="z-index:10;">
+                <div class="spinner-border text-primary" role="status"></div>
+              </div>
+              <div id="ioUsage" class="px-2"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Compute Usages + Active Applications ===== -->
+  <div class="col-12 col-md-6 col-lg-3">
+    <div class="card h-100">
+      <div class="card-header d-flex align-items-center gap-2">
+        <div class="avatar">
+          <img src="https://cloud.fltt.fr/apps/dashboard/img/activity.png" class="rounded p-2">
+        </div>
+        <h5 class="mb-0">Compute Usages</h5>
+      </div>
+      <div class="card-body">
+        <div class="d-flex justify-content-around">
+          <div id="CPUusage" class="text-center">
+            <small class="fw-bold d-block">CPU Usages</small>
+          </div>
+          <div id="MemoryUsage" class="text-center">
+            <small class="fw-bold d-block">Memory Usages</small>
+          </div>
+        </div>
+        <hr />
+        <div class="d-flex align-items-center gap-2 mb-2">
+          <div class="avatar">
+            <img src="https://cloud.fltt.fr/apps/dashboard/img/activity.png" class="rounded p-2">
+          </div>
+          <h6 class="mb-0">Active Applications</h6>
+        </div>
+        <div id="active-application-scroll" style="max-height: 220px; overflow-y: auto;">
+          <ul class="p-0 m-0 list-unstyled" id="active_application"></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Compute Activity ===== -->
+  <div class="col-12 col-md-6 col-lg-3">
+    <div class="card h-100">
+      <div class="card-header d-flex align-items-center gap-2">
+        <div class="avatar">
+          <img src="https://cloud.fltt.fr/apps/dashboard/img/activity.png" class="rounded p-2">
+        </div>
+        <h5 class="mb-0">Compute Activity</h5>
+      </div>
+      <div class="card-body" id="compute-activity-scroll" style="max-height: 420px; overflow-y: auto;">
+        <ul class="list-unstyled mb-0" id="activity_txt"></ul>
+      </div>
+    </div>
+  </div>
+</div>
+
 </template>
 
 <script>

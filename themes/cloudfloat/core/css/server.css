@@ -171,10 +171,10 @@ button.primary:focus,
 	height: 128px;
 }
 #header .logo-icon {
-	background-image: url('../img/login-logo.webp');
+	background-image: url('../img/login-logo.webp') !important;
 	/* background-image: url('https://cloud.scaleinfinite.fr/themes/cloudfloat/core/img/login-logo.webp'); */
 /*	background-image: url('https://cdn.scaleinfinite.fr/cloudfloat-theme/login-logo.webp');*/
-	width: 280px;
+	width: 280px !important;
 	height: auto;
 }
 #nextcloud {
@@ -486,7 +486,7 @@ color: #000 !important;
 .app-navigation-administration>ul>li>a:first-child img{
 	filter: invert(1) !important;
 }
-.app-navigation-entry:not(.app-navigation-entry--editing) .app-navigation-entry-link[data-v-018c4203]{
+.app-navigation-entry:not(.app-navigation-entry--editing) .app-navigation-entry-link[data-v-76a56f53]{
 	border-radius: 10px !important;
 	
 }
@@ -530,6 +530,10 @@ color: #000 !important;
 }
 /* Search and Contacts */
 #header .header-right>div{
+	display: none !important;
+}
+
+#header .header-end>div{ /* Nextcloud version 32*/
 	display: none !important;
 }
 .app-navigation-personal>ul>li[data-section-id="availability"],[data-section-id="workflow"] {
@@ -661,16 +665,16 @@ h3[data-v-3705ae06]{
     width: 60px;
     height: auto;
 	}
-	.app-navigation-entry .app-navigation-entry-link .app-navigation-entry__name[data-v-018c4203],
-	.app-navigation-entry .app-navigation-entry-button .app-navigation-entry__name[data-v-018c4203] {
+	.app-navigation-entry .app-navigation-entry-link .app-navigation-entry__name[data-v-76a56f53],
+	.app-navigation-entry .app-navigation-entry-button .app-navigation-entry__name[data-v-76a56f53] {
 	    display: inline-block;
 	    opacity: 1;
 /*	    transform: translateX(0);*/
-/*	    transition: opacity 0.3s ease, transform 0.3s ease;*/
+/*	    transition: opacity 0.3s ease, transform 0.3s ease;*/ 
 	}
 
-	.app-navigation--close .app-navigation-entry .app-navigation-entry-link .app-navigation-entry__name[data-v-018c4203],
-	.app-navigation--close .app-navigation-entry .app-navigation-entry-button .app-navigation-entry__name[data-v-018c4203] {
+	.app-navigation--close .app-navigation-entry .app-navigation-entry-link .app-navigation-entry__name[data-v-76a56f53],
+	.app-navigation--close .app-navigation-entry .app-navigation-entry-button .app-navigation-entry__name[data-v-76a56f53] {
 	    opacity: 0;
 /*	    transform: translateX(-10px);*/
 	    pointer-events: none; /* prevent click when hidden */
@@ -942,22 +946,48 @@ h3[data-v-3705ae06]{
 }
 
 @media (max-width:1024px) {
+  /* Show only the menu icon */
+  .file-app-res-menu {
+    display: block !important;
+  }
 
-	/* Type fillter Button */
-	.file-list-filter-type{
-		display: none !important;
-	}
-	/* Modified Filter button */
-	.responsive-modify {
-		display: none !important;
-	}
-	.files-list__header-filterbutton{
-		max-width: 6% !important;
-	}
-	.file-list-top-bar{
-		z-index: 99;
-	}
+  /* Hide filter buttons (Type, Modified, People) */
+  .file-list-filter-type,
+  .action-item--default-popover,
+  .file-list-filter-accounts {
+    display: none !important;
+  }
+
+  /* Keep the main wrapper visible so menu icon shows */
+  .file-list-filters__filter {
+    display: flex !important;
+    align-items: center;
+  }
+
+  /* Optional: reduce spacing and adjust layout for mobile */
+  .files-list__header-filterbutton {
+    max-width: 6% !important;
+  }
+
+  .file-list-top-bar {
+    z-index: 99;
+  }
 }
+/* Open Image icon in fileapp  */
+.pencil-outline-icon,
+.dots-horizontal-icon,
+.close-icon {
+  color: #fff !important;
+}
+.dots-horizontal-icon svg path {
+  fill: #fff !important;
+}
+.chevron-up-icon{
+	color: #fff !important;
+}
+
+
+/* End */
 
 
 /* File app Responsive menu - END */
@@ -1172,5 +1202,22 @@ button:not([role="tab"]) {
 	padding-bottom: 10rem !important;
 }
 
-
-
+/*===========================
+		NEXTCLOUD VERSION 32 
+=============================*/
+.header-menu__content{
+	width: 260px !important;
+}
+.list-item__wrapper .list-item-content__name{
+ color: #000 !important;
+ padding: 0px 10px !important; 
+}
+/*App Logo Space correction*/
+.app-menu__list[data-v-6def076f]{
+	padding-left: 10px !important;
+	margin-inline:0px !important;
+	margin-bottom: 0px !important;
+}
+.file-list-filters__filter > button {
+  display: none !important;
+}

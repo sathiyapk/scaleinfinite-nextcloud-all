@@ -3,18 +3,13 @@
   - SPDX-License-Identifier: AGPL-3.0-or-later
 -->
 <template>
-	<div class="file-list-top-bar" >
-		<div class="file-app-res-menu">
-			<i :class="['menu-icon tf-icons bx-sm  bx bx-menu']" style="padding:0px 5px 0px 5px"></i>
-		</div>
 	<FileListFilter class="file-list-filter-type"
 		:is-active="isActive"
 		:filter-name="t('files', 'Type')"
 		@reset-filter="resetFilter">
-		<template #icon>			
-			<!-- <NcIconSvgWrapper :path="mdiFile" /> -->			
-			<i :class="['menu-icon tf-icons bx-sm  bx bx-food-menu']"></i>							
-			</template>		
+		<template #icon>
+			<NcIconSvgWrapper :path="mdiFileOutline" />
+		</template>
 		<NcActionButton v-for="fileType of typePresets"
 			:key="fileType.id"
 			type="checkbox"
@@ -26,19 +21,18 @@
 			{{ fileType.label }}
 		</NcActionButton>
 	</FileListFilter>
-</div>
 </template>
 
 <script lang="ts">
 import type { PropType } from 'vue'
 import type { ITypePreset } from '../../filters/TypeFilter.ts'
 
-import { mdiFile } from '@mdi/js'
+import { mdiFileOutline } from '@mdi/js'
 import { translate as t } from '@nextcloud/l10n'
 import { defineComponent } from 'vue'
 
-import NcActionButton from '@nextcloud/vue/dist/Components/NcActionButton.js'
-import NcIconSvgWrapper from '@nextcloud/vue/dist/Components/NcIconSvgWrapper.js'
+import NcActionButton from '@nextcloud/vue/components/NcActionButton'
+import NcIconSvgWrapper from '@nextcloud/vue/components/NcIconSvgWrapper'
 import FileListFilter from './FileListFilter.vue'
 
 export default defineComponent({
@@ -51,6 +45,10 @@ export default defineComponent({
 	},
 
 	props: {
+		presets: {
+			type: Array as PropType<ITypePreset[]>,
+			default: () => [],
+		},
 		typePresets: {
 			type: Array as PropType<ITypePreset[]>,
 			required: true,
@@ -59,7 +57,7 @@ export default defineComponent({
 
 	setup() {
 		return {
-			mdiFile,
+			mdiFileOutline,
 			t,
 		}
 	},
@@ -77,15 +75,23 @@ export default defineComponent({
 	},
 
 	watch: {
+		/** Reset selected options if property is changed */
+		presets() {
+			this.selectedOptions = this.presets ?? []
+		},
 		selectedOptions(newValue, oldValue) {
 			if (this.selectedOptions.length === 0) {
 				if (oldValue.length !== 0) {
-					this.$emit('update:preset')
+					this.$emit('update:presets')
 				}
 			} else {
-				this.$emit('update:preset', this.selectedOptions)
+				this.$emit('update:presets', this.selectedOptions)
 			}
 		},
+	},
+
+	mounted() {
+		this.selectedOptions = this.presets ?? []
 	},
 
 	methods: {

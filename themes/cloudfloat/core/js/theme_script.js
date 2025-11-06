@@ -131,28 +131,9 @@
  						   $('.app-navigation').hide();
 						}
 					}
-					var $target = $('.file-list-filters');
-					console.log($target.find("ul").length);
-					console.log($target.find("ul").children().length);
-					if( $target.find("ul").children().length==1)
-					{
-						$(".breadcrumb__crumbs").attr('style' , 'margin-top:0px'); 					
-					 $(".files-list__header-upload-button").attr('style' , 'margin-top:0px');	
-					}
+					
 				});
-				$(document).on('click', '.nc-chip, .files-list-filter_clear-button, .input-field_trailing-button, .button-vue__wrapper', function(){
-					console.log("remove margin");
-					var $target = $('.file-list-filters');
-					console.log($target.find("ul").length);
-					console.log($target.find("ul").children().length);
-					if( $target.find("ul").children().length==0)
-					{
-						$(".breadcrumb__crumbs").attr('style' , 'margin-top:0px'); 					
-					 $(".files-list__header-upload-button").attr('style' , 'margin-top:0px');	
-					}
-					$(".search-card-container").removeClass("active");
-					$(".search-textbox-position").removeClass("search-textbox-position-active");
-				});
+				
 
 				// Main Navigation Menu
 						$(document).on('click','.layout-menu-toggle',function(){
@@ -213,16 +194,7 @@
 				$('.app-navigation-toggle-wrapper').hide();
 				// file filter button 
 		//		$(".v-popper--theme-dropdown").on('click',function (event){
-					$(document).on('click', '.file-list-filters .v-popper--theme-dropdown', function(){
-				console.log("margin 30px placed");
-					 $(".breadcrumb__crumbs").attr('style' , 'margin-top:30px'); 					
-					 $(".files-list__header-upload-button").attr('style' , 'margin-top:30px');					
-				})
-				// Serch fileter function
-				$('#search_files').on('input', function() {
-					 $(".breadcrumb__crumbs").attr('style' , 'margin-top:30px'); 
-					 $(".files-list__header-upload-button").attr('style' , 'margin-top:30px');		
-				});
+					
 			
 				$('.app-navigation__content').removeAttr("inert");
 
