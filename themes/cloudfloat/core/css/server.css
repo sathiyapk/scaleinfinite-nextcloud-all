@@ -665,20 +665,41 @@ h3[data-v-3705ae06]{
     width: 60px;
     height: auto;
 	}
-	.app-navigation-entry .app-navigation-entry-link .app-navigation-entry__name[data-v-76a56f53],
-	.app-navigation-entry .app-navigation-entry-button .app-navigation-entry__name[data-v-76a56f53] {
-	    display: inline-block;
-	    opacity: 1;
-/*	    transform: translateX(0);*/
-/*	    transition: opacity 0.3s ease, transform 0.3s ease;*/ 
-	}
+	/* Navigation collapse/expand style STRT */
+/* Expanded (default) state */
+.app-navigation-entry .app-navigation-entry-link .app-navigation-entry__name[data-v-76a56f53],
+.app-navigation-entry .app-navigation-entry-button .app-navigation-entry__name[data-v-76a56f53] {
+    display: inline-block;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
 
-	.app-navigation--close .app-navigation-entry .app-navigation-entry-link .app-navigation-entry__name[data-v-76a56f53],
-	.app-navigation--close .app-navigation-entry .app-navigation-entry-button .app-navigation-entry__name[data-v-76a56f53] {
-	    opacity: 0;
-/*	    transform: translateX(-10px);*/
-	    pointer-events: none; /* prevent click when hidden */
-	}
+/* Collapsed state */
+.app-navigation--close .app-navigation-entry .app-navigation-entry-link .app-navigation-entry__name[data-v-76a56f53],
+.app-navigation--close .app-navigation-entry .app-navigation-entry-button .app-navigation-entry__name[data-v-76a56f53]
+{
+    opacity: 0;
+    pointer-events: none;
+}
+/* Default: expanded */
+.app-navigation-entry .icon-collapse .chevron-down-icon[data-v-ce3a06f2],
+.app-navigation-entry .icon-collapse .chevron-up-icon[data-v-ce3a06f2] {
+  transform: rotate(0deg);
+  opacity: 1;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* When navigation is collapsed */
+.app-navigation--close .app-navigation-entry .icon-collapse .chevron-down-icon[data-v-ce3a06f2],
+.app-navigation--close .app-navigation-entry .icon-collapse .chevron-up-icon[data-v-ce3a06f2] {
+  transform: rotate(-90deg); /* or 180deg for flip */
+  opacity: 0; /* optional dim effect */
+}
+.app-navigation-entry .app-navigation-entry-link .app-navigation-entry__name[data-v-76a56f53]{
+	padding-left: 0.8rem;
+}
+	/* Navigation collapse/expand style END */
+
 	.app-navigation-entry-link {
     transition: all 0.3s ease;
 	}
@@ -974,7 +995,7 @@ h3[data-v-3705ae06]{
   }
 }
 /* Open Image icon in fileapp  */
-.pencil-outline-icon,
+/*.pencil-outline-icon,
 .dots-horizontal-icon,
 .close-icon {
   color: #fff !important;
@@ -984,7 +1005,7 @@ h3[data-v-3705ae06]{
 }
 .chevron-up-icon{
 	color: #fff !important;
-}
+}*/
 
 
 /* End */
